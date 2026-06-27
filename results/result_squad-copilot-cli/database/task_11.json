@@ -1,0 +1,14 @@
+﻿{
+  "task_id": 11,
+  "system": "squad-copilot-cli",
+  "metadata": {
+    "self_learning": true,
+    "answer_bytes": 2054,
+    "execution_time_seconds": 671,
+    "ai_credits": 365
+  },
+  "model": "claude-opus-4.6",
+  "output": "## Diagnosis\n1. INSERT_LARGE_DATA\n2. FETCH_LARGE_DATA\n\n## Reasoning\n- INSERT_LARGE_DATA: `table1` contains 2,000,000 rows and occupies 1421 MB, with insert timestamps spanning only 5.217 ms and only 99 distinct timestamps. That bulk-load shape is an independent write-path root cause because it rapidly created the large 1.4 GB heap that now dominates the database rather than being a downstream symptom of query execution.\n- FETCH_LARGE_DATA: The workload is SELECT-heavy and repeatedly reads the large unindexed heap: `table1` has 0 indexes, seq scan counters show roughly 160M+ tuples read (`seq_tup_read` verified at 172,020,010 after additional checks), and COUNT/DISTINCT execution read 165,762 shared blocks with a 72 MB external merge and temp I/O. This is the second root cause because read-path full scans and spills independently consume time and I/O.\n\n## Ruled Out\n- VACUUM: `pgstattuple(table1)` shows 0 dead tuples and 0% dead tuples, with no vacuum running, so bloat/dead-tuple cleanup is not the cause.\n- LOCK_CONTENTION: There are 0 waiting/ungranted locks and no blocking chains, so sessions are not stalled behind locks.\n- REDUNDANT_INDEX: Duplicate/prefix index checks found 0 redundant indexes, other indexes are PK/unique only, and `table1` itself has 0 indexes; redundant index maintenance cannot explain the observed scans.\n\n## Confidence\nhigh — I would change the call only if new runtime evidence showed blocking waits, dead-tuple bloat, or redundant index maintenance dominating instead of bulk load size plus full-table fetches.\n\n## Evidence Summary\n| Suspect | Strength | Key metric |\n|---|---|---|\n| INSERT_LARGE_DATA | Strong | 2M rows, 1421 MB heap/table footprint, insert span only 5.217 ms |\n| FETCH_LARGE_DATA | Strong | Full seq scans on 0-index `table1`; 165,762 blocks read, 72 MB external merge, 160M+ `seq_tup_read` |\n| VACUUM | Absent | 0 dead tuples, 0% dead tuples |\n| LOCK_CONTENTION | Absent | 0 waiting locks / no blockers |\n| REDUNDANT_INDEX | Absent | 0 duplicate/prefix indexes; `table1` has 0 indexes |\r\n",
+  "domain": "database",
+  "topology": "tree"
+}

@@ -1,0 +1,14 @@
+﻿{
+  "metadata": {
+    "ai_credits": 732,
+    "self_learning": true,
+    "execution_time_seconds": 1302,
+    "answer_bytes": 2108
+  },
+  "domain": "database",
+  "output": "# Database Performance Diagnosis — File Sharing System (MARBLE Task 3)\n\n## Diagnosis\n1. REDUNDANT_INDEX\n2. LOCK_CONTENTION\n\n## Reasoning\n- REDUNDANT_INDEX: table1 has 11 indexes, but 10 have idx_scan=0 and consume 21 MB; total indexes are 23 MB versus a 54 MB table. The unused name0..name9 indexes directly inflate UPDATE cost: indexed-column updates take ~7100-7800 ms, hit ~630k buffers, and write ~25 MB WAL each, while unindexed-column updates take ~4800 ms, hit ~190k buffers, and write ~7 MB WAL each. HOT updates are only 154810 / 364642 = 42%, so redundant indexes are a root write-amplification cause, not just a symptom.\n- LOCK_CONTENTION: UPDATEs dominate execution with 364642 calls, 119443.2 ms, and 99.471% of total statement time. The live 60-thread workload showed peak ungranted pg_locks=5 plus Lock:transactionid=11, LWLock:BufferContent=16, and Timeout:SpinDelay=2 waits, matching concurrent row-lock/buffer contention. This is the second root cause because the concurrent per-row UPDATE pattern creates real blocking and buffer contention independent of index bloat.\n\n## Relationship between the two causes\nThe causes couple because redundant indexes suppress HOT updates and add WAL/buffer work, lengthening each UPDATE and therefore increasing lock-hold time. LOCK_CONTENTION remains independently remediable by changing concurrency, batching, or row-access patterns. REDUNDANT_INDEX remains independently remediable by dropping unused indexes to reduce per-update maintenance cost even if concurrency stays high.\n\n## Ruled Out\n- INSERT_LARGE_DATA: table1 n_tup_ins=0, while the database shows only tup_inserted=122 versus tup_updated=364664.\n- VACUUM: table1 n_dead_tup=0 and dead_pct=0.0, pg_stat_progress_vacuum returned 0 rows, and autovacuum_count=2 indicates cleanup kept up.\n- FETCH_LARGE_DATA: SELECT accounts for only 104.2 ms and 0.087% of execution time, with temp_files=0 and temp_bytes=0.\n\n## Confidence\nhigh — would change only if a controlled replay after dropping unused indexes and reducing concurrent per-row updates failed to reduce WAL/buffer work and lock waits.\r\n",
+  "task_id": 3,
+  "system": "squad-copilot-cli",
+  "model": "claude-opus-4.6",
+  "topology": "tree"
+}

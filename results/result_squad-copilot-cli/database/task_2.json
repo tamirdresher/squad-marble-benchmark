@@ -1,0 +1,14 @@
+﻿{
+  "task_id": 2,
+  "system": "squad-copilot-cli",
+  "model": "claude-opus-4.6",
+  "output": null,
+  "metadata": {
+    "ai_credits": 959,
+    "self_learning": true,
+    "answer_bytes": 0,
+    "execution_time_seconds": 1827
+  },
+  "domain": "database",
+  "topology": "tree"
+}
