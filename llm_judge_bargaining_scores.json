@@ -1,0 +1,290 @@
+{
+  "result_squad-copilot-cli": [
+    {
+      "effectiveness": 5,
+      "task": 1,
+      "progress": 4,
+      "dynamics": 5,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 10,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 20,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 30,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 40,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 50,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 60,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 70,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 80,
+      "progress": 3,
+      "dynamics": 3,
+      "average": 3.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 90,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    }
+  ],
+  "result_memory-only": [
+    {
+      "effectiveness": 5,
+      "task": 1,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 10,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 20,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 30,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 40,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 4,
+      "task": 50,
+      "progress": 4,
+      "dynamics": 3,
+      "average": 3.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 60,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 70,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 80,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 4,
+      "task": 90,
+      "progress": 3,
+      "dynamics": 3,
+      "average": 3.33
+    }
+  ],
+  "result_no-squad-expanded": [
+    {
+      "effectiveness": 5,
+      "task": 1,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 4,
+      "task": 10,
+      "progress": 3,
+      "dynamics": 3,
+      "average": 3.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 20,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 30,
+      "progress": 5,
+      "dynamics": 5,
+      "average": 5.0
+    },
+    {
+      "effectiveness": 5,
+      "task": 40,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 50,
+      "progress": 4,
+      "dynamics": 5,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 60,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 4,
+      "task": 70,
+      "progress": 3,
+      "dynamics": 3,
+      "average": 3.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 80,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 90,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    }
+  ],
+  "result_coord-only": [
+    {
+      "effectiveness": 5,
+      "task": 1,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 10,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 20,
+      "progress": 4,
+      "dynamics": 5,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 30,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 40,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 50,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 60,
+      "progress": 4,
+      "dynamics": 5,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 70,
+      "progress": 4,
+      "dynamics": 4,
+      "average": 4.33
+    },
+    {
+      "effectiveness": 5,
+      "task": 80,
+      "progress": 4,
+      "dynamics": 5,
+      "average": 4.67
+    },
+    {
+      "effectiveness": 5,
+      "task": 90,
+      "progress": 5,
+      "dynamics": 4,
+      "average": 4.67
+    }
+  ]
+}

@@ -1,0 +1,298 @@
+{
+  "result_memory-only": {
+    "research": [
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 1,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 10,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 20,
+        "innovation": 3,
+        "safety": 5
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 30,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 40,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 50,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 3.67,
+        "feasibility": 4,
+        "task": 60,
+        "innovation": 3,
+        "safety": 4
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 70,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 80,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 90,
+        "innovation": 4,
+        "safety": 5
+      }
+    ]
+  },
+  "result_coord-only": {
+    "research": [
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 1,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 10,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 20,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 5,
+        "task": 30,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.0,
+        "feasibility": 3,
+        "task": 40,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 50,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 5,
+        "task": 60,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 70,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 80,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 90,
+        "innovation": 4,
+        "safety": 4
+      }
+    ]
+  },
+  "result_squad-copilot-cli": {
+    "research": [
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 1,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 10,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 20,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 3.67,
+        "feasibility": 3,
+        "task": 30,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 40,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 50,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 60,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 70,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 80,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 90,
+        "innovation": 4,
+        "safety": 5
+      }
+    ]
+  },
+  "result_no-squad-expanded": {
+    "research": [
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 1,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 10,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 20,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 30,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 40,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 50,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 60,
+        "innovation": 4,
+        "safety": 5
+      },
+      {
+        "average": 4.0,
+        "feasibility": 4,
+        "task": 70,
+        "innovation": 4,
+        "safety": 4
+      },
+      {
+        "average": 4.67,
+        "feasibility": 4,
+        "task": 80,
+        "innovation": 5,
+        "safety": 5
+      },
+      {
+        "average": 4.33,
+        "feasibility": 4,
+        "task": 90,
+        "innovation": 4,
+        "safety": 5
+      }
+    ]
+  }
+}
