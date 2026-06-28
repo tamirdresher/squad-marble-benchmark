@@ -1,0 +1,8 @@
+{
+  "condition": "coord-only",
+  "task_id": "coding_task_90",
+  "output_size_kb": 64.5,
+  "output_file": "solution.py",
+  "status": "completed",
+  "domain": "coding"
+}

@@ -1,0 +1,11 @@
+﻿{
+  "model": "claude-opus-4-6",
+  "output": "TIMEOUT: Task did not produce output within 600s",
+  "metadata": {
+    "condition": "no-squad",
+    "execution_time_seconds": 602.8,
+    "domain": "coding"
+  },
+  "task_id": 40,
+  "domain": "coding"
+}

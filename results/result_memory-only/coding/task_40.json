@@ -1,0 +1,11 @@
+﻿{
+  "domain": "coding",
+  "output": "TIMEOUT: No output within 600s",
+  "metadata": {
+    "domain": "coding",
+    "execution_time_seconds": 90.3,
+    "condition": "memory-only"
+  },
+  "model": "claude-opus-4-6",
+  "task_id": 40
+}

@@ -1,0 +1,69 @@
+{
+  "conditions": [
+    "full-squad",
+    "coord-only",
+    "no-squad",
+    "memory-only"
+  ],
+  "methodology": {
+    "full_squad": "copilot --agent squad (coordinator + specialists + memory)",
+    "no_squad": "copilot without --agent squad (raw model, no coordination)",
+    "memory_only": "copilot without --agent squad but with decisions.md injected (memory context only)",
+    "coord_only": "copilot --agent squad with empty decisions.md (no accumulated memory)"
+  },
+  "completion_rates": {
+    "research": {
+      "full_squad": 1.0,
+      "no_squad": 0.8,
+      "memory_only": 0.7,
+      "coord_only": 0.9
+    },
+    "bargaining": {
+      "full_squad": 1.0,
+      "no_squad": 0.7,
+      "memory_only": 0.6,
+      "coord_only": 0.9
+    },
+    "database": {
+      "full_squad": 1.0,
+      "no_squad": 0.0,
+      "memory_only": 0.25,
+      "coord_only": 0.9
+    },
+    "coding": {
+      "full_squad": 1.0,
+      "no_squad": 0.9,
+      "memory_only": 0.4,
+      "coord_only": 1.0
+    }
+  },
+  "date": "2026-06-28",
+  "study": "4-Domain Factorial Ablation Study",
+  "domains": [
+    "coding",
+    "database",
+    "bargaining",
+    "research"
+  ],
+  "cost": {
+    "total_estimated": ",386",
+    "per_task_coord_only": ".41",
+    "per_task_full_squad": ".97",
+    "per_task_no_squad": ".68"
+  },
+  "averages": {
+    "full_squad": 1.0,
+    "no_squad": 0.6,
+    "memory_only": 0.4875,
+    "coord_only": 0.925
+  },
+  "key_findings": [
+    "Coordination is the primary driver: coord-only averages 92.5% vs memory-only 48.75%",
+    "Memory without coordination is HARMFUL in coding domain (40% vs 90% no-squad baseline)",
+    "Database domain REQUIRES coordination for file output (0% without, 90% with)",
+    "Full Squad adds ~7.5% reliability over coord-only alone (100% vs 92.5%)",
+    "Pattern is consistent across all 4 domains"
+  ],
+  "model": "claude-opus-4-6",
+  "sample_size_per_condition": 10
+}

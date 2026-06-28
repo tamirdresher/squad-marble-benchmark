@@ -1,0 +1,11 @@
+﻿{
+  "metadata": {
+    "execution_time_seconds": 903.1,
+    "condition": "coord-only",
+    "domain": "database"
+  },
+  "output": "# MARBLE Task #40 — Database Diagnosis\n\n## Diagnosis\n1. INSERT_LARGE_DATA\n2. VACUUM\n\n## Reasoning\n- INSERT_LARGE_DATA: The dominant statement is `INSERT INTO table1 SELECT generate_series(...)`: 41 calls, 820,000 rows, 270,453.5 ms total execution, 6,596.4 ms mean, 820,021 WAL records, and 596,330,816 WAL bytes. It dwarfs the next statement (~76 ms) and accounts for almost all observed WAL, so it is the primary root cause rather than a symptom.\n- VACUUM: The same 820,000-row bulk load exceeded autovacuum insert-maintenance thresholds (`autovacuum_vacuum_insert_threshold=1000`, scale factor `0.2`) while producing ~596 MB WAL. The loaded `table1` was dropped before direct inspection, but the live stats show no vacuum/autovacuum/analyze history on remaining tables and the insert pattern creates stale stats/visibility-map/freezing maintenance debt during the load. This is the second strongest cause as insert-driven vacuum/maintenance gap, not classic dead-tuple bloat.\n\n## Ruled Out\n- LOCK_CONTENTION: `deadlocks=0`, `numbackends=1`, and specialist probes found 0 ungranted locks and 0 blocking chains, so there is no concurrency/blocking fingerprint.\n- REDUNDANT_INDEX: All 7 indexes are primary-key or unique-constraint indexes; duplicate/prefix-overlap returned 0 rows. Five `idx_scan=0` entries are explained by recent stats reset/write-only workload and are not tied to the `table1` insert.\n- FETCH_LARGE_DATA: Final `pg_stat_statements` check found no large `SELECT` from `table1`; table1 entries are insert/create/drop/diagnostic only. Top SELECTs return at most 119 rows total, temp files/bytes are 0, and user-table seq reads are tiny, so aggregate tuple counters are diagnostic/catalog noise.\n\n## Confidence\nmedium — INSERT_LARGE_DATA is certain; VACUUM would be downgraded only if logs proved autovacuum/analyze completed on `table1` before it was dropped, or upgraded with preserved table1 maintenance stats.\n\n## Method\nLive diagnosis via `docker exec marble-pg psql -U test -d sysbench -P pager=off` against marble-pg/sysbench.\r\n",
+  "domain": "database",
+  "task_id": 40,
+  "model": "claude-opus-4-6"
+}

@@ -1,0 +1,9 @@
+{
+  "status": "timeout_no_output",
+  "output_file": "answer.md",
+  "domain": "database",
+  "note": "Memory-only condition: Squad decisions.md loaded but no coordination agent",
+  "task_id": "database_task_1",
+  "condition": "memory-only",
+  "output_size_kb": 0.1
+}

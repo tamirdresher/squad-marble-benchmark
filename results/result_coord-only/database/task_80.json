@@ -1,0 +1,11 @@
+﻿{
+  "metadata": {
+    "execution_time_seconds": 903.0,
+    "condition": "coord-only",
+    "domain": "database"
+  },
+  "output": "TIMEOUT: Squad coord-only task 80 did not complete within 900s",
+  "domain": "database",
+  "task_id": 80,
+  "model": "claude-opus-4-6"
+}

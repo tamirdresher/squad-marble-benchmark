@@ -1,4 +1,4 @@
-﻿# Squad MARBLE Benchmark Results
+# Squad MARBLE Benchmark Results
 
 **System:** Squad (Copilot CLI + multi-agent coordination)
 **Model:** Claude Opus 4.6

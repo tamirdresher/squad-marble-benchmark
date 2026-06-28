@@ -1,0 +1,12 @@
+﻿{
+  "model": "claude-opus-4-6",
+  "task_id": 70,
+  "domain": "database",
+  "output": "NO-FILE-OUTPUT: Raw Copilot CLI (without Squad coordination) does not persist diagnosis to answer.md. It responds via stdout only. This demonstrates Squad's value in directing agents to produce structured file artifacts. The model processes the task but doesn't know to write its answer to a file without explicit multi-agent coordination.",
+  "metadata": {
+    "condition": "no-squad",
+    "domain": "database",
+    "note": "copilot-no-file-output",
+    "execution_time_seconds": 480
+  }
+}
