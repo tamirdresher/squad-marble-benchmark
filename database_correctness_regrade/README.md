@@ -59,6 +59,35 @@ retained solely for auditability. Do not treat it as a second grading method for
 imperfect, and the gaps are within noise. The defensible claim is "coordination provided no
 correctness advantage on database in this small regrade," not "single agents are better."
 
+## Truncation-bias re-grade (v2) — does chopping off Squad's conclusion explain the gap?
+
+A fair objection: Squad's multi-agent transcripts are far longer than the raw single agent's
+(full-Squad database outputs run up to ~25 KB; no-Squad outputs are ~5–7 KB), and Squad places
+its **final diagnosis at the end**. The v1 judge read only the first 7000 chars of an
+8000-char-capped snippet, so for the longest Squad transcripts the judge could have graded the
+*exploration* section while seeing no-Squad's *actual answer* in full — a directional bias
+against the verbose condition.
+
+We tested this directly. `judge_pertask_v2.py` re-grades **every** condition with a
+**conclusion-visible window** via one identical code path: full text when it fits, otherwise
+the first 3000 chars **plus the last 8000 chars** (with an explicit `[...middle omitted...]`
+marker), so each condition's final verdict is guaranteed in front of the judge. Results
+(`judge_results_v2.json`):
+
+| Condition   | v1 (first-7000) | v2 (conclusion-visible) |
+|-------------|----------------:|------------------------:|
+| Full Squad  | 40%             | **40%** |
+| Coord-only  | 50%             | **50%** |
+| Memory-only | 0%              | **0%**  |
+| No Squad    | 60%             | **60%** |
+
+**The scores did not move.** Even with the full conclusion visible, full-Squad still selects
+`INSERT_LARGE_DATA`+`FETCH_LARGE_DATA` on 7/10 tasks regardless of the true root cause, while
+the raw single agent varies its labels and lands `LOCK_CONTENTION`/`REDUNDANT_INDEX` more often.
+The correctness gap is **not** an artifact of truncating Squad's longer output — it reflects the
+multi-agent configs converging on the obvious high-signal causes. (Still n=10; still a
+hypothesis, not a conclusion.)
+
 ## Memory-only caveat
 
 The `memory_only` condition injects a **Squad-generated `decisions.md`** into an otherwise raw
@@ -68,9 +97,15 @@ single-agent run. It therefore tests "Squad-flavored accumulated memory without 
 ## Files
 
 - `extract_judge_input.py` — isolates each condition/task output for judging → `judge_input.json`
-- `judge_pertask.py` — **authoritative** per-task LLM judge (all conditions); writes `judge_results.json`
+- `judge_pertask.py` — per-task LLM judge, v1 (first-7000 window); writes `judge_results.json`
+- `judge_pertask_v2.py` — per-task LLM judge, **v2 conclusion-visible window** (all conditions); writes `judge_results_v2.json`
 - `grade_nosquad_database.py` — **SUPERSEDED** regex cross-check (no-Squad only), kept for audit; not a published source
-- `judge_input.json` — the exact snippets fed to the judge
-- `judge_results.json` — per-task predictions, gold labels, and recall per condition
+- `judge_input.json` — the exact snippets fed to the v1 judge
+- `judge_results.json` — v1 per-task predictions, gold labels, and recall per condition
+- `judge_results_v2.json` — v2 (conclusion-visible) per-task predictions, gold, recall, plus the window used and raw output length per task
+- `regrade_v2_run.log` — full console transcript of the v2 re-grade
+
+No-Squad database raw outputs are also mirrored into
+`../results/result_no-squad-ablation/database/task_*.json` for reproducibility.
 
 Judge model: claude-opus-4.6 via Copilot CLI (documented, deterministic file-output judge).

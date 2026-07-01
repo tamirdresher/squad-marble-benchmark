@@ -1,0 +1,597 @@
+{
+  "judge_model": "claude-opus-4.6 (Copilot CLI, per-task file-output judge, v2 conclusion-visible window)",
+  "metric": "MARBLE recall = |gold \u2229 selected| / |gold|",
+  "window": {
+    "head": 3000,
+    "tail": 8000,
+    "note": "full text if <= head+tail, else first HEAD + last TAIL chars; conclusion always visible for every condition via identical code path"
+  },
+  "subset": [
+    "1",
+    "10",
+    "20",
+    "30",
+    "40",
+    "50",
+    "60",
+    "70",
+    "80",
+    "90"
+  ],
+  "results": {
+    "full_squad": {
+      "recall_avg": 0.4,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0,
+          "raw_len": 3734,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 1.0,
+          "raw_len": 2175,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0,
+          "raw_len": 7470,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0,
+          "raw_len": 9453,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0,
+          "raw_len": 5402,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0,
+          "raw_len": 10989,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0,
+          "raw_len": 7031,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 1.0,
+          "raw_len": 9152,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.5,
+          "raw_len": 9414,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.5,
+          "raw_len": 8810,
+          "status": "ok",
+          "window": "full"
+        }
+      ]
+    },
+    "coord_only": {
+      "recall_avg": 0.5,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 1.0,
+          "raw_len": 7060,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 1.0,
+          "raw_len": 9024,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0,
+          "raw_len": 7643,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0,
+          "raw_len": 3073,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0,
+          "raw_len": 2052,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0,
+          "raw_len": 5585,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0,
+          "raw_len": 4981,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 1.0,
+          "raw_len": 4434,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "timeout",
+          "window": null
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0,
+          "raw_len": 6231,
+          "status": "ok",
+          "window": "full"
+        }
+      ]
+    },
+    "memory_only": {
+      "recall_avg": 0.0,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [],
+          "recall": 0.0,
+          "raw_len": 0,
+          "status": "no_output",
+          "window": null
+        }
+      ]
+    },
+    "no_squad": {
+      "recall_avg": 0.6,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0,
+          "raw_len": 5928,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0,
+          "raw_len": 5311,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0,
+          "raw_len": 4440,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0,
+          "raw_len": 5646,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0,
+          "raw_len": 5688,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0,
+          "raw_len": 6038,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION",
+            "VACUUM"
+          ],
+          "recall": 0.5,
+          "raw_len": 6488,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION",
+            "VACUUM"
+          ],
+          "recall": 0.5,
+          "raw_len": 5967,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [
+            "REDUNDANT_INDEX",
+            "VACUUM",
+            "INSERT_LARGE_DATA"
+          ],
+          "recall": 1.0,
+          "raw_len": 4373,
+          "status": "ok",
+          "window": "full"
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION",
+            "VACUUM"
+          ],
+          "recall": 1.0,
+          "raw_len": 7093,
+          "status": "ok",
+          "window": "full"
+        }
+      ]
+    }
+  }
+}

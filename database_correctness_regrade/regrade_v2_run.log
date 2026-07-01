@@ -1,0 +1,53 @@
+  full_squad   1    len=3734   gold=INSERT_LARGE_DATA                pred=INSERT_LARGE_DATA,LOCK_CONTENTION          r=1.00
+  full_squad   10   len=2175   gold=INSERT_LARGE_DATA                pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=1.00
+  full_squad   20   len=7470   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=0.00
+  full_squad   30   len=9453   gold=LOCK_CONTENTION                  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=0.00
+  full_squad   40   len=5402   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=0.00
+  full_squad   50   len=10989  gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=0.00
+  full_squad   60   len=7031   gold=LOCK_CONTENTION,REDUNDANT_INDEX  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA,VACUUM  r=0.00
+  full_squad   70   len=9152   gold=FETCH_LARGE_DATA,INSERT_LARGE_DATA pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA,VACUUM  r=1.00
+  full_squad   80   len=9414   gold=REDUNDANT_INDEX,VACUUM           pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA,VACUUM  r=0.50
+  full_squad   90   len=8810   gold=INSERT_LARGE_DATA,LOCK_CONTENTION pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA,VACUUM  r=0.50
+==> full_squad: recall_avg=40.0%
+
+  coord_only   1    len=7060   gold=INSERT_LARGE_DATA                pred=INSERT_LARGE_DATA,VACUUM                   r=1.00
+  coord_only   10   len=9024   gold=INSERT_LARGE_DATA                pred=INSERT_LARGE_DATA,VACUUM                   r=1.00
+  coord_only   20   len=7643   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=0.00
+  coord_only   30   len=3073   gold=LOCK_CONTENTION                  pred=INSERT_LARGE_DATA,LOCK_CONTENTION          r=1.00
+  coord_only   40   len=2052   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,VACUUM                   r=0.00
+  coord_only   50   len=5585   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,VACUUM                   r=0.00
+  coord_only   60   len=4981   gold=LOCK_CONTENTION,REDUNDANT_INDEX  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA,VACUUM  r=0.00
+  coord_only   70   len=4434   gold=FETCH_LARGE_DATA,INSERT_LARGE_DATA pred=INSERT_LARGE_DATA,VACUUM,FETCH_LARGE_DATA  r=1.00
+  coord_only   80   len=0      gold=REDUNDANT_INDEX,VACUUM           pred=                                           r=0.00
+  coord_only   90   len=6231   gold=INSERT_LARGE_DATA,LOCK_CONTENTION pred=INSERT_LARGE_DATA,VACUUM,LOCK_CONTENTION   r=1.00
+==> coord_only: recall_avg=50.0%
+
+  memory_only  1    len=0      gold=INSERT_LARGE_DATA                pred=                                           r=0.00
+  memory_only  10   len=0      gold=INSERT_LARGE_DATA                pred=                                           r=0.00
+  memory_only  20   len=0      gold=REDUNDANT_INDEX                  pred=                                           r=0.00
+  memory_only  30   len=0      gold=LOCK_CONTENTION                  pred=                                           r=0.00
+  memory_only  40   len=0      gold=REDUNDANT_INDEX                  pred=                                           r=0.00
+  memory_only  50   len=0      gold=REDUNDANT_INDEX                  pred=                                           r=0.00
+  memory_only  60   len=0      gold=LOCK_CONTENTION,REDUNDANT_INDEX  pred=                                           r=0.00
+  memory_only  70   len=0      gold=FETCH_LARGE_DATA,INSERT_LARGE_DATA pred=                                           r=0.00
+  memory_only  80   len=0      gold=REDUNDANT_INDEX,VACUUM           pred=                                           r=0.00
+  memory_only  90   len=0      gold=INSERT_LARGE_DATA,LOCK_CONTENTION pred=                                           r=0.00
+==> memory_only: recall_avg=0.0%
+
+  no_squad     1    len=5928   gold=INSERT_LARGE_DATA                pred=INSERT_LARGE_DATA,LOCK_CONTENTION          r=1.00
+  no_squad     10   len=5311   gold=INSERT_LARGE_DATA                pred=INSERT_LARGE_DATA,LOCK_CONTENTION          r=1.00
+  no_squad     20   len=4440   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,FETCH_LARGE_DATA         r=0.00
+  no_squad     30   len=5646   gold=LOCK_CONTENTION                  pred=INSERT_LARGE_DATA,LOCK_CONTENTION          r=1.00
+  no_squad     40   len=5688   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,VACUUM                   r=0.00
+  no_squad     50   len=6038   gold=REDUNDANT_INDEX                  pred=INSERT_LARGE_DATA,VACUUM                   r=0.00
+  no_squad     60   len=6488   gold=LOCK_CONTENTION,REDUNDANT_INDEX  pred=INSERT_LARGE_DATA,LOCK_CONTENTION,VACUUM   r=0.50
+  no_squad     70   len=5967   gold=FETCH_LARGE_DATA,INSERT_LARGE_DATA pred=INSERT_LARGE_DATA,LOCK_CONTENTION,VACUUM   r=0.50
+  no_squad     80   len=4373   gold=REDUNDANT_INDEX,VACUUM           pred=REDUNDANT_INDEX,VACUUM,INSERT_LARGE_DATA   r=1.00
+  no_squad     90   len=7093   gold=INSERT_LARGE_DATA,LOCK_CONTENTION pred=INSERT_LARGE_DATA,LOCK_CONTENTION,VACUUM   r=1.00
+==> no_squad: recall_avg=60.0%
+
+SUMMARY (MARBLE recall, database, n=10 subset) � v2 conclusion-visible:
+  full_squad    40.0%
+  coord_only    50.0%
+  memory_only   0.0%
+  no_squad      60.0%
