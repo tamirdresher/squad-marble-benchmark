@@ -46,10 +46,10 @@
     "research"
   ],
   "cost": {
-    "total_estimated": ",386",
-    "per_task_coord_only": ".41",
-    "per_task_full_squad": ".97",
-    "per_task_no_squad": ".68"
+    "per_task_full_squad_usd": 0.97,
+    "per_task_coord_only_usd": 0.41,
+    "per_task_no_squad_usd": 0.68,
+    "note": "Per-task USD cost measured during the ablation runs. An earlier version stored these as malformed strings (dollar sign stripped); corrected to numeric USD."
   },
   "averages": {
     "full_squad": 1.0,

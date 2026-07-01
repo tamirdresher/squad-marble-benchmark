@@ -41,11 +41,35 @@ the obvious high-signal causes (large inserts, full-table scans) and missed subt
 (e.g. `REDUNDANT_INDEX`). With n=10 these gaps are within noise, so the honest takeaway is
 "coordination provides no correctness advantage here" — the opposite of the fabricated 0%.
 
+## Extraction consistency (important)
+
+**All four conditions were graded by the identical LLM extractor** — the same
+`judge_pertask.py` code path, the same prompt, the same 7000-char truncation, the same
+`claude-opus-4.6` judge. No condition was graded differently from another. The published
+numbers in `judge_results.json` (Full Squad 40%, Coord-only 50%, Memory-only 0%, No-Squad 60%)
+all come from this single uniform pass. `no_squad`, `coord_only`, and `full_squad` are graded
+inside one loop (`for cond in ["full_squad","coord_only","no_squad"]`); `memory_only` produced
+no output at all (all runs empty), so its recall is 0 by definition, not by a different grader.
+
+`grade_nosquad_database.py` is a **superseded regex cross-check** that was written earlier and
+only inspects the no-Squad outputs. It is **not** the source of any published number and is
+retained solely for auditability. Do not treat it as a second grading method for the comparison.
+
+**Treat the correctness gap as a hypothesis, not a conclusion.** n=10, label extraction is
+imperfect, and the gaps are within noise. The defensible claim is "coordination provided no
+correctness advantage on database in this small regrade," not "single agents are better."
+
+## Memory-only caveat
+
+The `memory_only` condition injects a **Squad-generated `decisions.md`** into an otherwise raw
+single-agent run. It therefore tests "Squad-flavored accumulated memory without coordination,"
+**not** generic persistent memory. Read the memory-only results with that scope in mind.
+
 ## Files
 
 - `extract_judge_input.py` — isolates each condition/task output for judging → `judge_input.json`
-- `judge_pertask.py` — per-task LLM judge; writes `judge_results.json`
-- `grade_nosquad_database.py` — standalone recall grader for the no-Squad outputs
+- `judge_pertask.py` — **authoritative** per-task LLM judge (all conditions); writes `judge_results.json`
+- `grade_nosquad_database.py` — **SUPERSEDED** regex cross-check (no-Squad only), kept for audit; not a published source
 - `judge_input.json` — the exact snippets fed to the judge
 - `judge_results.json` — per-task predictions, gold labels, and recall per condition
 

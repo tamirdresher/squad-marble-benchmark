@@ -1,4 +1,12 @@
 """
+[SUPERSEDED — regex cross-check, NOT a published source]
+
+This standalone regex grader inspects ONLY the no-Squad database outputs. It was written
+before the uniform LLM judge and is retained solely for auditability. Every published
+correctness number comes from judge_pertask.py, which grades ALL four conditions with the
+identical LLM extractor. Do NOT treat this file as a second/alternate grading method for
+the cross-condition comparison — doing so would (incorrectly) imply mixed extraction methods.
+
 Transparent grader for no-squad database re-run, using MARBLE's official recall metric.
 
 MARBLE database metric (scripts/database/batch_eval.py):

@@ -6,13 +6,16 @@ Public repository containing all raw benchmark data for evaluating [Squad](https
 
 | Benchmark | Tasks | Squad | Baseline (no Squad) | Δ | Controlled? |
 |-----------|-------|-------|---------------------|---|-------------|
-| **MARBLE** (ACL 2025) | 400 (+160 ablation) | 99.25% | 85% | +14.25pp | ✅ Same model |
-| **DevBench** | 1,800 | 53.1% | 43.5%† | +9.6pp | ⚠️ Different model |
-| **SWE-bench Lite** | 300 | 66% | ~48%‡ | +18pp | ⚠️ Estimated baseline |
-| **TerminalBench 2.0** | 20 | 80% | 75% | +5pp | ✅ Same model |
+| **MARBLE** ablation (ACL 2025) | 160 | 100% | 85% (same model) | **+15pp** | ✅ Controlled |
+| **MARBLE** full run | 400 | 99.25% | ~45% (gpt-4o-mini, paper) | n/a* | ⚠️ Diff model/metric |
+| **DevBench** | 1,800 | 53.1% | 43.5%† | +9.6pp* | ⚠️ Different model |
+| **SWE-bench Lite** | 300 | 66% | ~48%‡ | +18pp* | ⚠️ Estimated baseline |
+| **TerminalBench 2.0** | 20 | 80% | 75% | +5pp* | ⚠️ Same model, diff harness (n=20, +1 task) |
 
-† DevBench: Squad uses GPT-5.4; baseline is GPT-5.5 (different model).
-‡ SWE-bench Lite: Baseline estimated from public reports. No same-model-without-Squad run.
+\* **Directional, not controlled.** Only the MARBLE ablation row isolates the coordination layer (same model, same 160 tasks). The MARBLE full-run 99.25% is the 400-task completion headline; its ~45% comparator is the paper's different-model/different-metric result, so no clean Δ is claimed. The other rows use different models, estimated baselines, or different harness paths.
+
+† DevBench: Squad uses GPT-5.4; baseline is GPT-5.5 (different model). Raw per-task data not hosted here — contextual only.
+‡ SWE-bench Lite: Baseline estimated from public reports. No same-model-without-Squad run. Retry/timeout accounting in [squad-swe-bench](https://github.com/tamirdresher/squad-swe-bench).
 
 MARBLE Squad/baseline figures above are the **completion** metric (did the condition produce
 usable output). See the correctness re-grade below — on the database domain, coordination
@@ -55,16 +58,17 @@ database," not "single agents win." See [`database_correctness_regrade/`](databa
 
 ```
 results/
-├── result_full-squad/          # 400 tasks, all domains
+├── result_squad-copilot-cli/   # Full Squad: 400 tasks, all domains
 ├── result_coord-only/          # Ablation: coordination without memory
-├── result_memory-only/         # Ablation: memory without coordination
+├── result_memory-only/         # Ablation: Squad-generated memory injected, no coordination
 ├── result_no-squad-ablation/   # Ablation: raw model, no Squad
 ├── result_no-squad-expanded/   # Extended no-squad runs (coding + database)
 ├── terminalbench-2/            # TerminalBench 2.0 results (20 tasks)
 ├── self-learning-evidence/     # Memory accumulation data
 factorial_ablation_4domain.json # Factorial ablation summary (4 domains)
-factorial_ablation_results.json # Detailed ablation data
-llm_judge_*.json                # LLM-as-judge quality scores
+factorial_ablation_results.json # Detailed ablation data (research/bargaining quality)
+llm_judge_*.json                # LLM-as-judge quality scores (see SUPERSEDED_NOTICE)
+database_correctness_regrade/   # Database correctness re-grade (authoritative, single extractor)
 ```
 
 ## Related Repositories
@@ -75,11 +79,12 @@ llm_judge_*.json                # LLM-as-judge quality scores
 
 ## Methodology
 
-- **MARBLE**: Binary file output within 600s timeout. Same model for all conditions.
-- **TerminalBench 2.0**: Tasks run via Harbor (baseline) and host-side Squad. Same model (Claude Opus 4.6).
-- **DevBench**: Pass@1, 6 languages × 6 categories. Results from Brady Gaster's evaluation.
-- **SWE-bench Lite**: Pass@1, standard evaluation harness. Results from Squad v0.9.6.
-- **Cost**: All costs from actual API billing (Claude/GPT token usage).
+- **MARBLE**: Binary file output within 600s timeout (**completion**, not correctness). Same model for all conditions. Database correctness additionally re-graded by MARBLE recall — see `database_correctness_regrade/`.
+- **Memory-only condition**: injects a **Squad-generated `decisions.md`** into a raw single-agent run. This tests "Squad-flavored memory without coordination," not generic persistent memory.
+- **TerminalBench 2.0**: 20-of-89 sequential subset. Baseline runs via the native terminal-bench harness; Squad runs via a host-side orchestrator (**different harness paths**), each scored by its own Docker verifier. Squad 16/20 vs baseline 15/20 is a **+1-task margin on n=20** — directional, not a clean controlled result.
+- **DevBench**: Pass@1, 6 languages × 6 categories. Squad uses GPT-5.4; baseline is GPT-5.5 (**different model**). Raw per-task data is not hosted in this repo — treat as **contextual/preliminary**, not a controlled comparison.
+- **SWE-bench Lite**: Pass@1, standard evaluation harness (198/300 = 66%). See [tamirdresher/squad-swe-bench](https://github.com/tamirdresher/squad-swe-bench) for raw data, retry configuration, and timeout/empty-patch accounting. Baseline is estimated from public reports — no verified same-model-without-Squad run.
+- **Cost**: Per-task USD from actual API billing (Claude/GPT token usage): Full Squad $0.97, Coord-only $0.41, No-Squad $0.68.
 
 ## Reproducing
 

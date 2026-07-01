@@ -7,14 +7,14 @@
     "Coord-Only has LOWEST variance (StdDev 0.15/0.17) — multi-agent coordination provides consistency",
     "Memory-Only scores BELOW No-Squad on research (4.16 vs 4.26) — accumulated memory without coordination can hurt",
     "Full Squad = best of both: coordination consistency + memory knowledge = highest quality",
-    "Task completion: Full Squad 399/400 (99.75%) vs published baselines ChatDev ~33%, MetaGPT ~40-50%"
+    "Task completion: Full Squad 397/400 (99.25%) vs published baselines ChatDev ~33%, MetaGPT ~40-50%"
   ],
   "reviewer_feedback_addressed": {
     "pearl_causality": "Factorial design isolates memory vs coordination vs their interaction",
     "hinton_architecture": "Coord-only vs memory-only proves coordination alone provides consistency value",
     "bengio_learning": "Memory-only condition shows accumulated context WITHOUT learning; Squad's self-learning requires both memory AND coordination",
     "turing_methodology": "LLM-judge scoring replaces byte-count proxy; data inconsistencies fixed",
-    "sutskever_efficiency": "Efficiency story: Squad's value is reliability (99.75% completion) + consistency (low variance), not raw per-task score delta"
+    "sutskever_efficiency": "Efficiency story: Squad's value is reliability (99.25% completion) + consistency (low variance), not raw per-task score delta"
   },
   "study": "MARBLE Factorial Ablation Study",
   "tasks_sampled": [

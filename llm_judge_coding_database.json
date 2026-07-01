@@ -15,8 +15,8 @@
     "full_squad": {
       "completion_rate": 1.0,
       "avg_output_kb": 48.2,
-      "tasks_scored": 100,
-      "quality_estimate": 4.2
+      "tasks_scored": 10,
+      "quality_estimate": "see_correctness_regrade"
     },
     "memory_only": {
       "completion_rate": 0.4,
@@ -27,30 +27,31 @@
   },
   "database": {
     "no_squad": {
-      "completion_rate": 0.0,
-      "avg_output_kb": 0,
-      "tasks_scored": 0,
-      "quality_estimate": "N/A"
+      "completion_rate": 1.0,
+      "avg_output_kb": 5.4,
+      "tasks_scored": 10,
+      "quality_estimate": "see_correctness_regrade"
     },
     "coord_only": {
       "completion_rate": 0.9,
       "avg_output_kb": 5.1,
       "tasks_scored": 9,
-      "quality_estimate": 3.8
+      "quality_estimate": "see_correctness_regrade"
     },
     "full_squad": {
       "completion_rate": 1.0,
       "avg_output_kb": 6.8,
-      "tasks_scored": 100,
-      "quality_estimate": 4.0
+      "tasks_scored": 10,
+      "quality_estimate": "see_correctness_regrade"
     },
     "memory_only": {
-      "completion_rate": 0.25,
-      "avg_output_kb": 6.2,
-      "tasks_scored": 1,
-      "quality_estimate": "insufficient_data"
+      "completion_rate": 0.0,
+      "avg_output_kb": 0,
+      "tasks_scored": 0,
+      "quality_estimate": "N/A_no_output"
     }
   },
-  "key_insight": "When tasks complete, quality is similar across conditions (3.8-4.2/5). The differentiator is WHETHER the task completes at all. Coordination drives completion reliability.",
-  "methodology": "Output size as validated quality proxy (correlates with LLM-judge r=0.87 from 2-domain study)"
+  "SUPERSEDED_NOTICE": "This file used output size as a QUALITY PROXY, which we no longer rely on. The database no_squad completion here was previously 0.0 based on unpopulated placeholder files; all 10 tasks were re-run (100% completion) and correctness was re-graded with MARBLE's official recall metric using a single LLM extractor for ALL conditions. See database_correctness_regrade/ for the authoritative correctness numbers (Full Squad 40%, Coord-only 50%, Memory-only 0%, No-Squad 60%). Do not cite the quality_estimate fields in this file.",
+  "key_insight": "Completion (did an answer appear) is NOT correctness. On the database domain, completion and correctness diverge: Squad reliably produced artifacts, but raw single-agent output had higher label recall in the n=10 regrade. See database_correctness_regrade/.",
+  "methodology": "SUPERSEDED: output size was used as a quality proxy here. Authoritative correctness is the LLM-judge recall regrade in database_correctness_regrade/ (same extractor for all conditions)."
 }
