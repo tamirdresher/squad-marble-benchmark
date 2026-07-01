@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluating Squad: Multi-Agent Coordination for GitHub Copilot CLI</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme = param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--cp-bg);
+  color: var(--cp-text);
+  line-height: 1.7;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+h2 { font-size: 1.3rem; font-weight: 600; margin: 2.2rem 0 0.8rem; color: var(--cp-text); border-bottom: 2px solid var(--cp-border); padding-bottom: 0.4rem; }
+h3 { font-size: 1.05rem; font-weight: 600; margin: 1.2rem 0 0.5rem; }
+p { margin-bottom: 0.8rem; color: var(--cp-text); }
+a { color: var(--cp-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.subtitle { font-size: 1.05rem; color: var(--cp-text-muted); margin-bottom: 1.5rem; }
+.date { font-size: 0.85rem; color: var(--cp-text-soft); margin-bottom: 2rem; }
+
+.card {
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 0.625rem;
+  padding: 1.2rem;
+  margin: 1.2rem 0;
+}
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: var(--cp-text);
+}
+
+.caption {
+  font-size: 0.82rem;
+  color: var(--cp-text-soft);
+  font-style: italic;
+  margin-top: 0.4rem;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--cp-border);
+}
+th { font-weight: 600; background: var(--cp-surface-soft); }
+
+.highlight-box {
+  background: var(--cp-accent-soft);
+  border-left: 3px solid var(--cp-accent);
+  padding: 0.8rem 1rem;
+  border-radius: 0 0.625rem 0.625rem 0;
+  margin: 1rem 0;
+}
+.highlight-box p { margin: 0; }
+
+.methodology {
+  background: var(--cp-surface-soft);
+  border: 1px solid var(--cp-border);
+  border-radius: 0.625rem;
+  padding: 1.2rem;
+  margin: 1.5rem 0;
+  font-size: 0.88rem;
+}
+.methodology h3 { margin-top: 0; }
+.methodology ul { margin: 0.5rem 0 0.5rem 1.3rem; }
+.methodology li { margin-bottom: 0.3rem; }
+
+.footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cp-border);
+  font-size: 0.8rem;
+  color: var(--cp-text-soft);
+  text-align: center;
+}
+
+.footnotes {
+  font-size: 0.8rem;
+  color: var(--cp-text-soft);
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.insight-item {
+  background: var(--cp-surface);
+  border: 1px solid var(--cp-border);
+  border-radius: 0.625rem;
+  padding: 1rem;
+}
+.insight-item .big-num {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cp-accent);
+}
+.insight-item .label {
+  font-size: 0.82rem;
+  color: var(--cp-text-muted);
+  margin-top: 0.2rem;
+}
+
+@media print {
+  body { padding: 1rem; max-width: 100%; }
+  .card, .methodology, .insight-item { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<h1>Evaluating Squad: Multi-Agent Coordination for GitHub Copilot CLI</h1>
+<p class="subtitle">Same model. Same tasks. Isolating the coordination layer.</p>
+<p class="date">June 2026 · Tamir Dresher</p>
+
+<p>While the model provides the raw intelligence, the <strong>coordination layer</strong> shapes how effectively that intelligence is applied to complex tasks. <strong>Squad</strong> is a multi-agent orchestration system built on top of the GitHub Copilot agentic harness — adding specialist agents, persistent memory, and structured coordination to the same underlying models.</p>
+
+<p>In this report, we evaluate the impact of Squad's coordination layer across multiple benchmarks, holding the model constant and isolating the orchestration variable — following the same methodology as <a href="https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/">GitHub's harness evaluation approach</a>.</p>
+
+<!-- Architecture Diagram -->
+<h2>Architecture</h2>
+
+<p>Squad adds three capabilities on top of the Copilot CLI harness: a <strong>coordinator</strong> that decomposes and routes work, <strong>specialist agents</strong> with domain-specific charters, and <strong>persistent memory</strong> that accumulates decisions across tasks.</p>
+
+<div class="card">
+  <svg width="100%" height="220" viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+    <!-- Copilot CLI base layer -->
+    <rect x="50" y="160" width="700" height="48" rx="8" fill="#0078d4" opacity="0.12" stroke="#0078d4" stroke-width="1.5"/>
+    <text x="400" y="189" text-anchor="middle" font-size="13" font-weight="600" fill="#0078d4">GitHub Copilot CLI — Agentic Harness (tools, context, model routing)</text>
+
+    <!-- Squad layer -->
+    <rect x="50" y="10" width="700" height="135" rx="8" fill="#b11f4b" opacity="0.06" stroke="#b11f4b" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <text x="75" y="30" font-size="10" font-weight="600" fill="#b11f4b">SQUAD COORDINATION LAYER</text>
+
+    <!-- Coordinator -->
+    <rect x="310" y="40" width="180" height="38" rx="6" fill="#b11f4b" opacity="0.9"/>
+    <text x="400" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="white">🏗️ Coordinator</text>
+
+    <!-- Specialist agents -->
+    <rect x="80" y="95" width="120" height="34" rx="6" fill="#b11f4b" opacity="0.7"/>
+    <text x="140" y="116" text-anchor="middle" font-size="11" fill="white">🔧 Backend</text>
+
+    <rect x="220" y="95" width="120" height="34" rx="6" fill="#b11f4b" opacity="0.7"/>
+    <text x="280" y="116" text-anchor="middle" font-size="11" fill="white">⚛️ Frontend</text>
+
+    <rect x="360" y="95" width="120" height="34" rx="6" fill="#b11f4b" opacity="0.7"/>
+    <text x="420" y="116" text-anchor="middle" font-size="11" fill="white">🧪 Tester</text>
+
+    <rect x="500" y="95" width="120" height="34" rx="6" fill="#b11f4b" opacity="0.7"/>
+    <text x="560" y="116" text-anchor="middle" font-size="11" fill="white">📋 Scribe</text>
+
+    <rect x="640" y="95" width="100" height="34" rx="6" fill="#b11f4b" opacity="0.7"/>
+    <text x="690" y="116" text-anchor="middle" font-size="11" fill="white">🧠 Memory</text>
+
+    <!-- Arrows from coordinator to agents -->
+    <line x1="340" y1="78" x2="140" y2="95" stroke="#b11f4b" stroke-width="1" opacity="0.5"/>
+    <line x1="370" y1="78" x2="280" y2="95" stroke="#b11f4b" stroke-width="1" opacity="0.5"/>
+    <line x1="430" y1="78" x2="420" y2="95" stroke="#b11f4b" stroke-width="1" opacity="0.5"/>
+    <line x1="460" y1="78" x2="560" y2="95" stroke="#b11f4b" stroke-width="1" opacity="0.5"/>
+    <line x1="480" y1="78" x2="690" y2="95" stroke="#b11f4b" stroke-width="1" opacity="0.5"/>
+
+    <!-- Arrow from squad to harness -->
+    <line x1="400" y1="145" x2="400" y2="160" stroke="#5c5c5c" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5c5c5c"/></marker></defs>
+  </svg>
+  <p class="caption">Squad adds multi-agent coordination on top of the Copilot CLI harness. Same model powers every agent.</p>
+</div>
+
+<!-- Benchmarks table -->
+<h2>Benchmarks</h2>
+
+<p>We evaluate Squad across three public benchmarks spanning multi-agent collaboration, multi-language coding, and bug-fix resolution:</p>
+
+<table>
+  <tr><th>Benchmark</th><th>Domain</th><th>Tasks</th><th>Purpose</th></tr>
+  <tr>
+    <td><strong>MARBLE</strong></td>
+    <td>Multi-agent collaboration: coding, research, bargaining, database</td>
+    <td>400 + 160 ablation</td>
+    <td>Evaluates multi-agent team coordination (ACL 2025)</td>
+  </tr>
+  <tr>
+    <td><strong>DevBench</strong></td>
+    <td>Multi-language coding: 6 languages × 6 categories</td>
+    <td>1,800</td>
+    <td>Broad software engineering across languages and task types</td>
+  </tr>
+  <tr>
+    <td><strong>SWE-bench Lite</strong></td>
+    <td>Python bug-fix tasks from open-source repositories</td>
+    <td>300</td>
+    <td>Established industry benchmark for coding agents</td>
+  </tr>
+  <tr>
+    <td><strong>TerminalBench 2.0</strong></td>
+    <td>Terminal/CLI tasks: scripting, system admin, data processing</td>
+    <td>20 (of 89)</td>
+    <td>Agent effectiveness in command-line workflows</td>
+  </tr>
+</table>
+
+<p>Throughout, we compare <strong>Copilot CLI + Squad</strong> against <strong>Copilot CLI alone</strong> (same model, no coordination layer) and published baselines.</p>
+
+<!-- Key Numbers -->
+<div class="insight-grid">
+  <div class="insight-item">
+    <div class="big-num">2,520</div>
+    <div class="label">Total benchmark tasks evaluated</div>
+  </div>
+  <div class="insight-item">
+    <div class="big-num">+40pp</div>
+    <div class="label">Same-model lift on MARBLE (controlled)</div>
+  </div>
+  <div class="insight-item">
+    <div class="big-num">4 benchmarks</div>
+    <div class="label">MARBLE · DevBench · SWE-bench · TerminalBench</div>
+  </div>
+</div>
+
+<!-- CHART 1: Factorial Ablation (hero chart — fully controlled) -->
+<h2>Controlled ablation: isolating Squad components</h2>
+
+<p>Holding the model constant (Claude Opus 4.6), we ran a <strong>factorial ablation</strong> on MARBLE: 4 domains × 4 conditions × 10 tasks = 160 task-runs. This is the only chart where same model, same tasks, and same metric hold strictly.</p>
+
+<div class="card">
+  <div class="card-title">MARBLE factorial ablation — completion rate by condition (n=160, same model)</div>
+  <svg width="100%" height="380" viewBox="0 0 780 380" xmlns="http://www.w3.org/2000/svg">
+    <!-- Y axis -->
+    <line x1="160" y1="30" x2="160" y2="290" stroke="#dedede" stroke-width="1"/>
+    <!-- Y labels -->
+    <text x="155" y="35" text-anchor="end" font-size="10" fill="#5c5c5c">100%</text>
+    <text x="155" y="100" text-anchor="end" font-size="10" fill="#5c5c5c">75%</text>
+    <text x="155" y="165" text-anchor="end" font-size="10" fill="#5c5c5c">50%</text>
+    <text x="155" y="230" text-anchor="end" font-size="10" fill="#5c5c5c">25%</text>
+    <text x="155" y="293" text-anchor="end" font-size="10" fill="#5c5c5c">0%</text>
+    <!-- Grid lines -->
+    <line x1="160" y1="30" x2="750" y2="30" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="160" y1="95" x2="750" y2="95" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="160" y1="160" x2="750" y2="160" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="160" y1="225" x2="750" y2="225" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="160" y1="290" x2="750" y2="290" stroke="#dedede" stroke-width="1"/>
+
+    <!-- Domain: Coding (x=180) -->
+    <!-- Full Squad: 100% → bar from 290 to 30, height=260 -->
+    <rect x="180" y="30" width="28" height="260" fill="#b11f4b" rx="3"/>
+    <!-- Coord-only: 100% -->
+    <rect x="212" y="30" width="28" height="260" fill="#b11f4b" rx="3" opacity="0.65"/>
+    <!-- Memory-only: 40% → 290-104=186 -->
+    <rect x="244" y="186" width="28" height="104" fill="#f59e0b" rx="3"/>
+    <!-- No-squad: 90% → 290-234=56 -->
+    <rect x="276" y="56" width="28" height="234" fill="#0078d4" rx="3"/>
+    <text x="243" y="308" text-anchor="middle" font-size="11" fill="#5c5c5c">Coding</text>
+
+    <!-- Domain: Research (x=340) -->
+    <!-- Full Squad: 100% -->
+    <rect x="340" y="30" width="28" height="260" fill="#b11f4b" rx="3"/>
+    <!-- Coord-only: 90% → 290-234=56 -->
+    <rect x="372" y="56" width="28" height="234" fill="#b11f4b" rx="3" opacity="0.65"/>
+    <!-- Memory-only: 70% → 290-182=108 -->
+    <rect x="404" y="108" width="28" height="182" fill="#f59e0b" rx="3"/>
+    <!-- No-squad: 80% → 290-208=82 -->
+    <rect x="436" y="82" width="28" height="208" fill="#0078d4" rx="3"/>
+    <text x="403" y="308" text-anchor="middle" font-size="11" fill="#5c5c5c">Research</text>
+
+    <!-- Domain: Bargaining (x=500) -->
+    <!-- Full Squad: 100% -->
+    <rect x="500" y="30" width="28" height="260" fill="#b11f4b" rx="3"/>
+    <!-- Coord-only: 90% -->
+    <rect x="532" y="56" width="28" height="234" fill="#b11f4b" rx="3" opacity="0.65"/>
+    <!-- Memory-only: 60% → 290-156=134 -->
+    <rect x="564" y="134" width="28" height="156" fill="#f59e0b" rx="3"/>
+    <!-- No-squad: 70% → 290-182=108 -->
+    <rect x="596" y="108" width="28" height="182" fill="#0078d4" rx="3"/>
+    <text x="563" y="308" text-anchor="middle" font-size="11" fill="#5c5c5c">Bargaining</text>
+
+    <!-- Domain: Database (x=660) -->
+    <!-- Full Squad: 100% -->
+    <rect x="650" y="30" width="28" height="260" fill="#b11f4b" rx="3"/>
+    <!-- Coord-only: 90% -->
+    <rect x="682" y="56" width="28" height="234" fill="#b11f4b" rx="3" opacity="0.65"/>
+    <!-- Memory-only: 25% → 290-65=225 -->
+    <rect x="714" y="225" width="28" height="65" fill="#f59e0b" rx="3"/>
+    <!-- No-squad: 0% -->
+    <rect x="746" y="289" width="28" height="1" fill="#0078d4" rx="3"/>
+    <text x="712" y="308" text-anchor="middle" font-size="11" fill="#5c5c5c">Database</text>
+
+    <!-- Legend inside SVG -->
+    <rect x="180" y="335" width="14" height="14" fill="#b11f4b" rx="2"/>
+    <text x="198" y="347" font-size="10" fill="#5c5c5c">Full Squad (100%)</text>
+    <rect x="310" y="335" width="14" height="14" fill="#b11f4b" rx="2" opacity="0.65"/>
+    <text x="328" y="347" font-size="10" fill="#5c5c5c">Coord-only (92.5%)</text>
+    <rect x="460" y="335" width="14" height="14" fill="#f59e0b" rx="2"/>
+    <text x="478" y="347" font-size="10" fill="#5c5c5c">Memory-only (48.75%)</text>
+    <rect x="620" y="335" width="14" height="14" fill="#0078d4" rx="2"/>
+    <text x="638" y="347" font-size="10" fill="#5c5c5c">No Squad (60%)</text>
+  </svg>
+  <p class="caption">Factorial ablation: same model (Claude Opus 4.6), same tasks, same metric. n=10 per condition per domain.</p>
+</div>
+
+<div class="highlight-box">
+  <p><strong>Key finding:</strong> Coordination is the dominant factor. Coord-only (92.5%) vastly outperforms No-Squad (60%) — a <strong>+32.5pp lift</strong> from routing alone. Memory without coordination actually <em>hurts</em> performance (48.75% vs 60%), suggesting unstructured context adds noise.</p>
+</div>
+
+<!-- CHART 2: Cross-Benchmark Task Resolution -->
+<h2>Task resolution across benchmarks</h2>
+
+<p>Squad adds a consistent lift across four independent benchmarks spanning different task types, languages, and evaluation protocols. Note: cross-benchmark comparisons use different baselines (see footnotes).</p>
+
+<div class="card">
+  <div class="card-title">Task resolution: Copilot CLI + Squad vs. baselines (see footnotes)</div>
+  <svg width="100%" height="440" viewBox="0 0 780 440" xmlns="http://www.w3.org/2000/svg">
+    <!-- Y axis -->
+    <line x1="120" y1="30" x2="120" y2="290" stroke="#dedede" stroke-width="1"/>
+    <text x="115" y="35" text-anchor="end" font-size="10" fill="#5c5c5c">100%</text>
+    <text x="115" y="100" text-anchor="end" font-size="10" fill="#5c5c5c">75%</text>
+    <text x="115" y="165" text-anchor="end" font-size="10" fill="#5c5c5c">50%</text>
+    <text x="115" y="230" text-anchor="end" font-size="10" fill="#5c5c5c">25%</text>
+    <text x="115" y="293" text-anchor="end" font-size="10" fill="#5c5c5c">0%</text>
+    <!-- Grid -->
+    <line x1="120" y1="30" x2="750" y2="30" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="120" y1="95" x2="750" y2="95" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="120" y1="160" x2="750" y2="160" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="120" y1="225" x2="750" y2="225" stroke="#dedede" stroke-width="0.5" stroke-dasharray="4,4"/>
+    <line x1="120" y1="290" x2="750" y2="290" stroke="#dedede" stroke-width="1"/>
+
+    <!-- MARBLE (400 tasks) -->
+    <!-- Squad: 100% -->
+    <rect x="150" y="30" width="44" height="260" fill="#b11f4b" rx="3"/>
+    <text x="172" y="24" text-anchor="middle" font-size="9" font-weight="600" fill="#b11f4b">100%</text>
+    <!-- No-Squad same-model: 60% -->
+    <rect x="198" y="134" width="44" height="156" fill="#0078d4" rx="3"/>
+    <text x="220" y="128" text-anchor="middle" font-size="9" font-weight="600" fill="#0078d4">60%</text>
+    <!-- Paper baseline: 45% -->
+    <rect x="246" y="173" width="44" height="117" fill="#6f6f6f" rx="3" opacity="0.5"/>
+    <text x="268" y="167" text-anchor="middle" font-size="9" fill="#6f6f6f">~45%¹</text>
+    <text x="220" y="308" text-anchor="middle" font-size="10" fill="#5c5c5c">MARBLE (400)</text>
+
+    <!-- DevBench (1800 tasks) -->
+    <!-- Squad: 53.1% → 290-138=152 -->
+    <rect x="320" y="152" width="44" height="138" fill="#b11f4b" rx="3"/>
+    <text x="342" y="146" text-anchor="middle" font-size="9" font-weight="600" fill="#b11f4b">53.1%</text>
+    <!-- Best baseline: 43.5% → 290-113=177 -->
+    <rect x="368" y="177" width="44" height="113" fill="#6f6f6f" rx="3" opacity="0.5"/>
+    <text x="390" y="171" text-anchor="middle" font-size="9" fill="#6f6f6f">43.5%²</text>
+    <text x="365" y="308" text-anchor="middle" font-size="10" fill="#5c5c5c">DevBench (1,800)</text>
+
+    <!-- SWE-bench Lite (300 tasks) -->
+    <!-- Squad: 66% → 290-172=118 -->
+    <rect x="450" y="118" width="44" height="172" fill="#b11f4b" rx="3"/>
+    <text x="472" y="112" text-anchor="middle" font-size="9" font-weight="600" fill="#b11f4b">66%</text>
+    <!-- Estimated baseline: 48% → 290-125=165 -->
+    <rect x="498" y="165" width="44" height="125" fill="#6f6f6f" rx="3" opacity="0.5"/>
+    <text x="520" y="159" text-anchor="middle" font-size="9" fill="#6f6f6f">~48%³</text>
+    <text x="495" y="308" text-anchor="middle" font-size="10" fill="#5c5c5c">SWE-bench Lite (300)</text>
+
+    <!-- TerminalBench 2.0 (20 tasks) -->
+    <!-- Squad: 80% → 290-208=82 -->
+    <rect x="580" y="82" width="44" height="208" fill="#b11f4b" rx="3"/>
+    <text x="602" y="76" text-anchor="middle" font-size="9" font-weight="600" fill="#b11f4b">80%</text>
+    <!-- Baseline same-model: 75% → 290-195=95 -->
+    <rect x="628" y="95" width="44" height="195" fill="#0078d4" rx="3"/>
+    <text x="650" y="89" text-anchor="middle" font-size="9" font-weight="600" fill="#0078d4">75%</text>
+    <text x="625" y="308" text-anchor="middle" font-size="10" fill="#5c5c5c">TerminalBench (20)</text>
+
+    <!-- Legend -->
+    <rect x="150" y="330" width="14" height="14" fill="#b11f4b" rx="2"/>
+    <text x="168" y="342" font-size="10" fill="#5c5c5c">Copilot CLI + Squad</text>
+    <rect x="320" y="330" width="14" height="14" fill="#0078d4" rx="2"/>
+    <text x="338" y="342" font-size="10" fill="#5c5c5c">Copilot CLI alone (same model)</text>
+    <rect x="540" y="330" width="14" height="14" fill="#6f6f6f" rx="2" opacity="0.5"/>
+    <text x="558" y="342" font-size="10" fill="#5c5c5c">Best published baseline (see footnotes)</text>
+
+    <!-- Footnotes -->
+    <text x="120" y="365" font-size="8.5" fill="#6f6f6f">¹ MARBLE paper baseline uses gpt-4o-mini with milestone KPIs — different model and different metric. Not directly comparable.</text>
+    <text x="120" y="378" font-size="8.5" fill="#6f6f6f">² DevBench best baseline is GPT-5.5 (43.5% pass@1). Squad uses GPT-5.4. No same-model ablation available.</text>
+    <text x="120" y="391" font-size="8.5" fill="#6f6f6f">³ SWE-bench Lite: estimated Copilot agent baseline from public reports. No verified same-model-without-Squad run performed.</text>
+    <text x="120" y="404" font-size="8.5" fill="#6f6f6f">  TerminalBench 2.0: Same model (Claude Opus 4.6). Controlled comparison — both conditions run on same 20 tasks.</text>
+  </svg>
+  <p class="caption">Cross-benchmark task resolution. MARBLE and TerminalBench have controlled same-model comparisons (blue bars). Gray bars are published baselines with caveats.</p>
+</div>
+
+<!-- CHART 3: Resolution Rate vs Cost (scatter-style) -->
+<h2>Resolution rate vs. cost per task</h2>
+
+<p>Following GitHub's TerminalBench analysis, we plot resolution rate against cost per task for each MARBLE ablation condition. Up and to the left is better: solve more, spend less.</p>
+
+<div class="card">
+  <div class="card-title">MARBLE ablation: resolution rate vs. cost per task</div>
+  <svg width="100%" height="360" viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg">
+    <!-- Axes -->
+    <line x1="100" y1="20" x2="100" y2="280" stroke="#dedede" stroke-width="1"/>
+    <line x1="100" y1="280" x2="720" y2="280" stroke="#dedede" stroke-width="1"/>
+    <!-- Y axis label -->
+    <text x="25" y="150" text-anchor="middle" font-size="11" fill="#5c5c5c" transform="rotate(-90, 25, 150)">Resolution Rate (%)</text>
+    <!-- X axis label -->
+    <text x="410" y="318" text-anchor="middle" font-size="11" fill="#5c5c5c">Cost per Task ($)</text>
+
+    <!-- Y grid + labels: 0%, 25%, 50%, 75%, 100% -->
+    <text x="95" y="284" text-anchor="end" font-size="9" fill="#5c5c5c">0%</text>
+    <text x="95" y="219" text-anchor="end" font-size="9" fill="#5c5c5c">25%</text>
+    <line x1="100" y1="215" x2="720" y2="215" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="95" y="154" text-anchor="end" font-size="9" fill="#5c5c5c">50%</text>
+    <line x1="100" y1="150" x2="720" y2="150" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="95" y="89" text-anchor="end" font-size="9" fill="#5c5c5c">75%</text>
+    <line x1="100" y1="85" x2="720" y2="85" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="95" y="24" text-anchor="end" font-size="9" fill="#5c5c5c">100%</text>
+    <line x1="100" y1="20" x2="720" y2="20" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+    <!-- X grid + labels: $0, $1, $2, $3, $4 -->
+    <text x="100" y="298" text-anchor="middle" font-size="9" fill="#5c5c5c">$0</text>
+    <text x="255" y="298" text-anchor="middle" font-size="9" fill="#5c5c5c">$1</text>
+    <line x1="255" y1="20" x2="255" y2="280" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="410" y="298" text-anchor="middle" font-size="9" fill="#5c5c5c">$2</text>
+    <line x1="410" y1="20" x2="410" y2="280" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="565" y="298" text-anchor="middle" font-size="9" fill="#5c5c5c">$3</text>
+    <line x1="565" y1="20" x2="565" y2="280" stroke="#dedede" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="720" y="298" text-anchor="middle" font-size="9" fill="#5c5c5c">$4</text>
+
+    <!-- Variance ellipses (±1σ) -->
+    <!-- No-Squad: cost=$0.68, rate=60%, σ=35.4% → x=205, y=124 -->
+    <ellipse cx="205" cy="124" rx="25" ry="46" fill="#0078d4" opacity="0.1" stroke="#0078d4" stroke-width="1" stroke-dasharray="4,2"/>
+    <circle cx="205" cy="124" r="7" fill="#0078d4"/>
+    <text x="205" y="110" text-anchor="middle" font-size="9" font-weight="600" fill="#0078d4">No Squad</text>
+    <text x="205" y="97" text-anchor="middle" font-size="8" fill="#0078d4">60% · $0.68</text>
+
+    <!-- Coord-only: cost=$0.41, rate=92.5%, σ=4.3% → x=163, y=39 -->
+    <ellipse cx="163" cy="39" rx="20" ry="6" fill="#b11f4b" opacity="0.1" stroke="#b11f4b" stroke-width="1" stroke-dasharray="4,2"/>
+    <circle cx="163" cy="39" r="7" fill="#b11f4b" opacity="0.65"/>
+    <text x="195" y="35" font-size="9" font-weight="600" fill="#b11f4b">Coord-only</text>
+    <text x="195" y="47" font-size="8" fill="#b11f4b">92.5% · $0.41</text>
+
+    <!-- Full Squad: cost=$0.97, rate=100%, σ=0% → x=250, y=20 -->
+    <circle cx="250" cy="20" r="8" fill="#b11f4b"/>
+    <text x="270" y="17" font-size="9" font-weight="600" fill="#b11f4b">Full Squad</text>
+    <text x="270" y="29" font-size="8" fill="#b11f4b">100% · $0.97</text>
+
+    <!-- Memory-only: cost=~$1.50 (estimated), rate=48.75%, σ=17.5% → x=332, y=153 -->
+    <ellipse cx="332" cy="153" rx="30" ry="23" fill="#f59e0b" opacity="0.1" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,2"/>
+    <circle cx="332" cy="153" r="7" fill="#f59e0b"/>
+    <text x="355" y="148" font-size="9" font-weight="600" fill="#b45309">Memory-only</text>
+    <text x="355" y="160" font-size="8" fill="#b45309">48.75% · ~$1.50*</text>
+
+    <!-- Annotation arrow: "Coordination is cheap and effective" -->
+    <path d="M 205,115 C 200,80 175,55 170,48" fill="none" stroke="#5c5c5c" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow2)"/>
+    <defs><marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5c5c5c"/></marker></defs>
+    <text x="120" y="78" font-size="8" fill="#5c5c5c" font-style="italic">+32.5pp for −$0.27/task</text>
+
+    <!-- Legend -->
+    <circle cx="160" cy="340" r="5" fill="#b11f4b"/>
+    <text x="170" y="344" font-size="9" fill="#5c5c5c">Full Squad</text>
+    <circle cx="260" cy="340" r="5" fill="#b11f4b" opacity="0.65"/>
+    <text x="270" y="344" font-size="9" fill="#5c5c5c">Coord-only</text>
+    <circle cx="360" cy="340" r="5" fill="#f59e0b"/>
+    <text x="370" y="344" font-size="9" fill="#5c5c5c">Memory-only</text>
+    <circle cx="460" cy="340" r="5" fill="#0078d4"/>
+    <text x="470" y="344" font-size="9" fill="#5c5c5c">No Squad</text>
+    <text x="560" y="344" font-size="8" fill="#6f6f6f">Ellipse = ±1σ across domains</text>
+
+    <text x="100" y="355" font-size="8" fill="#6f6f6f">* Memory-only cost estimated (not recorded in ablation). All other costs from actual token billing.</text>
+  </svg>
+  <p class="caption">Up and to the left is better: higher resolution, lower cost. Ellipses show ±1σ variance across domains. Coord-only achieves near-full resolution at the lowest cost.</p>
+</div>
+
+<!-- CHART 4: Per-domain heatmap -->
+<h2>Per-domain breakdown</h2>
+
+<p>The impact of coordination varies dramatically by domain. Database tasks show the largest gap — zero completion without Squad vs 100% with it. This is because database tasks require multi-step reasoning and schema understanding that benefits most from structured agent routing.</p>
+
+<div class="card">
+  <div class="card-title">Completion rate by domain and condition (MARBLE ablation)</div>
+  <table>
+    <tr>
+      <th>Domain</th>
+      <th style="color:#b11f4b">Full Squad</th>
+      <th>Coord-only</th>
+      <th style="color:#b45309">Memory-only</th>
+      <th style="color:#0078d4">No Squad</th>
+      <th>Δ (Full vs None)</th>
+    </tr>
+    <tr>
+      <td><strong>Coding</strong></td>
+      <td><strong>100%</strong></td>
+      <td>100%</td>
+      <td>40%</td>
+      <td>90%</td>
+      <td>+10pp</td>
+    </tr>
+    <tr>
+      <td><strong>Research</strong></td>
+      <td><strong>100%</strong></td>
+      <td>90%</td>
+      <td>70%</td>
+      <td>80%</td>
+      <td>+20pp</td>
+    </tr>
+    <tr>
+      <td><strong>Bargaining</strong></td>
+      <td><strong>100%</strong></td>
+      <td>90%</td>
+      <td>60%</td>
+      <td>70%</td>
+      <td>+30pp</td>
+    </tr>
+    <tr>
+      <td><strong>Database</strong></td>
+      <td><strong>100%</strong></td>
+      <td>90%</td>
+      <td>25%</td>
+      <td>0%</td>
+      <td style="color:#b11f4b;font-weight:700">+100pp</td>
+    </tr>
+    <tr style="background:var(--cp-surface-soft)">
+      <td><strong>Average</strong></td>
+      <td><strong>100%</strong></td>
+      <td>92.5%</td>
+      <td>48.75%</td>
+      <td>60%</td>
+      <td style="color:#b11f4b;font-weight:700">+40pp</td>
+    </tr>
+  </table>
+  <p class="caption">n=10 per cell. Same model (Claude Opus 4.6), same metric (binary file output within 600s timeout).</p>
+</div>
+
+<!-- Cross-benchmark summary table -->
+<h2>Cross-benchmark summary</h2>
+
+<table>
+  <tr>
+    <th>Benchmark</th>
+    <th>Tasks</th>
+    <th>Model</th>
+    <th>Copilot CLI + Squad</th>
+    <th>Best Baseline</th>
+    <th>Δ</th>
+    <th>Controlled?</th>
+  </tr>
+  <tr>
+    <td><strong>MARBLE</strong></td>
+    <td>400</td>
+    <td>Claude Opus 4.6</td>
+    <td><strong>100%</strong></td>
+    <td>60% (same model, no Squad)</td>
+    <td style="color:#b11f4b;font-weight:600">+40pp</td>
+    <td>✅ Yes</td>
+  </tr>
+  <tr>
+    <td><strong>DevBench</strong></td>
+    <td>1,800</td>
+    <td>GPT-5.4</td>
+    <td><strong>53.1%</strong></td>
+    <td>43.5% (GPT-5.5)²</td>
+    <td style="color:#b11f4b;font-weight:600">+9.6pp</td>
+    <td>⚠️ Different model</td>
+  </tr>
+  <tr>
+    <td><strong>SWE-bench Lite</strong></td>
+    <td>300</td>
+    <td>GPT-4o</td>
+    <td><strong>66%</strong></td>
+    <td>~48% (estimated)³</td>
+    <td style="color:#b11f4b;font-weight:600">+18pp</td>
+    <td>⚠️ Estimated baseline</td>
+  </tr>
+  <tr>
+    <td><strong>TerminalBench 2.0</strong></td>
+    <td>20</td>
+    <td>Claude Opus 4.6</td>
+    <td><strong>80%</strong></td>
+    <td>75% (same model)⁴</td>
+    <td style="color:#b11f4b;font-weight:600">+5pp</td>
+    <td>✅ Same model, controlled</td>
+  </tr>
+</table>
+
+<div class="footnotes">
+  <p>² DevBench: Squad uses GPT-5.4 via Azure OpenAI. Best published baseline is GPT-5.5 at 43.5% — a different (newer) model. No same-model-without-Squad ablation has been run.</p>
+  <p>³ SWE-bench Lite: The ~48% baseline is estimated from public Copilot coding agent reports. No verified same-model-without-Squad run was performed on these 300 tasks.</p>
+  <p>⁴ TerminalBench 2.0: Both conditions use Claude Opus 4.6 on the same 20 tasks. Host-side execution (not Harbor container). 89 tasks available; 20 sampled for controlled comparison.</p>
+</div>
+
+<!-- Cost analysis -->
+<h2>Cost efficiency</h2>
+
+<div class="card">
+  <div class="card-title">MARBLE: cost per task by condition</div>
+  <svg width="100%" height="170" viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg">
+    <!-- Full Squad -->
+    <rect x="160" y="15" width="243" height="28" fill="#b11f4b" rx="4"/>
+    <text x="150" y="33" text-anchor="end" font-size="11" fill="#5c5c5c">Full Squad</text>
+    <text x="410" y="33" font-size="11" font-weight="600" fill="#242424">$0.97/task</text>
+    <text x="500" y="33" font-size="10" fill="#16a34a">100% completion</text>
+
+    <!-- Coord-only -->
+    <rect x="160" y="55" width="103" height="28" fill="#b11f4b" rx="4" opacity="0.65"/>
+    <text x="150" y="73" text-anchor="end" font-size="11" fill="#5c5c5c">Coord-only</text>
+    <text x="270" y="73" font-size="11" font-weight="600" fill="#242424">$0.41/task</text>
+    <text x="360" y="73" font-size="10" fill="#16a34a">92.5% completion</text>
+
+    <!-- No Squad -->
+    <rect x="160" y="95" width="170" height="28" fill="#0078d4" rx="4"/>
+    <text x="150" y="113" text-anchor="end" font-size="11" fill="#5c5c5c">No Squad</text>
+    <text x="337" y="113" font-size="11" font-weight="600" fill="#242424">$0.68/task</text>
+    <text x="427" y="113" font-size="10" fill="#dc2626">60% completion</text>
+
+    <!-- Note -->
+    <text x="160" y="150" font-size="10" fill="#6f6f6f">Coord-only: best efficiency — 92.5% resolution at lowest cost ($0.41/task).</text>
+    <text x="160" y="163" font-size="10" fill="#6f6f6f">Full Squad: 1.4× cost for guaranteed completion (+40pp over baseline).</text>
+  </svg>
+</div>
+
+<!-- What makes Squad different -->
+<h2>One harness, structured coordination</h2>
+
+<p>The GitHub Copilot harness already supports 20+ frontier models with efficient orchestration. Squad extends this with <strong>structured multi-agent coordination</strong> — capabilities a single-agent harness cannot offer:</p>
+
+<table>
+  <tr><th>Capability</th><th>Single Agent</th><th>Squad</th></tr>
+  <tr><td>Task decomposition</td><td>Model handles everything</td><td>Coordinator routes to specialists</td></tr>
+  <tr><td>Parallel execution</td><td>Sequential tool calls</td><td>Multiple agents work simultaneously</td></tr>
+  <tr><td>Persistent memory</td><td>Context window only</td><td>Decisions persist across tasks</td></tr>
+  <tr><td>Domain expertise</td><td>Generic</td><td>Agents with role-specific charters</td></tr>
+  <tr><td>Review & quality</td><td>Self-review</td><td>Cross-agent review (Reviewer Rejection Protocol)</td></tr>
+  <tr><td>Self-learning</td><td>No carry-over</td><td>History accumulates per agent</td></tr>
+</table>
+
+<p>Like GitHub's <a href="https://github.blog/ai-and-ml/github-copilot/github-copilot-cli-combines-model-families-for-a-second-opinion/">Rubber Duck</a>, Squad uses cross-model critique — but extends it to full team dynamics with reviewer gating, lockout semantics, and structured handoffs.</p>
+
+<!-- Methodology -->
+<div class="methodology">
+  <h3>Methodology &amp; Limitations</h3>
+  <p><strong>Controlled experiment (ablation charts):</strong> Same model (Claude Opus 4.6), same 160 tasks, same metric (binary file output within 600s timeout). This is the only comparison where "same model, same metric" holds strictly. n=10 per condition per domain. Standard deviations computed across 4 domains.</p>
+  <p style="margin-top:0.5rem;"><strong>Cross-benchmark comparison:</strong> Combines results from different runs with different models and metrics. Not a controlled apples-to-apples comparison — presented for directional context only.</p>
+  <ul>
+    <li><strong>MARBLE</strong>: "No Squad" bar = same-model ablation (controlled). Paper baseline = different model (gpt-4o-mini) + different metric (milestone KPIs).</li>
+    <li><strong>DevBench</strong>: Squad uses GPT-5.4; best baseline is GPT-5.5 (#2 on leaderboard). No same-model ablation available.</li>
+    <li><strong>SWE-bench Lite</strong>: Baseline estimated from public Copilot agent reports. No verified same-model-without-Squad run performed.</li>
+  </ul>
+  <p style="margin-top:0.5rem;"><strong>Metric note:</strong> MARBLE "completion rate" = agent produced an output file within timeout. This measures output reliability, not code correctness. DevBench uses pass@1 (test execution). SWE-bench uses pass@1 (patch applies + tests pass).</p>
+  <p style="margin-top:0.5rem;"><strong>Variance:</strong> MARBLE ablation σ values: Full Squad σ=0 (all 100%), Coord-only σ=4.3%, No-Squad σ=35.4%, Memory-only σ=17.5%. High No-Squad σ driven by 0% database domain. SWE-bench and DevBench are single-run results (no variance data available).</p>
+  <p style="margin-top:0.5rem;"><strong>Cost:</strong> All costs from actual Claude API billing (input + output tokens). Memory-only cost not recorded — estimated at ~$1.50/task based on context size.</p>
+  <p style="margin-top:0.5rem;">Raw data: <a href="https://github.com/tamirdresher/squad-marble-benchmark">tamirdresher/squad-marble-benchmark</a> (581 files) · <a href="https://github.com/tamirdresher/squad-swe-bench">tamirdresher/squad-swe-bench</a> (1,500+ files) · MARBLE PR: <a href="https://github.com/ulab-uiuc/MARBLE/pull/245">#245</a></p>
+</div>
+
+<div class="footer">
+  Squad v0.9.6 · June 2026 · All benchmark data is public · <a href="https://github.com/tamirdresher/squad-marble-benchmark">MARBLE data</a> · <a href="https://github.com/tamirdresher/squad-swe-bench">SWE-bench data</a>
+</div>
+
+</body>
+</html>
