@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "60",
+  "milestones": [
+    "solution.py exists and is syntactically valid Python (parses without errors)",
+    "A Quiz module/class is implemented containing multiple-choice questions about cultural traditions, customs, or festivals",
+    "A Puzzle module/class is implemented with matching or puzzle-solving mechanics involving cultural elements such as landmarks, clothing, or animals",
+    "A Recipe module/class is implemented that includes ingredient lists, step-by-step cooking instructions, and cooking tips for traditional dishes",
+    "The system is identifiable as Cultural_Journey (via class name, module name, or main entry point)",
+    "The system provides interactive user input handling (e.g., answering quiz questions, solving puzzles, or browsing recipes)"
+  ]
+}

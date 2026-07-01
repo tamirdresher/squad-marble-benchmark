@@ -1,0 +1,76 @@
+{
+  "full_squad": {
+    "n": 18,
+    "kpi_overall": 88.9,
+    "rubric_overall": 4.54,
+    "by_domain": {
+      "research": {
+        "kpi": 81.2,
+        "rubric": 4.21
+      },
+      "bargaining": {
+        "kpi": 95.0,
+        "rubric": 4.8
+      }
+    }
+  },
+  "coord_only": {
+    "n": 18,
+    "kpi_overall": 93.5,
+    "rubric_overall": 4.68,
+    "by_domain": {
+      "research": {
+        "kpi": 89.6,
+        "rubric": 4.5
+      },
+      "bargaining": {
+        "kpi": 96.7,
+        "rubric": 4.83
+      }
+    }
+  },
+  "no_squad": {
+    "n": 18,
+    "kpi_overall": 83.3,
+    "rubric_overall": 4.13,
+    "by_domain": {
+      "research": {
+        "kpi": 75.0,
+        "rubric": 4.0
+      },
+      "bargaining": {
+        "kpi": 90.0,
+        "rubric": 4.24
+      }
+    }
+  },
+  "memory_only": {
+    "n": 18,
+    "kpi_overall": 76.9,
+    "rubric_overall": 4.09,
+    "by_domain": {
+      "research": {
+        "kpi": 52.1,
+        "rubric": 3.21
+      },
+      "bargaining": {
+        "kpi": 96.7,
+        "rubric": 4.8
+      }
+    }
+  },
+  "_gpt4o_crosscheck": {
+    "research": {
+      "memory_only": 4.21,
+      "coord_only": 4.21,
+      "full_squad": 4.33,
+      "no_squad": 4.33
+    },
+    "bargaining": {
+      "full_squad": 4.7,
+      "memory_only": 4.47,
+      "no_squad": 4.4,
+      "coord_only": 4.53
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "30",
+  "milestones": [
+    "A solution.py file exists containing valid Python code that defines classes or functions for user profile management including creation, editing, and storing skills/interests/past projects",
+    "Project creation and management functionality is implemented with support for title, description, required skills, and team member addition/removal",
+    "A search feature is implemented that filters users or projects by skills/interests, and a matching algorithm suggests projects or collaborators based on user preferences",
+    "Collaboration tools are implemented including a messaging system for team communication, a code repository or version control mechanism, and a task management component",
+    "Comprehensive test cases are included that validate user profile creation (valid/invalid inputs), project creation (valid/invalid inputs), search/matching functionality, and collaboration tools with multiple users",
+    "The code is syntactically valid Python that can be parsed without errors and follows a coherent structure with clearly defined components (classes/functions) for each major feature area"
+  ]
+}

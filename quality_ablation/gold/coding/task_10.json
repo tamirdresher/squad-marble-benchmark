@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "10",
+  "milestones": [
+    "solution.py exists and contains a multi-user authentication system supporting simultaneous login with user registration and credential validation",
+    "Users can create language exercises of multiple types including grammar quizzes, vocabulary tests, and writing prompts",
+    "Exercise sharing functionality allows users to share their created exercises with other users and access shared exercises",
+    "The system provides real-time feedback on exercises: correct/incorrect scoring for quizzes and grammar or vocabulary suggestions for writing prompts",
+    "Peer review system enables users to review and provide textual feedback on other users' exercises",
+    "Comprehensive test cases are included covering multi-user login, exercise creation and sharing, peer review workflows, invalid input handling, and concurrent user edge cases"
+  ]
+}

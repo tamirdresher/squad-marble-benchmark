@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "1",
+  "milestones": [
+    "Queried pg_stat_statements to examine query execution statistics such as total_time, calls, or rows returned",
+    "Queried pg_locks or lock-related system views to check for evidence of lock contention",
+    "Queried pg_stat_user_indexes or pg_indexes to assess index usage and detect redundant indexes",
+    "Queried pg_stat_user_tables or pg_stat_all_tables to examine vacuum statistics and dead tuple counts",
+    "Investigated at least 4 of the 5 candidate root causes before reaching a final conclusion",
+    "Final answer selects exactly two root causes from the allowed set: INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA"
+  ]
+}

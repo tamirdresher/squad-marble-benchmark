@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "40",
+  "milestones": [
+    "The output contains all five questions (Q1 through Q5) with their corresponding labeled sections in the specified format",
+    "Question 1 states a single, specific research question directly related to LLMs, alignment, fine-tuning, or safety as discussed in the introduction",
+    "Question 2 explains broader implications for the research community, discusses impact on future research, and identifies practical applications",
+    "Question 3 identifies concrete technical challenges and explicitly explains why naive or straightforward approaches would fail",
+    "Question 4 references specific gaps or limitations in prior work (e.g., closed-source models, RLHF cost, reproducibility) and explains how the proposed approach differs from existing methods",
+    "Question 5 outlines a concrete methodology specifying the proposed method, dataset(s), and evaluation metrics or benchmarks to be used"
+  ]
+}

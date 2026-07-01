@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "40",
+  "milestones": [
+    "Output contains all three required sections: Iteration Summary, Agent Actions and Tools Used, and Key Strategies and Observations",
+    "At least two distinct agents (a buyer and a seller) take explicit actions with tool names and structured parameters shown",
+    "At least one price offer is made referencing a dollar amount reasonably related to the $8.99 product price",
+    "At least one rejection or counter-offer is made in response to a prior offer, demonstrating multi-turn negotiation",
+    "Buyer priorities (warranty and/or after-sales support) are explicitly raised or addressed during the negotiation",
+    "Seller priorities (long-term contracts and/or stable business relationship) are explicitly raised or addressed during the negotiation"
+  ]
+}

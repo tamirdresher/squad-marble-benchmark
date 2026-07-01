@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "70",
+  "milestones": [
+    "A solution.py file exists containing the full implementation with file-name comment separators distinguishing frontend, backend, and database modules",
+    "User authentication is implemented with registration and login endpoints or functions handling credentials and session/token management",
+    "Quest management CRUD operations are implemented allowing creation, updating, and marking quests as complete",
+    "Character skill plan management is implemented with functionality to create, read, update, and delete skill plans",
+    "Real-time collaboration is implemented using WebSocket or equivalent mechanism enabling multiple users to simultaneously interact with shared quests or skill plans",
+    "A database schema or model layer is defined covering user profiles, quests, skill plans, and collaboration data with relationships between entities"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "60",
+  "milestones": [
+    "Queried pg_stat_statements to analyze query execution statistics (calls, total_time, rows) for identifying slow or heavy queries",
+    "Queried pg_locks or pg_stat_activity to investigate lock contention between concurrent transactions",
+    "Queried pg_stat_user_indexes and/or pg_indexes to examine index definitions and usage patterns for detecting redundant or unused indexes",
+    "Queried pg_stat_user_tables or pg_stat_all_tables to check dead tuple counts and vacuum-related statistics",
+    "Exactly three root causes are selected from the allowed list of five options (INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA)",
+    "Multiple agents were assigned to independently analyze different potential root causes before a final combined decision was made"
+  ]
+}

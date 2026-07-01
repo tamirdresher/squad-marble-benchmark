@@ -1,0 +1,24 @@
+{
+  "domain": "bargaining",
+  "cond": "no_squad",
+  "task": "30",
+  "status": "ok",
+  "raw_len": 11883,
+  "n_gold": 6,
+  "grading": "aligned-v1",
+  "kpi_achieved": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    true
+  ],
+  "kpi_rate": 0.8333,
+  "rubric": {
+    "correctness": 3,
+    "completeness": 4,
+    "quality": 4,
+    "avg": 3.67
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "60",
+  "milestones": [
+    "Output contains an [Iteration Summary] section that describes at least one exchange between buyer and seller regarding the Stoggles safety glasses negotiation",
+    "Output contains an [Agent Actions and Tools Used] section listing actions for both a buyer agent and a seller agent with each entry including Action Taken, Tool Parameters (as JSON), and Result fields",
+    "At least two distinct negotiation tools are used across all agent actions (e.g., offer price, reject and counter, provide information, or end negotiation)",
+    "Tool Parameters JSON includes a price or counter_price value anchored around the $33 USD reference price of the product",
+    "Output contains a [Key Strategies and Observations] section that references the buyer's focus on warranty/after-sales support and the seller's focus on maintaining profit margins",
+    "The negotiation involves multiple turns with at least one offer and at least one counter-offer or rejection demonstrating a back-and-forth bargaining process"
+  ]
+}

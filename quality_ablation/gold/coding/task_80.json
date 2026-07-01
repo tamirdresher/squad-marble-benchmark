@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "80",
+  "milestones": [
+    "solution.py exists and is valid Python (parses without syntax errors) containing the CollaborativeDesignSuite implementation",
+    "User registration and authentication system is implemented with classes/functions supporting account creation and login/logout functionality",
+    "A shared collaborative canvas is implemented that supports multiple simultaneous users and propagates real-time updates of design changes to all participants",
+    "Shape creation tools (for geometric shapes like rectangles, circles, etc.) and texture application tools are implemented and functional within the canvas",
+    "Element management features are implemented including alignment, grouping, and arranging/layering of design elements on the canvas",
+    "Dependency management is enforced in code such that operations require prerequisites (e.g., textures cannot be applied without existing shapes, annotations require an active collaboration canvas)"
+  ]
+}

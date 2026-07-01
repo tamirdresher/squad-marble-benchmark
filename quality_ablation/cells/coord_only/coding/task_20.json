@@ -1,0 +1,23 @@
+{
+  "cond": "coord_only",
+  "domain": "coding",
+  "task": "20",
+  "status": "ok",
+  "raw_len": 41600,
+  "n_gold": 6,
+  "kpi_achieved": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "kpi_rate": 0.0,
+  "rubric": {
+    "correctness": 1,
+    "completeness": 1,
+    "quality": 2,
+    "avg": 1.33
+  }
+}

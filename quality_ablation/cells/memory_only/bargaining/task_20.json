@@ -1,0 +1,17 @@
+{
+  "cond": "memory_only",
+  "domain": "bargaining",
+  "task": "20",
+  "status": "ok",
+  "raw_len": 22226,
+  "n_gold": 6,
+  "kpi_achieved": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "kpi_rate": 0.0
+}

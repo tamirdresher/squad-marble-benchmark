@@ -1,0 +1,209 @@
+START 2026-07-01T23:29:27.3778510+03:00
+=== PHASE A: gold milestones (40 tasks) ===
+[gold] coding     t10  -> 6 milestones
+[gold] coding     t40  -> 6 milestones
+[gold] coding     t30  -> 6 milestones
+[gold] coding     t20  -> 6 milestones
+[gold] coding     t50  -> 6 milestones
+[gold] coding     t70  -> 6 milestones
+[gold] coding     t60  -> 6 milestones
+[gold] coding     t80  -> 6 milestones
+[gold] coding     t90  -> 6 milestones
+[gold] research   t1   -> 6 milestones
+[gold] research   t20  -> 6 milestones
+[gold] research   t10  -> 6 milestones
+[gold] research   t30  -> 6 milestones
+[gold] research   t40  -> 6 milestones
+[gold] research   t50  -> 6 milestones
+[gold] research   t60  -> 6 milestones
+[gold] research   t70  -> 6 milestones
+[gold] research   t80  -> 6 milestones
+[gold] research   t90  -> 6 milestones
+[gold] bargaining t1   -> 6 milestones
+[gold] bargaining t30  -> 6 milestones
+[gold] bargaining t20  -> 6 milestones
+[gold] bargaining t40  -> 6 milestones
+[gold] bargaining t10  -> 6 milestones
+[gold] bargaining t50  -> 6 milestones
+[gold] bargaining t60  -> 6 milestones
+[gold] bargaining t70  -> 6 milestones
+[gold] bargaining t80  -> 6 milestones
+[gold] bargaining t90  -> 6 milestones
+[gold] database   t1   -> 6 milestones
+[gold] database   t10  -> 6 milestones
+[gold] database   t20  -> 6 milestones
+[gold] database   t60  -> 6 milestones
+[gold] database   t50  -> 6 milestones
+[gold] database   t40  -> 6 milestones
+[gold] database   t30  -> 6 milestones
+[gold] database   t70  -> 6 milestones
+[gold] database   t80  -> 6 milestones
+[gold] database   t90  -> 6 milestones
+=== PHASE B+C: scoring (160 cells) ===
+[cell] full_squad  coding     t10  kpi=0.00 (0/6) rubric=1.33
+[cell] full_squad  coding     t20  kpi=0.00 (0/6) rubric=1.33
+[cell] full_squad  coding     t40  kpi=0.50 (3/6) rubric=2.33
+[cell] full_squad  coding     t30  kpi=0.17 (1/6) rubric=2.33
+[cell] full_squad  coding     t60  kpi=0.17 (1/6) rubric=1.33
+[cell] full_squad  coding     t50  kpi=0.17 (1/6) rubric=1.33
+[cell] full_squad  coding     t70  kpi=0.00 (0/6) rubric=2.0
+[cell] full_squad  coding     t80  kpi=0.00 (0/6) rubric=1.33
+[cell] full_squad  research   t1   kpi=1.00 (6/6)
+[cell] full_squad  research   t30  kpi=0.00 (0/6)
+[cell] full_squad  research   t10  kpi=1.00 (6/6)
+[cell] full_squad  coding     t90  kpi=0.17 (1/6) rubric=2.33
+[cell] full_squad  research   t20  kpi=1.00 (6/6)
+[cell] full_squad  research   t50  kpi=1.00 (6/6)
+[cell] full_squad  research   t40  kpi=1.00 (6/6)
+[cell] full_squad  research   t70  kpi=0.00 (0/6)
+[cell] full_squad  research   t90  kpi=0.00 (0/6)
+[cell] full_squad  research   t60  kpi=1.00 (6/6)
+[cell] full_squad  bargaining t1   kpi=1.00 (6/6)
+[cell] full_squad  research   t80  kpi=0.83 (5/6)
+[cell] full_squad  bargaining t10  kpi=1.00 (6/6)
+[cell] full_squad  bargaining t40  kpi=1.00 (6/6)
+[cell] full_squad  bargaining t20  kpi=1.00 (6/6)
+[cell] full_squad  bargaining t50  kpi=0.83 (5/6)
+[cell] full_squad  bargaining t70  kpi=1.00 (6/6)
+[cell] full_squad  bargaining t30  kpi=0.83 (5/6)
+[cell] full_squad  bargaining t80  kpi=1.00 (6/6)
+[cell] full_squad  database   t1   kpi=1.00 (6/6)
+[cell] full_squad  bargaining t60  kpi=0.83 (5/6)
+[cell] full_squad  database   t10  kpi=0.67 (4/6)
+[cell] full_squad  bargaining t90  kpi=0.83 (5/6)
+[cell] full_squad  database   t20  kpi=1.00 (6/6)
+[cell] full_squad  database   t30  kpi=0.83 (5/6)
+[cell] full_squad  database   t40  kpi=1.00 (6/6)
+[cell] full_squad  database   t50  kpi=0.83 (5/6)
+[cell] full_squad  database   t60  kpi=1.00 (6/6)
+[cell] full_squad  database   t70  kpi=1.00 (6/6)
+[cell] full_squad  database   t90  kpi=1.00 (6/6)
+[cell] full_squad  database   t80  kpi=0.83 (5/6)
+[cell] coord_only  coding     t10  kpi=0.00 (0/6) rubric=1.33
+[cell] coord_only  coding     t1   kpi=0.17 (1/6) rubric=1.33
+[cell] coord_only  coding     t20  kpi=0.00 (0/6) rubric=1.33
+[cell] coord_only  coding     t30  kpi=0.00 (0/6) rubric=2.33
+[cell] coord_only  coding     t50  kpi=0.00 (0/6) rubric=1.33
+[cell] coord_only  coding     t60  kpi=0.17 (1/6) rubric=1.0
+[cell] coord_only  coding     t90  EMPTY(no_output) kpi=0.0
+[cell] coord_only  research   t1   kpi=1.00 (6/6)
+[cell] coord_only  coding     t80  kpi=0.00 (0/6) rubric=1.67
+[cell] coord_only  coding     t70  kpi=1.00 (6/6) rubric=4.0
+[cell] coord_only  coding     t40  kpi=0.50 (3/6) rubric=2.33
+[cell] coord_only  research   t10  kpi=0.00 (0/6)
+[cell] coord_only  research   t20  kpi=0.00 (0/6)
+[cell] coord_only  research   t40  kpi=0.83 (5/6)
+[cell] coord_only  research   t50  kpi=1.00 (6/6)
+[cell] coord_only  research   t30  kpi=0.83 (5/6)
+[cell] coord_only  research   t70  kpi=0.83 (5/6)
+[cell] coord_only  research   t80  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t1   kpi=1.00 (6/6)
+[cell] coord_only  research   t60  kpi=1.00 (6/6)
+[cell] coord_only  research   t90  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t20  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t10  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t30  kpi=0.83 (5/6)
+[cell] coord_only  bargaining t40  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t50  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t60  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t70  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t90  kpi=1.00 (6/6)
+[cell] coord_only  database   t1   kpi=1.00 (6/6)
+[cell] coord_only  database   t10  kpi=1.00 (6/6)
+[cell] coord_only  bargaining t80  kpi=0.00 (0/6)
+[cell] coord_only  database   t20  kpi=1.00 (6/6)
+[cell] coord_only  database   t30  kpi=0.83 (5/6)
+[cell] coord_only  database   t50  kpi=1.00 (6/6)
+[cell] coord_only  database   t80  EMPTY(timeout) kpi=0.0
+[cell] coord_only  database   t40  kpi=0.83 (5/6)
+[cell] coord_only  database   t60  kpi=1.00 (6/6)
+[cell] coord_only  database   t70  kpi=1.00 (6/6)
+[cell] coord_only  database   t90  kpi=1.00 (6/6)
+[cell] no_squad    coding     t1   kpi=1.00 (6/6) rubric=4.0
+[cell] no_squad    coding     t40  EMPTY(timeout) kpi=0.0
+[cell] no_squad    coding     t20  kpi=1.00 (6/6) rubric=4.0
+[cell] no_squad    coding     t30  kpi=0.00 (0/6) rubric=5.0
+[cell] no_squad    coding     t10  kpi=1.00 (6/6) rubric=4.33
+[cell] no_squad    coding     t50  kpi=1.00 (6/6) rubric=4.0
+[cell] no_squad    coding     t80  kpi=1.00 (6/6)
+[cell] no_squad    coding     t60  kpi=1.00 (6/6) rubric=4.33
+[cell] no_squad    coding     t70  kpi=1.00 (6/6) rubric=2.67
+[cell] no_squad    coding     t90  kpi=1.00 (6/6) rubric=4.0
+[cell] no_squad    research   t10  kpi=0.00 (0/6)
+[cell] no_squad    research   t20  kpi=0.00 (0/6)
+[cell] no_squad    research   t1   kpi=0.83 (5/6)
+[cell] no_squad    research   t40  kpi=0.00 (0/6)
+[cell] no_squad    research   t50  kpi=0.00 (0/6)
+[cell] no_squad    research   t30  kpi=0.67 (4/6)
+[cell] no_squad    research   t60  kpi=1.00 (6/6)
+[cell] no_squad    research   t80  kpi=0.83 (5/6)
+[cell] no_squad    research   t90  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t10  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t1   kpi=0.83 (5/6)
+[cell] no_squad    bargaining t20  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t30  kpi=0.83 (5/6)
+[cell] no_squad    research   t70  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t40  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t50  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t70  kpi=1.00 (6/6)
+[cell] no_squad    bargaining t90  kpi=0.00 (0/6)
+[cell] no_squad    database   t1   kpi=1.00 (6/6)
+[cell] no_squad    bargaining t80  kpi=1.00 (6/6)
+[cell] no_squad    database   t10  kpi=0.00 (0/6)
+[cell] no_squad    database   t20  kpi=0.00 (0/6)
+[cell] no_squad    bargaining t60  kpi=0.83 (5/6)
+[cell] no_squad    database   t40  kpi=0.00 (0/6)
+[cell] no_squad    database   t30  kpi=0.00 (0/6)
+[cell] no_squad    database   t50  kpi=0.00 (0/6)
+[cell] no_squad    database   t60  kpi=0.00 (0/6)
+[cell] no_squad    database   t70  kpi=0.00 (0/6)
+[cell] memory_only coding     t10  EMPTY(timeout) kpi=0.0
+[cell] memory_only coding     t20  EMPTY(timeout) kpi=0.0
+[cell] memory_only coding     t30  EMPTY(timeout) kpi=0.0
+[cell] memory_only coding     t40  EMPTY(timeout) kpi=0.0
+[cell] no_squad    database   t80  kpi=0.00 (0/6)
+[cell] no_squad    database   t90  kpi=0.00 (0/6)
+[cell] memory_only coding     t70  EMPTY(timeout) kpi=0.0
+[cell] memory_only coding     t80  EMPTY(timeout) kpi=0.0
+[cell] memory_only coding     t1   kpi=0.17 (1/6) rubric=1.0
+[cell] memory_only coding     t50  kpi=1.00 (6/6) rubric=4.67
+[cell] memory_only coding     t60  kpi=1.00 (6/6) rubric=4.67
+[cell] memory_only coding     t90  kpi=1.00 (6/6) rubric=4.0
+[cell] memory_only research   t1   kpi=1.00 (6/6)
+[cell] memory_only research   t20  kpi=0.83 (5/6)
+[cell] memory_only research   t10  kpi=0.50 (3/6)
+[cell] memory_only research   t30  kpi=0.83 (5/6)
+[cell] memory_only research   t50  kpi=0.83 (5/6)
+[cell] memory_only research   t60  kpi=0.67 (4/6)
+[cell] memory_only research   t40  kpi=1.00 (6/6)
+[cell] memory_only research   t70  kpi=0.83 (5/6)
+[cell] memory_only research   t80  kpi=0.00 (0/6)
+[cell] memory_only bargaining t1   kpi=1.00 (6/6)
+[cell] memory_only research   t90  kpi=0.00 (0/6)
+[cell] memory_only bargaining t10  kpi=0.83 (5/6)
+[cell] memory_only bargaining t40  kpi=1.00 (6/6)
+[cell] memory_only bargaining t30  kpi=0.83 (5/6)
+[cell] memory_only bargaining t20  kpi=0.00 (0/6)
+[cell] memory_only bargaining t50  kpi=1.00 (6/6)
+[cell] memory_only bargaining t70  kpi=1.00 (6/6)
+[cell] memory_only database   t1   EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t10  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t20  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t30  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t40  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t50  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t60  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t70  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t80  EMPTY(no_output) kpi=0.0
+[cell] memory_only database   t90  EMPTY(no_output) kpi=0.0
+[cell] memory_only bargaining t60  kpi=1.00 (6/6)
+[cell] memory_only bargaining t80  kpi=1.00 (6/6)
+[cell] memory_only bargaining t90  kpi=0.00 (0/6)
+
+===== AGGREGATE (milestone-KPI %) =====
+cond        coding     research   bargainin  database   OVERALL
+full_squad  21.7%      68.3%      93.3%      91.7%      68.8%
+coord_only  18.3%      75.0%      88.3%      86.7%      67.1%
+no_squad    80.0%      53.3%      85.0%      10.0%      57.1%
+memory_only 31.7%      65.0%      76.7%      0.0%       43.3%
+DONE 2026-07-02T00:29:53.5288326+03:00

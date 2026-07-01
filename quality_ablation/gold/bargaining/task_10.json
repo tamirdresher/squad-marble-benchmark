@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "10",
+  "milestones": [
+    "Output contains all three required sections: [Iteration Summary], [Agent Actions and Tools Used], and [Key Strategies and Observations]",
+    "At least two distinct agents (one buyer and one seller) each take at least one documented action during the negotiation",
+    "At least one explicit price offer is made via a tool call with a numeric price parameter between 10 and 18.99 USD",
+    "At least one rejection or counter-offer occurs, demonstrating multi-turn back-and-forth negotiation dynamics",
+    "Each agent action entry includes the tool/action name, structured tool parameters (e.g., JSON with price and reason), and a result description",
+    "The negotiation concludes with a clear outcome: either a mutually agreed price, a final rejection, or an explicit end-of-negotiation action"
+  ]
+}

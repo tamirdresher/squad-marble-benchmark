@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "40",
+  "milestones": [
+    "Queries pg_stat_statements to analyze query execution statistics (calls, total_time, rows) for identifying expensive INSERT or FETCH operations",
+    "Queries pg_locks or pg_stat_activity to check for lock contention and blocking between transactions",
+    "Queries pg_stat_user_indexes and pg_indexes to examine index usage and detect redundant or duplicate indexes",
+    "Queries pg_stat_user_tables or pg_stat_all_tables to inspect dead tuples, last_vacuum, and vacuum-related statistics",
+    "Assigns multiple distinct agents to independently investigate different root cause hypotheses before reaching a conclusion",
+    "Produces a final answer selecting exactly TWO root causes from the allowed set: INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA"
+  ]
+}

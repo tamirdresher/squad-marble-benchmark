@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "80",
+  "milestones": [
+    "Queried pg_stat_statements to analyze query execution statistics for identifying large data inserts or fetches",
+    "Queried pg_locks or related lock views to assess lock contention in the database",
+    "Queried pg_stat_user_indexes and/or pg_indexes to evaluate index usage and detect redundant indexes",
+    "Queried pg_stat_user_tables or pg_stat_all_tables to check vacuum status including dead tuples and last vacuum times",
+    "Assigned multiple distinct agents to independently investigate different root cause hypotheses before reaching a conclusion",
+    "Final answer selects exactly 3 root causes from the allowed set: INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA"
+  ]
+}

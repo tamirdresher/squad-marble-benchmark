@@ -1,0 +1,24 @@
+{
+  "domain": "research",
+  "cond": "no_squad",
+  "task": "1",
+  "status": "ok",
+  "raw_len": 24305,
+  "n_gold": 6,
+  "grading": "aligned-v1",
+  "kpi_achieved": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "kpi_rate": 1.0,
+  "rubric": {
+    "correctness": 5,
+    "completeness": 5,
+    "quality": 5,
+    "avg": 5.0
+  }
+}

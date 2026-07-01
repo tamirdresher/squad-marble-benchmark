@@ -1,0 +1,23 @@
+{
+  "cond": "memory_only",
+  "domain": "coding",
+  "task": "1",
+  "status": "ok",
+  "raw_len": 35287,
+  "n_gold": 6,
+  "kpi_achieved": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "kpi_rate": 0.1667,
+  "rubric": {
+    "correctness": 1,
+    "completeness": 1,
+    "quality": 1,
+    "avg": 1.0
+  }
+}

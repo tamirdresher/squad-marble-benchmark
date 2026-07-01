@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "70",
+  "milestones": [
+    "The solution queries pg_stat_statements to analyze query execution statistics for identifying large data operations (INSERT_LARGE_DATA and FETCH_LARGE_DATA)",
+    "The solution queries pg_locks to investigate lock contention issues",
+    "The solution queries pg_stat_user_indexes or pg_indexes to examine index usage and identify redundant indexes",
+    "The solution queries vacuum-related system tables (pg_stat_all_tables, pg_stat_user_tables, or pg_stat_progress_vacuum) to assess vacuum activity",
+    "The final answer selects exactly 3 root causes from the allowed list: INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA",
+    "All five potential root causes are investigated before reaching a final conclusion rather than deciding prematurely after partial analysis"
+  ]
+}

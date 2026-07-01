@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "90",
+  "milestones": [
+    "Queried pg_stat_statements to examine query execution statistics such as calls, total_time, mean_time, or rows for identifying slow or frequent queries",
+    "Queried pg_locks or related views to assess whether lock contention is occurring among concurrent transactions",
+    "Queried pg_stat_user_indexes and/or pg_indexes to evaluate index usage statistics and identify potentially redundant or unused indexes",
+    "Queried vacuum-related statistics from pg_stat_all_tables, pg_stat_user_tables, or pg_stat_progress_vacuum to assess dead tuple accumulation and vacuum activity",
+    "Analyzed query patterns or table statistics to distinguish between large data insertion issues and large data fetching issues as potential root causes",
+    "Final answer selects exactly 3 root causes from the permitted set of INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA"
+  ]
+}

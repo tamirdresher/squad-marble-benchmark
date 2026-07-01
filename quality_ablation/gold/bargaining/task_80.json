@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "80",
+  "milestones": [
+    "The output contains an [Iteration Summary] section that describes at least one exchange between buyer and seller agents regarding the Orange Clay Beads negotiation",
+    "At least one agent explicitly uses the 'Offer Price' tool with a numeric price parameter shown in the Agent Actions and Tools Used section",
+    "At least one agent uses the 'Reject and Counter' tool with a counter_price parameter, demonstrating back-and-forth negotiation",
+    "The [Agent Actions and Tools Used] section lists structured entries for both a Buyer agent and a Seller agent, each with Action Taken, Tool Parameters (as JSON), and Result fields",
+    "Prices discussed in the negotiation are anchored around the $9.99 unit price or the total order value for 5000 pieces, reflecting the specific product context",
+    "The output contains a [Key Strategies and Observations] section that identifies distinct buyer strategy (focused on delivery/lower price) and seller strategy (focused on profit margins)"
+  ]
+}

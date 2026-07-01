@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "70",
+  "milestones": [
+    "Output contains an [Iteration Summary] section that summarizes the negotiation exchange between buyer and seller regarding the Practicon Gleco Sediment Trap System",
+    "Output contains an [Agent Actions and Tools Used] section with structured entries for at least two agents (a buyer and a seller) each showing Action Taken, Tool Parameters, and Result",
+    "At least one agent makes a price offer and at least one agent rejects and counters with a different price, demonstrating multi-turn negotiation tool usage",
+    "Tool Parameters are provided as JSON-like structured data including numeric price values and textual reason strings justifying positions",
+    "Output contains a [Key Strategies and Observations] section identifying distinct strategies for both the buyer and the seller",
+    "Price values discussed in the negotiation are in a plausible range relative to the listed price of $34.99 USD"
+  ]
+}

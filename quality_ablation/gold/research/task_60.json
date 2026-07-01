@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "60",
+  "milestones": [
+    "The response contains all five sections clearly labeled [Question 1] through [Question 5] following the required output format",
+    "Question 1 states exactly one specific research question directly related to 3D scene style transfer or editing using neural implicit representations (NeRF or related)",
+    "Question 2 discusses both the broader scientific implications for the research community and practical applications of solving the proposed problem",
+    "Question 3 identifies specific technical obstacles (e.g., multi-view consistency, computational cost, or content-style disentanglement) and explicitly explains why naive or straightforward approaches would fail",
+    "Question 4 references limitations of prior methods discussed in the introduction (e.g., Instruct-NeRF2NeRF iterative unpredictability, lack of style preview, or view inconsistency) and clearly explains how the proposed approach differs from existing work",
+    "Question 5 outlines a concrete methodology specifying at minimum a proposed method or architecture, dataset(s) to be used, and quantitative evaluation metrics"
+  ]
+}

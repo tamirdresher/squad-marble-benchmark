@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "20",
+  "milestones": [
+    "The system supports multiple players logging in and collaboratively creating/modifying a quest with shared mutable state including objectives, enemies, rewards, and difficulty levels",
+    "The system provides a balance feedback mechanism that calculates and suggests difficulty adjustments based on player skills, enemy strengths, and quest objectives",
+    "The system implements a version history feature that tracks changes to quest parameters and allows reverting to any previous version",
+    "The system includes a testing/simulation mode that runs a quest scenario and produces outcome data (e.g., success probability, combat results) for refinement",
+    "The system supports multiple quest types (at minimum combat, puzzle, and exploration) and allows integration of custom content such as player-created NPCs or items",
+    "The system provides community sharing functionality where players can publish quests and other users can rate and review them"
+  ]
+}

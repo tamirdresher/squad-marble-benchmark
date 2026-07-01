@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "10",
+  "milestones": [
+    "Multiple distinct agents are assigned by a planner to investigate different candidate root causes in parallel rather than a single agent doing all work",
+    "SQL queries are executed against PostgreSQL system catalog tables (pg_stat_statements, pg_locks, pg_stat_user_indexes, pg_indexes, pg_stat_all_tables, pg_stat_user_tables) to gather diagnostic evidence",
+    "All five candidate root causes (INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA) are explicitly investigated before a final decision is made",
+    "Agents share findings or communicate with each other to exchange information gathered from their individual investigations",
+    "The final answer selects exactly two root causes from the allowed list (INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA)",
+    "Each selected root cause is justified with specific evidence from query results rather than assumed without data"
+  ]
+}

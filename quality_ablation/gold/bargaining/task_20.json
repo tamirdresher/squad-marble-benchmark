@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "20",
+  "milestones": [
+    "Both a buyer agent and a seller agent participate and take at least one action each in the negotiation",
+    "At least one explicit price offer is made using a tool with a numeric price parameter referencing or anchored around the $50.99 original price",
+    "At least one rejection or counter-offer occurs, demonstrating multi-turn back-and-forth negotiation between the agents",
+    "The output contains all three required sections: Iteration Summary, Agent Actions and Tools Used, and Key Strategies and Observations",
+    "Each agent action is documented with the tool/action name, tool parameters (including price and reason), and a result description",
+    "The negotiation content references product-specific context such as warranty, after-sales support, profit margins, or the product rating"
+  ]
+}

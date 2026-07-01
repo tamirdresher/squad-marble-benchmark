@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "1",
+  "milestones": [
+    "The output contains an [Iteration Summary] section that describes at least one exchange of offers between the buyer and seller for the remote control",
+    "The output contains an [Agent Actions and Tools Used] section listing at least two distinct agent actions with labeled fields for Action Taken, Tool Parameters, and Result",
+    "At least one buyer agent action uses a price-offering tool with explicit numeric price and a reason referencing scalability or premium features",
+    "At least one seller agent action uses a reject-and-counter or counter-offer tool with a numeric counter price and a reason referencing profit margins or product value",
+    "Tool Parameters are presented as structured key-value data (e.g., JSON-like format) containing at minimum a price/counter_price field and a reason field for each action",
+    "The output contains a [Key Strategies and Observations] section that separately identifies the buyer's strategy and the seller's strategy with at least one concrete observation about negotiation dynamics"
+  ]
+}

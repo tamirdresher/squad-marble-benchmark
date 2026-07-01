@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "30",
+  "milestones": [
+    "Output contains an [Iteration Summary] section that describes at least one exchange between buyer and seller regarding the Jewelry Organizer Stand",
+    "Output contains an [Agent Actions and Tools Used] section listing each agent's action with Tool Parameters shown as structured data including a price or counter_price value",
+    "Output contains a [Key Strategies and Observations] section analyzing both buyer and seller strategies",
+    "At least two distinct agent roles (buyer and seller) each take at least one tool-based action during the negotiation",
+    "All proposed prices fall within or near the plausible negotiation range bounded by the buyer opening offer of 19.99 USD and the original listing price of 29.99 USD",
+    "At least two different negotiation tool types are used across the simulation (e.g., offer price, reject and counter, provide information, or end negotiation)"
+  ]
+}

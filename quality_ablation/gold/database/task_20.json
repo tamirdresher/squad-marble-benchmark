@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "20",
+  "milestones": [
+    "Queries pg_stat_statements to analyze query execution statistics (total_time, calls, rows) for identifying slow or heavy queries",
+    "Queries pg_locks or pg_stat_activity to check for lock contention and blocking between transactions",
+    "Queries pg_stat_user_indexes and pg_indexes to identify redundant or unused indexes",
+    "Queries pg_stat_user_tables or pg_stat_all_tables to examine dead tuples and vacuum activity for vacuum-related issues",
+    "Investigates at least 4 of the 5 candidate root causes (INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA) before reaching a conclusion",
+    "Final answer selects exactly 2 root causes from the allowed list: INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA"
+  ]
+}

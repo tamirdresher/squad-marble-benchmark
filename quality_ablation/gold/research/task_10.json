@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "10",
+  "milestones": [
+    "The output contains all five required sections labeled [Question 1] through [Question 5] with appropriate headers",
+    "Question 1 states exactly one specific research question related to mobile UI understanding or multimodal LLMs, without extraneous information",
+    "Question 2 discusses both broader implications for the research community and practical applications or future research directions",
+    "Question 3 identifies at least one concrete technical or theoretical obstacle and explains why naive or straightforward approaches would fail",
+    "Question 4 references specific gaps or limitations in prior work on UI-focused models (e.g., aspect ratio handling, limited referring/grounding, lack of comprehensive UI task coverage) and clearly states how the proposed approach differs",
+    "Question 5 outlines a proposed methodology that explicitly specifies a method, dataset, and evaluation metrics"
+  ]
+}

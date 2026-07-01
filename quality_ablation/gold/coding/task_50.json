@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "50",
+  "milestones": [
+    "solution.py exists and is syntactically valid Python that can be parsed/imported without errors",
+    "Supports multiple user accounts where each user can independently input expenses and view their own budget data",
+    "Implements category-based budget limits (e.g., groceries, entertainment, utilities) that can be set and adjusted per category",
+    "Provides a dashboard or summary function that displays group total expenses, remaining budget, and individual contributions",
+    "Includes a collaborative optimization feature that generates specific suggestions to reduce expenses or reallocate funds to meet financial goals",
+    "Contains test cases covering core scenarios (inputting expenses, setting budgets, displaying summaries, optimization) and edge cases (invalid inputs, exceeding budget limits, multiple users with different spending patterns)"
+  ]
+}

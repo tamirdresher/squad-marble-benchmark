@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "80",
+  "milestones": [
+    "The output contains all five sections ([Question 1] through [Question 5]) with their corresponding headers matching the required format",
+    "Question 1 states a single specific research question directly related to graph-level anomaly detection",
+    "Question 2 discusses both broader research community implications and practical applications of solving the proposed problem",
+    "Question 3 identifies at least one concrete technical or theoretical challenge and explains why naive or straightforward approaches would fail",
+    "Question 4 references gaps or limitations in existing graph-level anomaly detection methods and clearly distinguishes the proposed approach from prior work",
+    "Question 5 describes a concrete methodology specifying the proposed method/framework, target datasets, and evaluation metrics"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "cond": "no_squad",
+  "domain": "bargaining",
+  "task": "60",
+  "status": "ok",
+  "raw_len": 31960,
+  "n_gold": 6,
+  "kpi_achieved": [
+    true,
+    true,
+    true,
+    false,
+    true,
+    true
+  ],
+  "kpi_rate": 0.8333
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "30",
+  "milestones": [
+    "The output contains all five required sections (Question 1 through Question 5) with their specified headings and non-empty content for each.",
+    "Question 1 poses a single specific research question related to generalizing divergence constraints (beyond reverse KL divergence) for text-to-image model alignment.",
+    "Question 2 discusses broader implications for the research community, mentions impact on future research, and addresses how solving the problem advances knowledge or enables practical applications.",
+    "Question 3 identifies at least one concrete technical or theoretical obstacle (e.g., optimization instability, mode collapse, balancing diversity vs. quality) and explains why naive approaches to incorporating alternative divergences may fail.",
+    "Question 4 explicitly identifies the gap that existing text-to-image alignment work predominantly relies on reverse KL divergence, references limitations of prior methods (e.g., DPO, D3PO, SPO), and clearly states how the proposed approach differs from or improves upon them.",
+    "Question 5 outlines a concrete methodology that specifies at minimum: the proposed method or algorithm, the dataset(s) to be used, and the evaluation metrics for measuring alignment quality and output diversity."
+  ]
+}

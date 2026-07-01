@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "90",
+  "milestones": [
+    "Output contains an [Iteration Summary] section that describes the negotiation progress between buyer and seller for the 50L Travel Laptop Backpack",
+    "Output contains an [Agent Actions and Tools Used] section with per-agent entries listing Action Taken, Tool Parameters, and Result for each agent turn",
+    "Both a buyer agent and a seller agent actively participate by using negotiation tools such as offering a price, rejecting and countering, or providing information",
+    "Tool Parameters are shown as structured data with concrete numeric price values and textual reasons justifying each offer or counter-offer",
+    "Output contains a [Key Strategies and Observations] section analyzing buyer strategy, seller strategy, and negotiation dynamics",
+    "Price values discussed in the negotiation are anchored around the listed price of $39.99 USD, with the buyer pushing below and the seller defending at or above that reference point"
+  ]
+}

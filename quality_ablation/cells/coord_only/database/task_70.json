@@ -1,0 +1,17 @@
+{
+  "cond": "coord_only",
+  "domain": "database",
+  "task": "70",
+  "status": "ok",
+  "raw_len": 4434,
+  "n_gold": 6,
+  "kpi_achieved": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "kpi_rate": 1.0
+}

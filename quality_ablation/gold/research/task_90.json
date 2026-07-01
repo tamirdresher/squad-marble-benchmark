@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "90",
+  "milestones": [
+    "The output contains all five sections explicitly labeled as Question 1 through Question 5 in the prescribed 5q format.",
+    "Question 1 states exactly one specific research question directly related to LLMs, in-context learning, or few-shot learning topics from the introduction.",
+    "Question 2 explains broader implications for the research community and discusses how solving the problem advances knowledge or enables practical applications.",
+    "Question 3 identifies concrete technical or theoretical challenges and explains why naive or straightforward approaches would fail.",
+    "Question 4 identifies specific gaps or limitations in prior work and clearly explains how the proposed approach differs from or improves upon existing methods.",
+    "Question 5 specifies a concrete methodology including proposed method, dataset(s), and evaluation metrics with expected outcomes."
+  ]
+}

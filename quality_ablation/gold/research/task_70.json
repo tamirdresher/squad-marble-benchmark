@@ -1,0 +1,12 @@
+{
+  "domain": "research",
+  "task": "70",
+  "milestones": [
+    "The output contains all five required sections ([Question 1] through [Question 5]) with their exact headers and each section is non-empty.",
+    "Question 1 states exactly one specific, well-defined research question directly related to negation handling in language models or NLP systems.",
+    "Question 2 explains why the problem matters by discussing at least two of: broader implications for the research community, impact on future research, advancement of knowledge, or practical applications.",
+    "Question 3 identifies at least two distinct technical or theoretical challenges explaining why the negation problem is hard, and explicitly states why naive or straightforward approaches would fail.",
+    "Question 4 references specific gaps or limitations in prior negation research (connecting to work mentioned in the introduction such as probing studies, benchmark evaluations, or scale-based findings) and clearly differentiates the proposed approach from existing efforts.",
+    "Question 5 proposes a concrete methodology that includes at minimum: a described method or technique, specific datasets or data sources to be used, and evaluation metrics or expected results."
+  ]
+}

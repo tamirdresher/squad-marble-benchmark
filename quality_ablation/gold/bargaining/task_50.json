@@ -1,0 +1,12 @@
+{
+  "domain": "bargaining",
+  "task": "50",
+  "milestones": [
+    "Output contains all three required sections: [Iteration Summary], [Agent Actions and Tools Used], and [Key Strategies and Observations]",
+    "At least two distinct agent roles (buyer and seller) participate with clearly labeled actions in the Agent Actions section",
+    "At least one explicit price offer tool call is made with a numeric price parameter reasonably related to the $17.99 list price",
+    "At least one reject-and-counter or counter-offer tool call is made with a counter_price parameter and a stated reason",
+    "Each agent action entry includes the three required fields: Action Taken, Tool Parameters (with valid JSON), and Result",
+    "The negotiation references the specific product context (Wall Mount Replacement Plate, Google Nest Outdoor Camera, 0.0-star rating, or $17.99 price) to ground the bargaining scenario"
+  ]
+}

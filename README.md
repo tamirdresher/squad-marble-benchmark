@@ -54,6 +54,33 @@ recall metric shows coordination did **not** help — the single agent scored hi
 With n=10 these gaps are within noise; the honest takeaway is "no correctness advantage on
 database," not "single agents win." See [`database_correctness_regrade/`](database_correctness_regrade/).
 
+## Correctness & quality (aligned domains)
+
+The database recall probe measured correctness for one domain. To extend correctness/quality
+grading across domains we audited **task alignment** first, and found the four conditions did
+not always run the same MARBLE task under the same task index (full-Squad came from the
+400-task production run; the others from separate reruns). Using each task's rarest
+distinctive tokens as anchors, **research (8/10) and bargaining (10/10) are cleanly aligned
+across all four conditions; coding (1/10) and database (0/10) are not.** The correctness table
+below is therefore restricted to the two verified-aligned domains (18 tasks × 4 conditions),
+graded with MARBLE's milestone-KPI + a 1–5 rubric, one identical judge (Claude Opus 4.6) and
+prompt across all conditions.
+
+| Condition | Milestone-KPI (correctness) | Quality rubric (1–5) |
+|-----------|----------------------------:|---------------------:|
+| **Coord-only** | **93.5%** | **4.68** |
+| Full Squad | 88.9% | 4.54 |
+| No Squad | 83.3% | 4.13 |
+| Memory-only | 76.9% | 4.09 |
+
+On same-task, same-model, uniformly-judged output, **coordination measurably improves
+correctness and quality** (full Squad +5.6pp KPI / +0.41 rubric over the single agent;
+coord-only +10.2pp / +0.55). Lean coordination edges out heavyweight full Squad, and
+memory-without-coordination is weakest. An independent gpt-4o rubric cross-check agrees on
+the broad ordering but differs on fine placement — treat exact deltas as **directional**
+(n=8–10 per domain). Scripts, alignment audit, gold milestones, and per-cell audits:
+[`quality_ablation/`](quality_ablation/).
+
 ## Repository Structure
 
 ```
@@ -69,6 +96,7 @@ factorial_ablation_4domain.json # Factorial ablation summary (4 domains)
 factorial_ablation_results.json # Detailed ablation data (research/bargaining quality)
 llm_judge_*.json                # LLM-as-judge quality scores (see SUPERSEDED_NOTICE)
 database_correctness_regrade/   # Database correctness re-grade (authoritative, single extractor)
+quality_ablation/               # Correctness & quality re-grade on verified-aligned domains (research + bargaining)
 ```
 
 ## Related Repositories
@@ -80,6 +108,7 @@ database_correctness_regrade/   # Database correctness re-grade (authoritative, 
 ## Methodology
 
 - **MARBLE**: Binary file output within 600s timeout (**completion**, not correctness). Same model for all conditions. Database correctness additionally re-graded by MARBLE recall — see `database_correctness_regrade/`.
+- **MARBLE correctness/quality (aligned domains)**: milestone-KPI + 1–5 rubric, one identical judge (Claude Opus 4.6) across all four conditions, restricted to research + bargaining after a per-task rare-token alignment audit (coding/database excluded — orderings not aligned across conditions). Independent gpt-4o cross-check included. See `quality_ablation/`.
 - **Memory-only condition**: injects a **Squad-generated `decisions.md`** into a raw single-agent run. This tests "Squad-flavored memory without coordination," not generic persistent memory.
 - **TerminalBench 2.0**: 20-of-89 sequential subset. Baseline runs via the native terminal-bench harness; Squad runs via a host-side orchestrator (**different harness paths**), each scored by its own Docker verifier. Squad 16/20 vs baseline 15/20 is a **+1-task margin on n=20** — directional, not a clean controlled result.
 - **DevBench**: Pass@1, 6 languages × 6 categories. Squad uses GPT-5.4; baseline is GPT-5.5 (**different model**). Raw per-task data is not hosted in this repo — treat as **contextual/preliminary**, not a controlled comparison.

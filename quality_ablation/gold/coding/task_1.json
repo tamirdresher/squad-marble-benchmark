@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "1",
+  "milestones": [
+    "A solution.py file exists and is valid Python (parses without syntax errors)",
+    "User registration and profile management system is implemented with classes/functions supporting account creation, profile data (cultural backgrounds, interests), and profile picture handling",
+    "Virtual tour module is implemented with support for 3D cultural landmark exploration, interactive hotspots providing additional information, and audio guide functionality",
+    "Language learning and practice feature is implemented with user pairing for real-time language exchange and an integrated translation tool",
+    "Cultural workshop module is implemented supporting live and pre-recorded sessions with functionality for users to join, ask questions, and participate in discussions",
+    "User feedback and rating system is implemented allowing users to rate and review virtual tours, language exchanges, and workshops"
+  ]
+}

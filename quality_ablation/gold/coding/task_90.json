@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "90",
+  "milestones": [
+    "A solution.py file exists and contains syntactically valid Python code that can be parsed without errors",
+    "Tasks can be defined with at minimum name, description, priority, and required resources fields represented as class attributes or data structures",
+    "Task assignment to agents is implemented with dynamic reassignment logic that considers agent availability and task urgency/priority",
+    "Real-time progress tracking is implemented providing completion status, estimated time to completion, and issue reporting for tasks",
+    "An agent communication mechanism exists (e.g., messaging, chat, or shared status updates) allowing agents to coordinate with each other",
+    "A history log is maintained that records task start times, end times, assigned agents, and notes or feedback from task execution"
+  ]
+}

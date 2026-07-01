@@ -1,0 +1,12 @@
+{
+  "domain": "coding",
+  "task": "40",
+  "milestones": [
+    "solution.py exists and contains Python code organized into multiple logical file sections using the '# filename.py' comment format as specified",
+    "RESTful API endpoints are defined for core task management operations (create, read, update, delete tasks) with route handlers or endpoint definitions",
+    "Role-based access control is implemented with at least two distinct roles (e.g., admin, manager, member) that restrict access to features or data based on user role",
+    "Database models or schema definitions exist for tasks, user profiles, and communication logs with fields appropriate to each entity",
+    "A reporting module is present that generates at least two types of reports from: project progress, resource utilization, or performance metrics",
+    "Third-party integration interfaces are defined for at least two of: calendar applications, email services, or CRM systems"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "cond": "full_squad",
+  "domain": "coding",
+  "task": "70",
+  "status": "ok",
+  "raw_len": 41900,
+  "n_gold": 6,
+  "kpi_achieved": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "kpi_rate": 0.0,
+  "rubric": {
+    "correctness": 2,
+    "completeness": 1,
+    "quality": 3,
+    "avg": 2.0
+  }
+}

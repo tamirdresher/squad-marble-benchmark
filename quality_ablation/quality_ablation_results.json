@@ -1,0 +1,112 @@
+{
+  "metric_primary": "MARBLE milestone-KPI achievement rate (shared gold milestones per task, achieved/total)",
+  "metric_secondary": "coding domain rubric 1-5 (correctness/completeness/quality)",
+  "judge": "claude-opus-4.6 via Copilot CLI (same-family judge; applied uniformly to all conditions; disclosed)",
+  "conditions": [
+    "full_squad",
+    "coord_only",
+    "no_squad",
+    "memory_only"
+  ],
+  "domains": [
+    "coding",
+    "research",
+    "bargaining",
+    "database"
+  ],
+  "n_per_cell": 10,
+  "subset_task_ids": [
+    "1",
+    "10",
+    "20",
+    "30",
+    "40",
+    "50",
+    "60",
+    "70",
+    "80",
+    "90"
+  ],
+  "results": {
+    "full_squad": {
+      "coding": {
+        "n": 10,
+        "kpi_rate": 0.2167,
+        "rubric_avg": 1.964
+      },
+      "research": {
+        "n": 10,
+        "kpi_rate": 0.6833
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi_rate": 0.9333
+      },
+      "database": {
+        "n": 10,
+        "kpi_rate": 0.9167
+      },
+      "OVERALL_kpi": 0.6875
+    },
+    "coord_only": {
+      "coding": {
+        "n": 10,
+        "kpi_rate": 0.1833,
+        "rubric_avg": 1.765
+      },
+      "research": {
+        "n": 10,
+        "kpi_rate": 0.75
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi_rate": 0.8833
+      },
+      "database": {
+        "n": 10,
+        "kpi_rate": 0.8667
+      },
+      "OVERALL_kpi": 0.6708
+    },
+    "no_squad": {
+      "coding": {
+        "n": 10,
+        "kpi_rate": 0.8,
+        "rubric_avg": 3.703
+      },
+      "research": {
+        "n": 10,
+        "kpi_rate": 0.5333
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi_rate": 0.85
+      },
+      "database": {
+        "n": 10,
+        "kpi_rate": 0.1
+      },
+      "OVERALL_kpi": 0.5708
+    },
+    "memory_only": {
+      "coding": {
+        "n": 10,
+        "kpi_rate": 0.3167,
+        "rubric_avg": 2.034
+      },
+      "research": {
+        "n": 10,
+        "kpi_rate": 0.65
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi_rate": 0.7667
+      },
+      "database": {
+        "n": 10,
+        "kpi_rate": 0.0
+      },
+      "OVERALL_kpi": 0.4334
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "50",
+  "milestones": [
+    "The solution queries pg_stat_statements to analyze query execution statistics such as total calls, mean time, or rows returned",
+    "The solution queries pg_locks or related views to investigate lock contention in the database",
+    "The solution queries pg_stat_user_indexes and/or pg_indexes to check for redundant or unused indexes",
+    "The solution queries pg_stat_user_tables or pg_stat_all_tables to examine vacuum-related metrics such as dead tuples, last_autovacuum, or n_dead_tup",
+    "The solution investigates large data operations by examining rows fetched or inserted from pg_stat_statements or pg_stat_user_tables",
+    "The final answer selects exactly 2 root causes from the allowed list (INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA)"
+  ]
+}

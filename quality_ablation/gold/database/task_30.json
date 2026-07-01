@@ -1,0 +1,12 @@
+{
+  "domain": "database",
+  "task": "30",
+  "milestones": [
+    "At least one SQL query was executed against pg_stat_statements to analyze query execution statistics (e.g., total calls, mean time, rows returned)",
+    "At least one SQL query was executed against pg_locks to investigate lock contention between transactions",
+    "At least one SQL query was executed against pg_stat_user_indexes or pg_indexes to investigate index usage and potential redundancy",
+    "At least one SQL query was executed against pg_stat_all_tables or pg_stat_user_tables or pg_stat_progress_vacuum to investigate vacuum-related issues such as dead tuples",
+    "Multiple distinct agents were assigned to analyze different root cause categories, and they communicated findings before the final decision",
+    "The final answer selects exactly two root causes from the allowed list (INSERT_LARGE_DATA, LOCK_CONTENTION, VACUUM, REDUNDANT_INDEX, FETCH_LARGE_DATA) and presents them clearly"
+  ]
+}
