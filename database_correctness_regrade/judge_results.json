@@ -1,0 +1,387 @@
+{
+  "judge_model": "claude-opus-4.6 (Copilot CLI, per-task file-output judge)",
+  "metric": "MARBLE recall = |gold \u2229 selected| / |gold|",
+  "subset": [
+    "1",
+    "10",
+    "20",
+    "30",
+    "40",
+    "50",
+    "60",
+    "70",
+    "80",
+    "90"
+  ],
+  "results": {
+    "full_squad": {
+      "recall_avg": 0.4,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.5
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.5
+        }
+      ]
+    },
+    "coord_only": {
+      "recall_avg": 0.5,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [],
+          "recall": 0.0
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0
+        }
+      ]
+    },
+    "no_squad": {
+      "recall_avg": 0.6,
+      "detail": [
+        {
+          "task": "1",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "10",
+          "gold": [
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "20",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "FETCH_LARGE_DATA"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "30",
+          "gold": [
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "40",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "50",
+          "gold": [
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "VACUUM"
+          ],
+          "recall": 0.0
+        },
+        {
+          "task": "60",
+          "gold": [
+            "LOCK_CONTENTION",
+            "REDUNDANT_INDEX"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION",
+            "VACUUM"
+          ],
+          "recall": 0.5
+        },
+        {
+          "task": "70",
+          "gold": [
+            "FETCH_LARGE_DATA",
+            "INSERT_LARGE_DATA"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION",
+            "VACUUM"
+          ],
+          "recall": 0.5
+        },
+        {
+          "task": "80",
+          "gold": [
+            "REDUNDANT_INDEX",
+            "VACUUM"
+          ],
+          "pred": [
+            "REDUNDANT_INDEX",
+            "VACUUM",
+            "INSERT_LARGE_DATA"
+          ],
+          "recall": 1.0
+        },
+        {
+          "task": "90",
+          "gold": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION"
+          ],
+          "pred": [
+            "INSERT_LARGE_DATA",
+            "LOCK_CONTENTION",
+            "VACUUM"
+          ],
+          "recall": 1.0
+        }
+      ]
+    },
+    "memory_only": {
+      "recall_avg": 0.0,
+      "detail": "all timeout_no_output"
+    }
+  }
+}

@@ -26,8 +26,8 @@
     },
     "database": {
       "full_squad": 1.0,
-      "no_squad": 0.0,
-      "memory_only": 0.25,
+      "no_squad": 1.0,
+      "memory_only": 0.0,
       "coord_only": 0.9
     },
     "coding": {
@@ -53,16 +53,23 @@
   },
   "averages": {
     "full_squad": 1.0,
-    "no_squad": 0.6,
-    "memory_only": 0.4875,
+    "no_squad": 0.85,
+    "memory_only": 0.425,
     "coord_only": 0.925
   },
+  "database_correctness_recall": {
+    "note": "MARBLE official recall metric (|gold ∩ selected| / |gold|) on the 10-task database subset. Graded by LLM-judge label extraction; two independent judge passes produced identical scores. Ground truth from multiagentbench/database/database_main.jsonl (.task.root_causes).",
+    "full_squad": 0.40,
+    "coord_only": 0.50,
+    "memory_only": 0.0,
+    "no_squad": 0.60
+  },
   "key_findings": [
-    "Coordination is the primary driver: coord-only averages 92.5% vs memory-only 48.75%",
-    "Memory without coordination is HARMFUL in coding domain (40% vs 90% no-squad baseline)",
-    "Database domain REQUIRES coordination for file output (0% without, 90% with)",
-    "Full Squad adds ~7.5% reliability over coord-only alone (100% vs 92.5%)",
-    "Pattern is consistent across all 4 domains"
+    "CORRECTION: The database no_squad completion was previously reported as 0.0 based on unpopulated placeholder files. All 10 no-squad database tasks were re-run from scratch and every one produced a substantive root-cause diagnosis (completion 1.0).",
+    "On completion (did the condition produce output), coordination helps modestly: coord-only 92.5% vs no-squad 85% (+7.5pp); full-squad 100% vs no-squad 85% (+15pp).",
+    "Memory without coordination is HARMFUL: memory-only averages 42.5%, well below the 85% no-squad baseline (unstructured context injection adds noise).",
+    "Completion is NOT correctness. On database correctness (MARBLE recall), coordination provided NO advantage: no-squad 60% >= coord-only 50% >= full-squad 40%. Multi-agent convergence appears to amplify confirmation bias, over-predicting obvious causes and missing subtle ones (e.g. REDUNDANT_INDEX).",
+    "With n=10 per cell these differences are within noise (~25pp detection threshold at p<0.05); treat as directional, not significant."
   ],
   "model": "claude-opus-4-6",
   "sample_size_per_condition": 10

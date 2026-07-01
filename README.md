@@ -6,7 +6,7 @@ Public repository containing all raw benchmark data for evaluating [Squad](https
 
 | Benchmark | Tasks | Squad | Baseline (no Squad) | Δ | Controlled? |
 |-----------|-------|-------|---------------------|---|-------------|
-| **MARBLE** (ACL 2025) | 400 (+160 ablation) | 100% | 60% | +40pp | ✅ Same model |
+| **MARBLE** (ACL 2025) | 400 (+160 ablation) | 99.25% | 85% | +14.25pp | ✅ Same model |
 | **DevBench** | 1,800 | 53.1% | 43.5%† | +9.6pp | ⚠️ Different model |
 | **SWE-bench Lite** | 300 | 66% | ~48%‡ | +18pp | ⚠️ Estimated baseline |
 | **TerminalBench 2.0** | 20 | 80% | 75% | +5pp | ✅ Same model |
@@ -14,17 +14,42 @@ Public repository containing all raw benchmark data for evaluating [Squad](https
 † DevBench: Squad uses GPT-5.4; baseline is GPT-5.5 (different model).
 ‡ SWE-bench Lite: Baseline estimated from public reports. No same-model-without-Squad run.
 
+MARBLE Squad/baseline figures above are the **completion** metric (did the condition produce
+usable output). See the correctness re-grade below — on the database domain, coordination
+provided no correctness advantage.
+
 ## Controlled Ablation (MARBLE)
 
-Factorial ablation: same model (Claude Opus 4.6), same tasks, same metric.
-4 domains × 4 conditions × 10 tasks = 160 task-runs.
+Factorial ablation: same model (Claude Opus 4.6), same tasks. The ablation metric is
+**completion** (output produced within the 600s budget). 4 domains × 4 conditions × 10 tasks
+= 160 task-runs.
 
 | Condition | Coding | Research | Bargaining | Database | **Average** |
 |-----------|--------|----------|------------|----------|-------------|
 | Full Squad | 100% | 100% | 100% | 100% | **100%** |
 | Coord-only | 100% | 90% | 90% | 90% | **92.5%** |
-| Memory-only | 40% | 70% | 60% | 25% | **48.75%** |
-| No Squad | 90% | 80% | 70% | 0% | **60%** |
+| Memory-only | 40% | 70% | 60% | 0% | **42.5%** |
+| No Squad | 90% | 80% | 70% | 100% | **85%** |
+
+> **Correction (database):** the no-Squad database completion was previously listed as **0%**,
+> based on unpopulated placeholder files. All 10 tasks were re-run and every one produced a
+> substantive diagnosis → **100%**. Memory-only database is 0% (all runs timed out/produced no
+> output). Details and the raw re-runs: [`database_correctness_regrade/`](database_correctness_regrade/).
+
+### Database correctness (MARBLE recall, n=10)
+
+Completion only checks that an answer appeared. Re-grading correctness with MARBLE's official
+recall metric shows coordination did **not** help — the single agent scored highest:
+
+| Condition | Completion | MARBLE recall (correctness) |
+|-----------|-----------:|----------------------------:|
+| Full Squad | 100% | **40%** |
+| Coord-only | 90% | **50%** |
+| Memory-only | 0% | **0%** |
+| No Squad | 100% | **60%** |
+
+With n=10 these gaps are within noise; the honest takeaway is "no correctness advantage on
+database," not "single agents win." See [`database_correctness_regrade/`](database_correctness_regrade/).
 
 ## Repository Structure
 
