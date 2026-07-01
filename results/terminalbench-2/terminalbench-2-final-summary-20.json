@@ -1,0 +1,224 @@
+{
+  "benchmark": "TerminalBench 2.0",
+  "total_tasks_available": 89,
+  "tasks_evaluated": 20,
+  "model": "claude-opus-4.6",
+  "conditions": {
+    "squad": {
+      "resolved": 16,
+      "total": 20,
+      "rate": 0.8,
+      "tasks": [
+        {
+          "task": "gpt2-codegolf",
+          "status": "failed",
+          "reward": 0.0
+        },
+        {
+          "task": "llm-inference-batching-scheduler",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "break-filter-js-from-html",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "reshard-c4-data",
+          "status": "timed_out",
+          "reward": null
+        },
+        {
+          "task": "write-compressor",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "merge-diff-arc-agi-task",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "winning-avg-corewars",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "log-summary-date-ranges",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "pytorch-model-cli",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "largest-eigenval",
+          "status": "failed",
+          "reward": 0.0
+        },
+        {
+          "task": "fix-git",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "overfull-hbox",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "prove-plus-comm",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "cobol-modernization",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "regex-log",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "query-optimize",
+          "status": "timed_out",
+          "reward": null
+        },
+        {
+          "task": "openssl-selfsigned-cert",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "sanitize-git-repo",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "large-scale-text-editing",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "build-cython-ext",
+          "status": "passed",
+          "reward": 1.0
+        }
+      ]
+    },
+    "baseline": {
+      "resolved": 15,
+      "total": 20,
+      "rate": 0.75,
+      "tasks": [
+        {
+          "task": "gpt2-codegolf",
+          "status": "exception",
+          "reward": null,
+          "exception": "NonZeroAgentExitCodeError"
+        },
+        {
+          "task": "llm-inference-batching-scheduler",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "break-filter-js-from-html",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "reshard-c4-data",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "write-compressor",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "merge-diff-arc-agi-task",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "winning-avg-corewars",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "log-summary-date-ranges",
+          "status": "failed",
+          "reward": 0.0
+        },
+        {
+          "task": "pytorch-model-cli",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "largest-eigenval",
+          "status": "failed",
+          "reward": 0.0
+        },
+        {
+          "task": "prove-plus-comm",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "cobol-modernization",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "overfull-hbox",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "fix-git",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "query-optimize",
+          "status": "exception",
+          "reward": null,
+          "exception": "VerifierTimeoutError"
+        },
+        {
+          "task": "regex-log",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "build-cython-ext",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "large-scale-text-editing",
+          "status": "passed",
+          "reward": 1.0
+        },
+        {
+          "task": "sanitize-git-repo",
+          "status": "failed",
+          "reward": 0.0
+        },
+        {
+          "task": "openssl-selfsigned-cert",
+          "status": "passed",
+          "reward": 1.0
+        }
+      ]
+    }
+  }
+}

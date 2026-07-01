@@ -1,0 +1,65 @@
+{
+  "run_mode": "host-side Squad orchestrator with Docker-backed task containers",
+  "agent": "squad",
+  "model": "claude-opus-4.6",
+  "n_tasks": 5,
+  "squad_mean_reward": 1.0,
+  "baseline_mean_reward_on_same_subset": 0.8,
+  "tasks": [
+    {
+      "task": "break-filter-js-from-html",
+      "status": "passed",
+      "reward": 1.0,
+      "baseline_reward": 1.0,
+      "baseline_exception": null,
+      "work_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\break-filter-js-from-html\\work",
+      "verifier_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\break-filter-js-from-html\\verifier",
+      "logs_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\break-filter-js-from-html\\logs\\verifier",
+      "docker_image": "alexgshaw/break-filter-js-from-html:20251031"
+    },
+    {
+      "task": "log-summary-date-ranges",
+      "status": "passed",
+      "reward": 1.0,
+      "baseline_reward": 0.0,
+      "baseline_exception": null,
+      "work_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\log-summary-date-ranges\\work",
+      "verifier_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\log-summary-date-ranges\\verifier",
+      "logs_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\log-summary-date-ranges\\logs\\verifier",
+      "docker_image": "alexgshaw/log-summary-date-ranges:20251031"
+    },
+    {
+      "task": "merge-diff-arc-agi-task",
+      "status": "passed",
+      "reward": 1.0,
+      "baseline_reward": 1.0,
+      "baseline_exception": null,
+      "work_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\merge-diff-arc-agi-task\\work",
+      "verifier_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\merge-diff-arc-agi-task\\verifier",
+      "logs_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\merge-diff-arc-agi-task\\logs\\verifier",
+      "docker_image": "alexgshaw/merge-diff-arc-agi-task:20251031"
+    },
+    {
+      "task": "pytorch-model-cli",
+      "status": "passed",
+      "reward": 1.0,
+      "baseline_reward": 1.0,
+      "baseline_exception": null,
+      "work_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\pytorch-model-cli\\work",
+      "verifier_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\pytorch-model-cli\\verifier",
+      "logs_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\pytorch-model-cli\\logs\\verifier",
+      "docker_image": "alexgshaw/pytorch-model-cli:20251031"
+    },
+    {
+      "task": "write-compressor",
+      "status": "passed",
+      "reward": 1.0,
+      "baseline_reward": 1.0,
+      "baseline_exception": null,
+      "work_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\write-compressor\\work",
+      "verifier_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\write-compressor\\verifier",
+      "logs_dir": "C:\\Users\\tamirdresher\\.copilot\\repos\\copilot-worktrees\\tamresearch1\\tamirdresher-microsoft-fluffy-dollop\\terminalbench-host-runs\\write-compressor\\logs\\verifier",
+      "docker_image": "alexgshaw/write-compressor:20251031"
+    }
+  ]
+}
