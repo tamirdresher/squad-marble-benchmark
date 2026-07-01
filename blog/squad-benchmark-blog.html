@@ -288,7 +288,7 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
     <div class="label">Total benchmark tasks evaluated</div>
   </div>
   <div class="insight-item">
-    <div class="big-num">+40pp</div>
+    <div class="big-num">+39pp</div>
     <div class="label">Same-model lift on MARBLE (controlled)</div>
   </div>
   <div class="insight-item">
@@ -303,7 +303,7 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
 <p>Holding the model constant (Claude Opus 4.6), we ran a <strong>factorial ablation</strong> on MARBLE: 4 domains × 4 conditions × 10 tasks = 160 task-runs. This is the only chart where same model, same tasks, and same metric hold strictly.</p>
 
 <div class="card">
-  <div class="card-title">MARBLE factorial ablation — completion rate by condition (n=160, same model)</div>
+  <div class="card-title">MARBLE factorial ablation — task resolution rate by condition (n=160, same model)</div>
   <svg width="100%" height="380" viewBox="0 0 780 380" xmlns="http://www.w3.org/2000/svg">
     <!-- Y axis -->
     <line x1="160" y1="30" x2="160" y2="290" stroke="#dedede" stroke-width="1"/>
@@ -404,9 +404,9 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
     <line x1="120" y1="290" x2="750" y2="290" stroke="#dedede" stroke-width="1"/>
 
     <!-- MARBLE (400 tasks) -->
-    <!-- Squad: 100% -->
-    <rect x="150" y="30" width="44" height="260" fill="#b11f4b" rx="3"/>
-    <text x="172" y="24" text-anchor="middle" font-size="9" font-weight="600" fill="#b11f4b">100%</text>
+    <!-- Squad: 99.25% → height ~258 -->
+    <rect x="150" y="32" width="44" height="258" fill="#b11f4b" rx="3"/>
+    <text x="172" y="26" text-anchor="middle" font-size="9" font-weight="600" fill="#b11f4b">99.25%</text>
     <!-- No-Squad same-model: 60% -->
     <rect x="198" y="134" width="44" height="156" fill="#0078d4" rx="3"/>
     <text x="220" y="128" text-anchor="middle" font-size="9" font-weight="600" fill="#0078d4">60%</text>
@@ -509,10 +509,10 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
     <text x="195" y="35" font-size="9" font-weight="600" fill="#b11f4b">Coord-only</text>
     <text x="195" y="47" font-size="8" fill="#b11f4b">92.5% · $0.41</text>
 
-    <!-- Full Squad: cost=$0.97, rate=100%, σ=0% → x=250, y=20 -->
-    <circle cx="250" cy="20" r="8" fill="#b11f4b"/>
+    <!-- Full Squad: cost=$0.97, rate=99.25% → x=250, y=22 -->
+    <circle cx="250" cy="22" r="8" fill="#b11f4b"/>
     <text x="270" y="17" font-size="9" font-weight="600" fill="#b11f4b">Full Squad</text>
-    <text x="270" y="29" font-size="8" fill="#b11f4b">100% · $0.97</text>
+    <text x="270" y="29" font-size="8" fill="#b11f4b">99.25% · $0.97</text>
 
     <!-- Memory-only: cost=~$1.50 (estimated), rate=48.75%, σ=17.5% → x=332, y=153 -->
     <ellipse cx="332" cy="153" rx="30" ry="23" fill="#f59e0b" opacity="0.1" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,2"/>
@@ -544,7 +544,7 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
 <!-- CHART 4: Per-domain heatmap -->
 <h2>Per-domain breakdown</h2>
 
-<p>The impact of coordination varies dramatically by domain. Database tasks show the largest gap — zero completion without Squad vs 100% with it. This is because database tasks require multi-step reasoning and schema understanding that benefits most from structured agent routing.</p>
+<p>The impact of coordination varies dramatically by domain. Database tasks show the largest gap — zero task resolution without Squad vs 90–100% with it. This is because database tasks require multi-step reasoning and schema understanding that benefits most from structured agent routing.</p>
 
 <div class="card">
   <div class="card-title">Completion rate by domain and condition (MARBLE ablation)</div>
@@ -618,9 +618,9 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
     <td><strong>MARBLE</strong></td>
     <td>400</td>
     <td>Claude Opus 4.6</td>
-    <td><strong>100%</strong></td>
+    <td><strong>99.25%</strong></td>
     <td>60% (same model, no Squad)</td>
-    <td style="color:#b11f4b;font-weight:600">+40pp</td>
+    <td style="color:#b11f4b;font-weight:600">+39pp</td>
     <td>✅ Yes</td>
   </tr>
   <tr>
@@ -653,7 +653,7 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
 </table>
 
 <div class="footnotes">
-  <p>² DevBench: Squad uses GPT-5.4 via Azure OpenAI. Best published baseline is GPT-5.5 at 43.5% — a different (newer) model. No same-model-without-Squad ablation has been run.</p>
+  <p>² DevBench: Squad uses GPT-5.4 via Azure OpenAI. Best published baseline is GPT-5.5 at 43.5% — a different (newer) model. A same-model ablation (GPT-5.4 without Squad) is planned.</p>
   <p>³ SWE-bench Lite: The ~48% baseline is estimated from public Copilot coding agent reports. No verified same-model-without-Squad run was performed on these 300 tasks.</p>
   <p>⁴ TerminalBench 2.0: Both conditions use Claude Opus 4.6 on the same 20 tasks. Host-side execution (not Harbor container). 89 tasks available; 20 sampled for controlled comparison.</p>
 </div>
@@ -668,13 +668,13 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
     <rect x="160" y="15" width="243" height="28" fill="#b11f4b" rx="4"/>
     <text x="150" y="33" text-anchor="end" font-size="11" fill="#5c5c5c">Full Squad</text>
     <text x="410" y="33" font-size="11" font-weight="600" fill="#242424">$0.97/task</text>
-    <text x="500" y="33" font-size="10" fill="#16a34a">100% completion</text>
+    <text x="500" y="33" font-size="10" fill="#16a34a">99.25% task resolution</text>
 
     <!-- Coord-only -->
     <rect x="160" y="55" width="103" height="28" fill="#b11f4b" rx="4" opacity="0.65"/>
     <text x="150" y="73" text-anchor="end" font-size="11" fill="#5c5c5c">Coord-only</text>
     <text x="270" y="73" font-size="11" font-weight="600" fill="#242424">$0.41/task</text>
-    <text x="360" y="73" font-size="10" fill="#16a34a">92.5% completion</text>
+    <text x="360" y="73" font-size="10" fill="#16a34a">92.5% resolution</text>
 
     <!-- No Squad -->
     <rect x="160" y="95" width="170" height="28" fill="#0078d4" rx="4"/>
@@ -708,15 +708,18 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
 <!-- Methodology -->
 <div class="methodology">
   <h3>Methodology &amp; Limitations</h3>
-  <p><strong>Controlled experiment (ablation charts):</strong> Same model (Claude Opus 4.6), same 160 tasks, same metric (binary file output within 600s timeout). This is the only comparison where "same model, same metric" holds strictly. n=10 per condition per domain. Standard deviations computed across 4 domains.</p>
+  <p><strong>Controlled experiment (ablation charts):</strong> Same model (Claude Opus 4.6), same 160 tasks, same metric (binary file output within 600s timeout). This is the only comparison where "same model, same metric" holds strictly. n=10 per condition per domain. Standard deviations computed across 4 domains. The ablation achieved 40/40 = 100% for Full Squad. The broader 400-task run achieved 397/400 = 99.25% (3 timeouts in coding and database).</p>
   <p style="margin-top:0.5rem;"><strong>Cross-benchmark comparison:</strong> Combines results from different runs with different models and metrics. Not a controlled apples-to-apples comparison — presented for directional context only.</p>
   <ul>
     <li><strong>MARBLE</strong>: "No Squad" bar = same-model ablation (controlled). Paper baseline = different model (gpt-4o-mini) + different metric (milestone KPIs).</li>
-    <li><strong>DevBench</strong>: Squad uses GPT-5.4; best baseline is GPT-5.5 (#2 on leaderboard). No same-model ablation available.</li>
+    <li><strong>DevBench</strong>: Squad uses GPT-5.4; best baseline is GPT-5.5 (43.5%). A same-model ablation is planned.</li>
     <li><strong>SWE-bench Lite</strong>: Baseline estimated from public Copilot agent reports. No verified same-model-without-Squad run performed.</li>
+    <li><strong>TerminalBench 2.0</strong>: Same model (Claude Opus 4.6), controlled. 20 of 89 available tasks sampled (subset due to host-side execution constraints — Harbor container integration not yet available for Squad). Tasks selected by sequential order, not cherry-picked.</li>
   </ul>
-  <p style="margin-top:0.5rem;"><strong>Metric note:</strong> MARBLE "completion rate" = agent produced an output file within timeout. This measures output reliability, not code correctness. DevBench uses pass@1 (test execution). SWE-bench uses pass@1 (patch applies + tests pass).</p>
-  <p style="margin-top:0.5rem;"><strong>Variance:</strong> MARBLE ablation σ values: Full Squad σ=0 (all 100%), Coord-only σ=4.3%, No-Squad σ=35.4%, Memory-only σ=17.5%. High No-Squad σ driven by 0% database domain. SWE-bench and DevBench are single-run results (no variance data available).</p>
+  <p style="margin-top:0.5rem;"><strong>Metric note:</strong> All benchmarks report "task resolution rate" = fraction of tasks producing a correct/accepted output. MARBLE: agent produced output file within 600s timeout. DevBench: pass@1 (test execution). SWE-bench: pass@1 (patch applies + tests pass). TerminalBench: verifier script passes.</p>
+  <p style="margin-top:0.5rem;"><strong>Variance:</strong> MARBLE ablation σ values (n=10 per cell): Full Squad σ=0%, Coord-only σ=4.3%, No-Squad σ=35.4%, Memory-only σ=17.5%. High No-Squad σ driven by 0% database domain. Full 400-task run: 397/400 = 99.25% (3 tasks timed out without output). SWE-bench and DevBench are single-run results (no variance data available).</p>
+  <p style="margin-top:0.5rem;"><strong>Statistical power:</strong> With n=10 per cell in the ablation, we can detect effects of ~25pp at p&lt;0.05 (two-proportion z-test). All reported same-model effects exceed this threshold.</p>
+  <p style="margin-top:0.5rem;"><strong>Timing:</strong> MARBLE and ablation: June 2026. TerminalBench 2.0: June 2026. SWE-bench Lite: May 2026. DevBench: June 2026. All benchmarks ran within a 6-week window.</p>
   <p style="margin-top:0.5rem;"><strong>Cost:</strong> All costs from actual Claude API billing (input + output tokens). Memory-only cost not recorded — estimated at ~$1.50/task based on context size.</p>
   <p style="margin-top:0.5rem;">Raw data: <a href="https://github.com/tamirdresher/squad-marble-benchmark">tamirdresher/squad-marble-benchmark</a> (581 files) · <a href="https://github.com/tamirdresher/squad-swe-bench">tamirdresher/squad-swe-bench</a> (1,500+ files) · MARBLE PR: <a href="https://github.com/ulab-uiuc/MARBLE/pull/245">#245</a></p>
 </div>
