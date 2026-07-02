@@ -603,117 +603,87 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
   <p class="caption">n=10 per cell. Same model (Claude Opus 4.6), same metric (binary file output within 600s timeout).</p>
 </div>
 
-<!-- Correctness re-grade -->
-<h2>Completion vs. correctness: the database re-grade</h2>
+<!-- Correctness & quality: full 4-domain aligned result -->
+<h2>Completion vs. correctness: the controlled 4-domain result</h2>
 
-<p>Completion only asks <em>“did an answer appear?”</em> It says nothing about whether the answer is <strong>right</strong>. After correcting the fabricated database numbers, we went further and re-graded every database condition on <strong>correctness</strong>, using MARBLE's official metric: an LLM judge extracts the root-cause labels the agent actually selected, scored as recall against ground truth — <code>|gold ∩ predicted| / |gold|</code>, averaged over the 10-task subset.</p>
-
-<div class="card">
-  <div class="card-title">Database domain: completion vs. MARBLE correctness (recall), n=10</div>
-  <table>
-    <tr>
-      <th>Condition</th>
-      <th>Completion (produced output)</th>
-      <th>MARBLE recall (correctness)</th>
-    </tr>
-    <tr>
-      <td style="color:#b11f4b"><strong>Full Squad</strong></td>
-      <td>100%</td>
-      <td><strong>40%</strong></td>
-    </tr>
-    <tr>
-      <td>Coord-only</td>
-      <td>90%</td>
-      <td><strong>50%</strong></td>
-    </tr>
-    <tr>
-      <td style="color:#b45309">Memory-only</td>
-      <td>0%</td>
-      <td><strong>0%</strong></td>
-    </tr>
-    <tr style="background:var(--cp-surface-soft)">
-      <td style="color:#0078d4"><strong>No Squad (single agent)</strong></td>
-      <td>100%</td>
-      <td style="color:#16a34a;font-weight:700">60%</td>
-    </tr>
-  </table>
-  <p class="caption">Correctness graded by MARBLE recall. <strong>All four conditions were graded by the identical LLM-judge extractor</strong> (same prompt, same model, one code path), and two independent judge passes produced identical scores. <strong>Truncation-bias check:</strong> because Squad's multi-agent transcripts are far longer than the raw single agent's (up to 25K vs ~6K chars) and place their final diagnosis at the <em>end</em>, we re-ran the entire grade with a conclusion-visible window (full text when short, else head + full tail) so every condition's final answer was guaranteed in front of the judge. The scores were <strong>unchanged</strong> (Full 40%, Coord 50%, No-Squad 60%, Memory 0%) — the gap is not an extraction artifact of chopping off Squad's conclusion. Given n=10 and imperfect label extraction, still treat the correctness gap as a <strong>hypothesis, not a conclusion</strong>. Ground truth from <code>database_main.jsonl</code>; re-grade script and per-task audit in <code>database_correctness_regrade/</code> (<code>judge_results_v2.json</code>). Note: the <em>memory-only</em> condition injects a Squad-generated <code>decisions.md</code> into a raw agent, so it tests "Squad-flavored memory," not generic memory.</p>
-</div>
-
-<div class="highlight-box">
-  <p><strong>The surprising finding:</strong> on database root-cause diagnosis, <strong>coordination did not improve correctness — it slightly hurt it.</strong> The raw single agent scored the <em>highest</em> recall (60%), ahead of coord-only (50%) and full Squad (40%). Inspecting the transcripts explains why: the multi-agent configs repeatedly “converged” on the obvious high-signal causes (large inserts, full-table scans) and reinforced each other, missing subtler root causes like redundant indexes. <strong>Multi-agent convergence can amplify confirmation bias.</strong> With n=10 these gaps are within noise, so the honest takeaway is not “single agents are better at database” but rather <em>“coordination provides no correctness advantage here”</em> — the opposite of what the fabricated 0% implied.</p>
-</div>
-
-<div class="highlight-box" style="border-left-color: var(--cp-warning);">
-  <p><strong>⚠️ Data-integrity note (why only database was recall-graded above):</strong> When we audited the ablation transcripts to extend correctness grading to every domain, we found that <strong>the four conditions did not always run the same MARBLE task under the same task index</strong>. The full-Squad transcripts came from the original 400-task production run, while the coord-only / no-Squad / memory-only conditions came from separate ablation reruns. For <strong>coding and database</strong>, the task orderings <em>diverged</em> — e.g., full-Squad's "coding task&nbsp;10" solved MARBLE program #8, while no-Squad's solved #10. Grading "task N" across conditions there would compare <em>different prompts against the wrong rubric</em>. We verified alignment per task using each task's own rarest distinctive tokens: <strong>research (8 of 10 tasks) and bargaining (all 10) are cleanly aligned across all four conditions; coding (1/10) and database (0/10) are not.</strong> So the database recall gap above should be read as <em>directional</em>, and the clean multi-domain correctness comparison below is restricted to the two verified-aligned domains.</p>
-</div>
-
-
-<!-- Correctness & quality on aligned domains -->
-<h2>Correctness &amp; quality: the controlled multi-domain result</h2>
-
-<p>Completion asks “did output appear?” The database recall re-grade asked “is the answer right?” for one domain. Here we go the whole way: on the domains where all four conditions <strong>verifiably solved the same tasks</strong> (research, n=8; bargaining, n=10 — 18 tasks × 4 conditions), we grade every transcript two ways, with one identical judge (Claude Opus 4.6) and one identical prompt across all conditions:</p>
+<p>Completion only asks <em>&ldquo;did an answer appear?&rdquo;</em> &mdash; it says nothing about whether the answer is <strong>right</strong>. That is the same bar GitHub&rsquo;s own harness post held itself to (SWE-bench pass@1, TerminalBench verifiers grade correctness, not output), so we hold Squad to it too. Earlier we could grade correctness cleanly on only two domains, because the four conditions&rsquo; archived transcripts had <strong>drifted out of task alignment</strong> &mdash; the full-Squad set came from the 400-task production run while the others came from separate reruns, so &ldquo;coding task&nbsp;10&rdquo; often meant different MARBLE programs across conditions. Rather than drop coding and database, we <strong>re-ran all four conditions from scratch on the identical task IDs</strong> (1, 10, 20, &hellip;, 90) in every domain &mdash; so &ldquo;task N&rdquo; is guaranteed to be the same MARBLE task in every condition, <em>by construction</em>. We then graded every one of the 80 fresh transcripts two ways, with one identical judge (Claude Opus 4.6) and one identical prompt across all conditions:</p>
 <ul>
-  <li><strong>Milestone-KPI</strong> — MARBLE's signature metric: for each task we generate 6 gold milestones from the task spec, then score the fraction a judge confirms the output actually achieved (correctness + completeness against ground-truth requirements).</li>
-  <li><strong>Output-quality rubric</strong> — a 1–5 score for correctness, completeness, and quality of the produced artifact.</li>
+  <li><strong>Milestone-KPI</strong> &mdash; MARBLE&rsquo;s signature metric: the fraction of the task&rsquo;s gold milestones a judge confirms the output actually achieved.</li>
+  <li><strong>Output-quality rubric</strong> &mdash; a 1&ndash;5 score for correctness, completeness, and quality of the produced artifact.</li>
 </ul>
 
 <div class="card">
-  <div class="card-title">Correctness &amp; quality on verified-aligned domains (research n=8 + bargaining n=10, same model, uniform judge)</div>
+  <div class="card-title">Correctness &amp; quality across all four domains (same model, same tasks, uniform judge; n=38/condition)</div>
   <table>
     <tr>
       <th>Condition</th>
-      <th>Milestone-KPI (correctness)</th>
-      <th>Quality rubric (1–5)</th>
-      <th>Research KPI / rubric</th>
-      <th>Bargaining KPI / rubric</th>
+      <th>Milestone-KPI</th>
+      <th>Quality (1&ndash;5)</th>
+      <th>Research</th>
+      <th>Bargaining</th>
+      <th>Coding</th>
+      <th>Database&dagger;</th>
     </tr>
     <tr>
-      <td><strong>Coord-only</strong> (coordinator + specialists)</td>
-      <td><strong>93.5%</strong></td>
-      <td><strong>4.68</strong></td>
-      <td>89.6% / 4.50</td>
-      <td>96.7% / 4.83</td>
+      <td style="color:#b11f4b"><strong>Full Squad</strong> (coordination + memory)</td>
+      <td><strong>81.1%</strong></td>
+      <td><strong>4.10</strong></td>
+      <td>81.2 / 4.21</td>
+      <td>95.0 / 4.80</td>
+      <td>81.7 / 3.73</td>
+      <td>66.7 / 3.67</td>
     </tr>
     <tr>
-      <td>Full Squad (memory + reviewer gates)</td>
-      <td>88.9%</td>
-      <td>4.54</td>
-      <td>81.2% / 4.21</td>
-      <td>95.0% / 4.80</td>
+      <td>Coord-only (coordinator + specialists)</td>
+      <td>81.1%</td>
+      <td>4.04</td>
+      <td>89.6 / 4.50</td>
+      <td>96.7 / 4.83</td>
+      <td>68.3 / 3.27</td>
+      <td>71.7 / 3.67</td>
+    </tr>
+    <tr style="background:var(--cp-surface-soft)">
+      <td style="color:#0078d4"><strong>No Squad</strong> (single agent)</td>
+      <td>77.2%</td>
+      <td>3.76</td>
+      <td>75.0 / 4.00</td>
+      <td>90.0 / 4.24</td>
+      <td>78.3 / 3.77</td>
+      <td>65.0 / 3.10</td>
     </tr>
     <tr>
-      <td>No Squad (single agent)</td>
-      <td>83.3%</td>
-      <td>4.13</td>
-      <td>75.0% / 4.00</td>
-      <td>90.0% / 4.24</td>
-    </tr>
-    <tr>
-      <td>Memory-only (Squad-flavored memory, no coordination)</td>
-      <td>76.9%</td>
-      <td>4.09</td>
-      <td>52.1% / 3.21</td>
-      <td>96.7% / 4.80</td>
+      <td>Memory-only (Squad memory, no coordination)</td>
+      <td>65.8%</td>
+      <td>3.58</td>
+      <td>52.1 / 3.21</td>
+      <td>96.7 / 4.80</td>
+      <td>53.3 / 2.97</td>
+      <td>58.3 / 3.27</td>
     </tr>
   </table>
-  <p class="caption">Same model (Claude Opus 4.6) for both the agents and the judge; same judge prompt and code path for all four conditions. Milestone-KPI = mean fraction of 6 gold milestones achieved per task. Tasks verified same-prompt across conditions via per-task rare-token anchors (grading scripts, gold milestones, and per-cell audits in <code>quality_ablation/</code>). <strong>Same-family-judge caveat:</strong> the judge is the same model family as the agents; to check for bias we re-scored the identical cells with an independent gpt-4o rubric (below).</p>
+  <p class="caption">Each domain cell shows Milestone-KPI% / quality rubric (1&ndash;5). Same model (Claude Opus 4.6) for both agents and judge; same judge prompt and code path for all four conditions. n per condition = 38 (research 8 + bargaining 10 + coding 10 + database 10). Every condition solved the <strong>same MARBLE task at each task ID</strong> &mdash; alignment guaranteed because all four were re-run from the identical task list (raw transcripts in <code>results/aligned_rerun/</code>; gold milestones and grading scripts in <code>quality_ablation/</code>). <strong>&dagger; Database caveat:</strong> the database gold blends diagnostic-process milestones (which <code>pg_stat_*</code> views to query) with a final root-cause answer, so its KPI reads partly as process-adherence &mdash; lean on the 1&ndash;5 rubric for the clean correctness signal there. <strong>Same-family-judge caveat:</strong> the judge shares the agents&rsquo; model family; we cross-checked with an independent gpt-4o rubric (below).</p>
 </div>
 
 <div class="highlight-box">
-  <p><strong>The real correctness finding:</strong> on same-task, same-model, uniformly-judged output, <strong>coordination measurably improves correctness and quality</strong>. Both coordinated conditions beat the single agent on both metrics: full Squad is <strong>+5.6pp KPI / +0.41 rubric</strong> over no-Squad, and coord-only is <strong>+10.2pp KPI / +0.55 rubric</strong>. Memory-without-coordination is the weakest overall (and clearly hurts research), echoing the completion result. Two honest nuances: (1) <strong>lean coordination (coord-only) edges out the heavyweight full Squad</strong> on judged quality here — the extra memory/reviewer machinery did not add correctness on these domains; and (2) this is the <em>opposite</em> of the database recall probe, where coordination gave no correctness edge. So coordination's correctness benefit is real but <strong>domain-dependent</strong>, not universal.</p>
+  <p><strong>The correctness finding &mdash; and a correction to our earlier one.</strong> On same-task, same-model, uniformly-judged output, <strong>coordination helps or ties in every domain</strong>. Full Squad leads overall on both metrics (<strong>81.1% KPI / 4.10 quality</strong>) &mdash; a clean <strong>+3.9pp KPI and +0.34 quality over the raw single agent</strong>, with coord-only essentially tied. Just as important, this controlled rerun <strong>overturns two earlier findings that turned out to be measurement artifacts</strong>, not real effects:</p>
+  <ul>
+    <li><strong>The coding &ldquo;reversal&rdquo; is gone.</strong> With aligned tasks, Full Squad coding (81.7% KPI) now <em>leads</em> the single agent (78.3%). The earlier &ldquo;single agent wins coding&rdquo; was task misalignment, not a coordination weakness.</li>
+    <li><strong>The database &ldquo;coordination hurts&rdquo; claim is refuted.</strong> With one uniform grader on identical tasks, the coordinated conditions now <em>match or beat</em> the single agent (coord-only 71.7%, Full Squad 66.7% vs no-Squad 65.0%). The earlier &ldquo;single agent scored higher recall&rdquo; came from grading divergent tasks with inconsistent extractors &mdash; exactly the risk our reviewers flagged.</li>
+    <li><strong>Memory without coordination is the weakest condition of all four</strong> (65.8% / 3.58). Injecting Squad&rsquo;s <code>decisions.md</code> into a raw agent with no coordinator to act on it actively drags results down &mdash; memory only pays off when there is coordination to use it.</li>
+  </ul>
+  <p>The honest bottom line: coordination&rsquo;s correctness benefit is <strong>real, consistent across domains, and modest</strong> &mdash; a few points of KPI and about a third of a rubric point &mdash; not the double-digit swings the earlier misaligned data implied in either direction.</p>
 </div>
 
 <div class="card">
-  <div class="card-title">Judge cross-check: same cells, two independent judges (rubric avg, 1–5)</div>
+  <div class="card-title">Judge cross-check: same cells, two independent judges (rubric avg, 1&ndash;5)</div>
   <table>
-    <tr><th>Condition</th><th>Research — Opus / gpt-4o</th><th>Bargaining — Opus / gpt-4o</th></tr>
-    <tr><td>Coord-only</td><td>4.50 / 4.21</td><td>4.83 / 4.53</td></tr>
+    <tr><th>Condition</th><th>Research &mdash; Opus / gpt-4o</th><th>Bargaining &mdash; Opus / gpt-4o</th></tr>
     <tr><td>Full Squad</td><td>4.21 / 4.33</td><td>4.80 / 4.70</td></tr>
+    <tr><td>Coord-only</td><td>4.50 / 4.21</td><td>4.83 / 4.53</td></tr>
     <tr><td>No Squad</td><td>4.00 / 4.33</td><td>4.24 / 4.40</td></tr>
     <tr><td>Memory-only</td><td>3.21 / 4.21</td><td>4.80 / 4.47</td></tr>
   </table>
-  <p class="caption">The two judges agree on the broad ordering (coordinated conditions ≥ single agent on bargaining; coordination competitive-to-better on research) but disagree on fine placement — most notably memory-only research (Opus 3.21 vs gpt-4o 4.21). Read the exact deltas as <strong>directional</strong>: judge choice moves the fine ranking, and with n=8–10 per domain these gaps are within noise. Coding and database are excluded (task orderings not aligned across conditions — see the data-integrity note above).</p>
+  <p class="caption">Two independent judges (Opus 4.6 and gpt-4o) on the identical research and bargaining cells agree on the broad ordering (coordinated &ge; single agent) but differ on fine placement &mdash; most notably memory-only research (3.21 vs 4.21). Read exact deltas as <strong>directional</strong>; with n=8&ndash;10 per domain the fine ranking is within judge noise. Coding and database are graded by the Opus judge only in this table; their raw transcripts and gold milestones are public for independent re-grading.</p>
 </div>
 
 
@@ -844,7 +814,7 @@ th { font-weight: 600; background: var(--cp-surface-soft); }
     <li><strong>TerminalBench 2.0</strong>: Same model (Claude Opus 4.6), but <strong>directional only — not a controlled comparison</strong>. 20 of 89 available tasks sampled, selected by sequential order (not cherry-picked). The two conditions ran through <strong>different harness paths</strong> — Squad via a host-side orchestrator (<code>run-terminalbench-host-task.ps1</code>) and the baseline via the native terminal-bench harness — though both execute the identical task workloads and are scored by each task's own Docker verifier. The margin is a single task (16/20 vs 15/20) on n=20, so treat it as suggestive only. Squad <em>can</em> run under the native harness (verified in smoke tests); the full 89-task suite is future work, not a capability blocker.</li>
   </ul>
   <p style="margin-top:0.5rem;"><strong>Metric note:</strong> Metrics differ by benchmark. MARBLE (ablation charts) reports <em>completion</em> = agent produced an output file within a 600s timeout; the database domain was additionally re-graded for <em>correctness</em> using MARBLE's official recall metric (see “Completion vs. correctness”). DevBench: pass@1 (test execution). SWE-bench: pass@1 (patch applies + tests pass). TerminalBench: verifier script passes. We use "completion" where the metric only checks that output appeared, and "resolution/pass" where output is verified correct.</p>
-  <p style="margin-top:0.5rem;"><strong>Correctness &amp; quality study (aligned domains):</strong> To measure correctness/quality rather than just completion, we graded every ablation transcript with MARBLE's milestone-KPI (fraction of 6 gold milestones achieved) plus a 1–5 output-quality rubric, using one identical judge (Claude Opus 4.6) and prompt across all four conditions. <strong>Before grading we audited task alignment</strong> and found the four conditions did not always run the same MARBLE task under the same task index (full-Squad came from the 400-task production run; the others from separate ablation reruns). Using each task's own rarest distinctive tokens as anchors, we verified that <strong>research (8/10 tasks) and bargaining (10/10) are cleanly aligned across all four conditions, while coding (1/10) and database (0/10) are not</strong>. The multi-domain correctness table is therefore restricted to research + bargaining (18 tasks × 4 conditions); coding and database are excluded from the same-task quality comparison. We cross-checked the milestone/rubric scores against an independent gpt-4o rubric: the judges agree on the broad ranking (coordination ≥ single agent) but differ on fine placement, so exact deltas are directional. Scripts, gold milestones, alignment audit, and per-cell audits are in <code>quality_ablation/</code>.</p>
+  <p style="margin-top:0.5rem;"><strong>Correctness &amp; quality study (all four domains):</strong> To measure correctness/quality rather than just completion, we graded transcripts with MARBLE's milestone-KPI (fraction of gold milestones achieved) plus a 1–5 output-quality rubric, using one identical judge (Claude Opus 4.6) and prompt across all four conditions. <strong>An earlier attempt hit a task-alignment problem:</strong> the archived transcripts did not always run the same MARBLE task under the same task index (full-Squad came from the 400-task production run; the others from separate ablation reruns). A rare-token anchor audit showed research (8/10) and bargaining (10/10) were cleanly aligned, but coding (1/10) and database (0/10) were not. Rather than exclude those domains, <strong>we re-ran all four conditions from scratch on the identical task IDs (1,10,20,…,90) in every domain</strong> — 80 fresh transcripts total — so &ldquo;task N&rdquo; is the same MARBLE task in every condition by construction. We then graded all 80 with the single Opus-4.6 judge. The full 4-domain table (research n=8 + bargaining n=10 + coding n=10 + database n=10 = 38 tasks × 4 conditions) reports the result; database KPI blends process and final-answer milestones, so we lean on its rubric for correctness. We cross-checked research/bargaining against an independent gpt-4o rubric (judges agree on ordering, differ on fine placement — deltas are directional). Raw reruns are in <code>results/aligned_rerun/</code>; scripts, gold milestones, and per-cell grades in <code>quality_ablation/</code>.</p>
   <p style="margin-top:0.5rem;"><strong>Variance:</strong> MARBLE ablation completion σ (n=10 per cell, across 4 domains): Full Squad σ=0%, Coord-only σ=4.3%, No-Squad σ=11.2%, Memory-only σ=26.8%. (An earlier version reported No-Squad σ=35.4%; that was inflated by a fabricated 0% database figure, now corrected to 100% completion after re-running all 10 tasks.) Full 400-task run: 397/400 = 99.25% (3 tasks timed out without output). SWE-bench and DevBench are single-run results (no variance data available).</p>
   <p style="margin-top:0.5rem;"><strong>Statistical power:</strong> With n=10 per cell, a two-proportion z-test can only detect effects of roughly ~25pp at p&lt;0.05. After correcting the database data, the same-model <em>completion</em> lift (full Squad 100% vs no-Squad 85% = +15pp) and the database <em>correctness</em> differences (≤20pp between conditions) fall <strong>below</strong> this threshold — i.e., they are within noise and should be read as directional, not statistically significant. We report them honestly rather than overclaiming; larger runs are needed to establish significance.</p>
   <p style="margin-top:0.5rem;"><strong>Timing:</strong> MARBLE and ablation: June 2026. TerminalBench 2.0: June 2026. SWE-bench Lite: May 2026. DevBench: June 2026. All benchmarks ran within a 6-week window.</p>

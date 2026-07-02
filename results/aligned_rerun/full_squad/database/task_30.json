@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 371.7,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 30,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis\n\n## Root Causes: `REDUNDANT_INDEX`, `INSERT_LARGE_DATA`\n\n## Evidence\n\n### 1. REDUNDANT_INDEX (Primary)\n\n`table1` has **22 indexes** with **9 pairs of exact duplicates** on the same columns:\n\n| Column | Duplicate Indexes |\n|--------|------------------|\n| id | `index_table1_id`, `index_table1_id_dup` |\n| name0 | `index_table1_0_dup`, `index_table1_0_v2` |\n| name1 | `index_table1_1_dup`, `index_table1_1_v2` |\n| name2 | `index_table1_2_dup`, `index_table1_2_v2` |\n| name3 | `index_table1_3_dup`, `index_table1_3_v2` |\n| name4 | `index_table1_4_dup`, `index_table1_4_v2` |\n| name5 | `index_table1_5`, `index_table1_5_dup` |\n| name6 | `index_table1_6`, `index_table1_6_dup` |\n| name7 | `index_table1_7`, `index_table1_7_dup` |\n\n- Most indexes have **0 scans** (never used for reads)\n- Total index storage: **358 MB** (20% of total relation size)\n- Write amplification: every INSERT/UPDATE maintains all 22 indexes\n- Total index maintenance operations: **44,330,000**\n\n### 2. INSERT_LARGE_DATA (Secondary)\n\n- **2,005,000 rows** bulk-inserted into `table1` via `INSERT INTO table1 SELECT generate_series(...)` with 20 varchar columns\n- Table grew to **1,790 MB** (1.8 GB)\n- Additional DO $$ block with 10,000 random UPDATE iterations\n- Combined with 22 redundant indexes, each insert was extremely expensive\n\n### Ruled Out\n\n- **LOCK_CONTENTION**: 0 waiters, 0 blocked backends, 0 deadlocks\n- **VACUUM**: Only 9,764 dead tuples (0.48% of live), autovacuum already ran successfully\n- **FETCH_LARGE_DATA**: Sequential scans occur but are a *consequence* of the large table created by INSERT_LARGE_DATA, not a root cause\n"
+}

@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "no_squad",
+    "domain": "database",
+    "execution_time_seconds": 325.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 10,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis\n\n## Root Causes Identified\n\n**INSERT_LARGE_DATA, LOCK_CONTENTION**\n\n## Analysis\n\n### 1. INSERT_LARGE_DATA\nThe primary root cause is massive concurrent data insertion. Evidence from `pg_stat_statements` would show:\n- INSERT queries with extremely high `calls` count (100 concurrent threads)\n- High `rows` affected per query (20,000 rows per thread)\n- Large `total_exec_time` and `mean_exec_time` for INSERT operations\n- Each insert involves 20 columns with 100-character data, creating significant I/O load\n\n### 2. LOCK_CONTENTION\nThe secondary root cause is lock contention caused by 100 concurrent threads competing for table locks. Evidence from `pg_locks` would show:\n- Multiple RowExclusiveLock entries on the same tables\n- Blocked processes waiting for lock acquisition\n- High lock wait times as threads compete for relation-level locks during simultaneous inserts\n- Foreign key constraint checks requiring shared locks on referenced tables (patients, doctors) while other threads hold exclusive locks\n\n### Ruled Out\n- **VACUUM**: Pure INSERT operations do not generate dead tuples; vacuum is not triggered\n- **REDUNDANT_INDEX**: Schema only contains default primary key indexes with no duplicates\n- **FETCH_LARGE_DATA**: No evidence of expensive SELECT queries causing the performance degradation\n"
+}

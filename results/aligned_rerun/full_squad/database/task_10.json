@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 289.8,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 10,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Healthcare Management System\n\n## Root Causes\n\n**REDUNDANT_INDEX, INSERT_LARGE_DATA**\n\n## Evidence\n\n### 1. REDUNDANT_INDEX (Primary)\n\n`table1` has **24 indexes** with 9+ duplicate pairs on the same columns:\n\n| Index A | Index B | Column |\n|---------|---------|--------|\n| index_table1_0_dup | index_table1_0_v2 | name0 |\n| index_table1_1_dup | index_table1_1_v2 | name1 |\n| index_table1_2_dup | index_table1_2_v2 | name2 |\n| index_table1_3_dup | index_table1_3_v2 | name3 |\n| index_table1_4_dup | index_table1_4_v2 | name4 |\n| index_table1_5 | index_table1_5_dup | name5 |\n| index_table1_6 | index_table1_6_dup | name6 |\n| index_table1_7 | index_table1_7_dup | name7 |\n| index_table1_id | index_table1_id_dup | id |\n\n- Total index storage: **358 MB** (vs 1431 MB table data)\n- Most redundant indexes have **0 scans** (completely unused)\n- Every write operation must update all 24 indexes, causing severe write amplification\n\n### 2. INSERT_LARGE_DATA (Secondary)\n\n- `table1` received **2,005,000 row insertions** (`n_tup_ins = 2,005,000`)\n- Table size grew to **1,431 MB**\n- Database-wide `tup_inserted = 3,086,955`\n- Batch INSERT of 5,000 rows took 1,189ms due to 24 indexes needing updates\n- A DO $$ loop performing 10,000 operations took 3,562ms\n\n### Eliminated Causes\n\n- **LOCK_CONTENTION**: 0 not-granted locks, 0 blocked backends, 0 deadlocks\n- **VACUUM**: Only 9,764 dead tuples (0.5% of 2M live), autovacuum functioning normally\n- **FETCH_LARGE_DATA**: Sequential scans present but dominated by diagnostic queries, not workload pattern\n\n## Conclusion\n\nThe performance anomaly is caused by **massive data insertions** (2M+ rows) into a table burdened with **redundant duplicate indexes**. Each insert must maintain 24 indexes (including 9+ unnecessary duplicates), causing extreme write amplification. The combined effect of INSERT_LARGE_DATA + REDUNDANT_INDEX creates a multiplicative performance degradation.\n"
+}

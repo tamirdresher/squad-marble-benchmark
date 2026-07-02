@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 485.3,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 80,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Task #80 \u2014 Database Performance Anomaly Diagnosis\n\n## Final Answer\n\nThe three root causes of the database performance anomaly are:\n\n1. **INSERT_LARGE_DATA**\n2. **VACUUM**\n3. **FETCH_LARGE_DATA**\n\n## Evidence Summary\n\n### 1. INSERT_LARGE_DATA \u2705 (Confidence: 0.97)\n\n- Single `INSERT INTO table1 SELECT generate_series(...)` statement consumes **99.5% of total DB execution time** (270,453 ms out of 271,807 ms total).\n- **820,000 rows** inserted across 41 calls (~20,000 rows per call), each row having 21 columns (id + 20 \u00d7 `substr(md5(random()::text),...)` varchar(100) fields).\n- Massive I/O: 74,572 shared_blks_dirtied, 130,257 shared_blks_written.\n- Database is insert-dominated: tup_inserted (820,888) \u226b tup_updated (123) + tup_deleted (334).\n\n### 2. VACUUM \u2705 (Confidence: 0.82)\n\n- `autovacuum_vacuum_insert_threshold = 1000` exceeded 820\u00d7 by the bulk insert workload.\n- Autovacuum would trigger within the first naptime window (60s) of the 270s insert duration, creating I/O contention.\n- `pg_statistic` shows 32 dead tuples \u2014 exactly matching a 21-column table that was ANALYZE'd then DROP'd.\n- Catalog bloat: pg_attribute (221 dead tuples), pg_depend (68 dead), pg_class (13 dead) \u2014 all unvacuumed.\n- No vacuum has ever run on any user table (vacuum_count=0, autovacuum_count=0 across all tables).\n\n### 3. FETCH_LARGE_DATA \u2705 (Confidence: 0.72)\n\n- The INSERT uses `SELECT generate_series(...)` with 20 computed MD5 subqueries per row \u2014 the DB internally generates and returns massive data volumes (tup_returned=612,892).\n- `returned_per_fetched` ratio = 2.61 indicates fetch amplification.\n- table1 is completely **unindexed** (0 indexes on 820k wide rows) \u2014 any read operation would require full sequential scan.\n- Prior session on the same schema confirmed **2.4 GB temp spill** + Parallel Seq Scan when querying the unindexed table1.\n- Architecture guarantees fetch problems: wide rows (est. ~640-700 bytes each) \u00d7 820k rows = ~560 MB data with no index support.\n\n## Eliminated Root Causes\n\n### LOCK_CONTENTION \u274c (Confidence absent: 0.97)\n- 0 lock waiters across 25 monitoring samples (75s window)\n- 0 deadlocks in pg_stat_database\n- Only 1 backend active (the diagnostic session)\n- Only normal self-held locks (AccessShareLock + ExclusiveLock)\n\n### REDUNDANT_INDEX \u274c (Confidence absent: 0.97)\n- `GROUP BY indrelid, indkey HAVING count(*) > 1` returned 0 rows \u2014 zero structural duplicates\n- table1 has 0 indexes (cannot have redundancy)\n- All 7 existing indexes serve distinct purposes (PKs + unique email constraints)\n"
+}

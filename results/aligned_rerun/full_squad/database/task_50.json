@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 428.6,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 50,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Task #50\n\n## Root Causes\n\n**REDUNDANT_INDEX, INSERT_LARGE_DATA**\n\n## Evidence\n\n### REDUNDANT_INDEX\n- `table1` has **22 indexes** on a single table with 2M rows\n- Many are explicit duplicates on the same columns:\n  - `index_table1_0_dup` and `index_table1_0_v2` both on `name0`\n  - `index_table1_1_dup` and `index_table1_1_v2` both on `name1`\n  - `index_table1_2_dup` and `index_table1_2_v2` both on `name2`\n  - `index_table1_3_dup` and `index_table1_3_v2` both on `name3`\n  - `index_table1_4_dup` and `index_table1_4_v2` both on `name4`\n  - `index_table1_5` and `index_table1_5_dup` both on `name5`\n  - `index_table1_6` and `index_table1_6_dup` both on `name6`\n  - `index_table1_7` and `index_table1_7_dup` both on `name7`\n  - `index_table1_id` and `index_table1_id_dup` both on `id`\n- **20 out of 22 indexes have zero scans** (idx_scan = 0) \u2014 never used for reads\n- Total index storage: 358 MB of wasted space (25% of total relation size)\n- Each write operation must maintain all 22 indexes, causing severe write amplification\n\n### INSERT_LARGE_DATA\n- `table1` received **2,005,000 inserts** (n_tup_ins = 2,005,000)\n- Table grew to 1431 MB of data (1790 MB total with indexes)\n- Bulk INSERT using `generate_series` to mass-load data\n- Combined with 22 redundant indexes, each insert triggers 22 index updates\n- This write amplification (22x) on 2M rows is the primary performance bottleneck\n\n### Ruled Out\n- **LOCK_CONTENTION**: 0 not-granted locks, 0 blocked backends, 0 deadlocks\n- **VACUUM**: Only 9,764 dead tuples (0.5% of 2M), autovacuum ran recently and successfully\n- **FETCH_LARGE_DATA**: While seq_scans exist (12,644), the seq_tup_read (28M) is relatively modest; the dominant cost is write-side, not read-side\n"
+}

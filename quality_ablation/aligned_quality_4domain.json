@@ -1,0 +1,153 @@
+{
+  "full_squad": {
+    "n": 38,
+    "n_by_domain": {
+      "research": 8,
+      "bargaining": 10,
+      "coding": 10,
+      "database": 10
+    },
+    "kpi_overall": 81.1,
+    "rubric_overall": 4.1,
+    "by_domain": {
+      "research": {
+        "n": 8,
+        "kpi": 81.2,
+        "rubric": 4.21
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi": 95.0,
+        "rubric": 4.8
+      },
+      "coding": {
+        "n": 10,
+        "kpi": 81.7,
+        "rubric": 3.73
+      },
+      "database": {
+        "n": 10,
+        "kpi": 66.7,
+        "rubric": 3.67
+      }
+    }
+  },
+  "coord_only": {
+    "n": 38,
+    "n_by_domain": {
+      "research": 8,
+      "bargaining": 10,
+      "coding": 10,
+      "database": 10
+    },
+    "kpi_overall": 81.1,
+    "rubric_overall": 4.04,
+    "by_domain": {
+      "research": {
+        "n": 8,
+        "kpi": 89.6,
+        "rubric": 4.5
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi": 96.7,
+        "rubric": 4.83
+      },
+      "coding": {
+        "n": 10,
+        "kpi": 68.3,
+        "rubric": 3.27
+      },
+      "database": {
+        "n": 10,
+        "kpi": 71.7,
+        "rubric": 3.67
+      }
+    }
+  },
+  "no_squad": {
+    "n": 38,
+    "n_by_domain": {
+      "research": 8,
+      "bargaining": 10,
+      "coding": 10,
+      "database": 10
+    },
+    "kpi_overall": 77.2,
+    "rubric_overall": 3.76,
+    "by_domain": {
+      "research": {
+        "n": 8,
+        "kpi": 75.0,
+        "rubric": 4.0
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi": 90.0,
+        "rubric": 4.24
+      },
+      "coding": {
+        "n": 10,
+        "kpi": 78.3,
+        "rubric": 3.77
+      },
+      "database": {
+        "n": 10,
+        "kpi": 65.0,
+        "rubric": 3.1
+      }
+    }
+  },
+  "memory_only": {
+    "n": 38,
+    "n_by_domain": {
+      "research": 8,
+      "bargaining": 10,
+      "coding": 10,
+      "database": 10
+    },
+    "kpi_overall": 65.8,
+    "rubric_overall": 3.58,
+    "by_domain": {
+      "research": {
+        "n": 8,
+        "kpi": 52.1,
+        "rubric": 3.21
+      },
+      "bargaining": {
+        "n": 10,
+        "kpi": 96.7,
+        "rubric": 4.8
+      },
+      "coding": {
+        "n": 10,
+        "kpi": 53.3,
+        "rubric": 2.97
+      },
+      "database": {
+        "n": 10,
+        "kpi": 58.3,
+        "rubric": 3.27
+      }
+    }
+  },
+  "_gpt4o_crosscheck": {
+    "research": {
+      "memory_only": 4.21,
+      "coord_only": 4.21,
+      "full_squad": 4.33,
+      "no_squad": 4.33
+    },
+    "bargaining": {
+      "full_squad": 4.7,
+      "memory_only": 4.47,
+      "no_squad": 4.4,
+      "coord_only": 4.53
+    }
+  },
+  "_notes": {
+    "database_kpi_caveat": "database gold blends process milestones (querying pg_stat_* views) with one final-answer milestone; treat its KPI as process-adherence and rely on the uniform 1-5 rubric for the clean correctness signal",
+    "alignment": "research/bargaining=anchor-verified; coding/database=by-construction (fresh aligned rerun)",
+    "judge": "claude-opus-4.6 uniform across all conditions & domains"
+  }
+}

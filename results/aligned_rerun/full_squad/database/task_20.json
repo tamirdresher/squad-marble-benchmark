@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 505.4,
+    "produced_output": false,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 20,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "TIMEOUT: Task did not produce answer.md within 700s"
+}

@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 225.5,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 70,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Task 70 \u2014 Database Performance Diagnosis\n\n## Root Causes (3 of 5)\n\n**INSERT_LARGE_DATA, REDUNDANT_INDEX, FETCH_LARGE_DATA**\n\n---\n\n## Evidence Summary\n\n### 1. INSERT_LARGE_DATA \u2705\n- `table1`: 2,005,000 rows inserted (n_tup_ins) \u2014 22 columns, ~676 bytes/row\n- Table total size: **1,790 MB**\n- INSERT via `generate_series` producing wide rows with 20 varchar(100) columns\n- Dominates all mutation counters\n\n### 2. REDUNDANT_INDEX \u2705\n- **9 pairs of duplicate indexes** on `table1` covering identical columns:\n  - `index_table1_0_dup` + `index_table1_0_v2` (both btree on name0)\n  - `index_table1_1_dup` + `index_table1_1_v2` (both btree on name1)\n  - `index_table1_2_dup` + `index_table1_2_v2` (both btree on name2)\n  - `index_table1_3_dup` + `index_table1_3_v2` (both btree on name3)\n  - `index_table1_4_dup` + `index_table1_4_v2` (both btree on name4)\n  - `index_table1_5` + `index_table1_5_dup` (both btree on name5)\n  - `index_table1_6` + `index_table1_6_dup` (both btree on name6)\n  - `index_table1_7` + `index_table1_7_dup` (both btree on name7)\n  - `index_table1_id` + `index_table1_id_dup` (both btree on id \u2014 43MB each)\n- Most duplicates have **0 idx_scan** \u2014 completely unused storage waste (~300+ MB)\n\n### 3. FETCH_LARGE_DATA \u2705\n- `table1` seq_scan: **12,644** sequential scans\n- seq_tup_read: **28,030,005** tuples read via sequential scan\n- SELECT queries on 2M-row table reading 170K\u2013340K blocks per query (3\u20137 seconds each)\n- Database-wide: tup_returned = 742M, tup_fetched = 583K \u2192 ratio **1,272\u00d7** (massive over-fetch)\n- temp_files = 68, temp_bytes = **800 MB** (spill to disk during large fetches)\n- temp_blks_written > 0 in SELECT queries with complex aggregations\n\n### Ruled Out\n- **LOCK_CONTENTION**: 0 not-granted locks, 0 deadlocks, 0 blocked backends\n- **VACUUM**: autovacuum_count=1 (has run), only 9,764 dead tuples vs 2M live \u2014 not a primary cause\n"
+}

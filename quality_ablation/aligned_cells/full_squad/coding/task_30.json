@@ -1,0 +1,24 @@
+{
+  "domain": "coding",
+  "cond": "full_squad",
+  "task": "30",
+  "status": "ok",
+  "raw_len": 77277,
+  "n_gold": 6,
+  "grading": "aligned-rerun-v1",
+  "kpi_achieved": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false
+  ],
+  "kpi_rate": 0.6667,
+  "rubric": {
+    "correctness": 3,
+    "completeness": 2,
+    "quality": 3,
+    "avg": 2.67
+  }
+}

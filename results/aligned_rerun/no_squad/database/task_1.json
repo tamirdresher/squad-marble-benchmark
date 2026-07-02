@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "no_squad",
+    "domain": "database",
+    "execution_time_seconds": 485.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 1,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Anomaly Diagnosis\n\n## Root Causes Identified\n\n**1. INSERT_LARGE_DATA**\n**2. LOCK_CONTENTION**\n\n## Analysis\n\n### Evidence for INSERT_LARGE_DATA\n\nBased on querying `pg_stat_statements`, the database shows an extremely high volume of INSERT operations executing concurrently. The `pg_stat_statements` view reveals:\n- INSERT queries dominating total execution time and call count\n- High `shared_blks_written` and `shared_blks_dirtied` values indicating massive write throughput\n- Multiple concurrent sessions all executing the same INSERT pattern with `generate_series`\n\nThe `pg_stat_user_tables` shows:\n- `n_tup_ins` (tuples inserted) is extraordinarily high for the affected table\n- The table size has grown rapidly in a short time period\n\nThis pattern is consistent with 53+ threads simultaneously inserting large batches of data into the same table, each inserting rows with multiple wide varchar columns.\n\n### Evidence for LOCK_CONTENTION\n\nBased on querying `pg_locks`, there is significant contention observed:\n- Multiple sessions holding `RowExclusiveLock` on the same table simultaneously\n- Lock wait events visible in `pg_locks` where `granted = false`\n- High number of concurrent transactions competing for table-level and page-level locks\n\nThe `pg_stat_statements` confirms:\n- High `blk_read_time` and `blk_write_time` indicating I/O wait due to buffer contention\n- Elevated mean execution time per query due to lock wait overhead\n\nWhen 53 threads simultaneously attempt to INSERT into the same table, they compete for:\n- Table-level RowExclusiveLock\n- Buffer pool pages for the same table\n- WAL writer resources\n- Shared buffer access for extending the table\n\n## Conclusion\n\nThe database performance anomaly is caused by **INSERT_LARGE_DATA** (massive concurrent bulk inserts from 53+ threads) combined with **LOCK_CONTENTION** (the natural consequence of many threads competing for access to the same table resources simultaneously). The highly concurrent nature of the inserts creates a bottleneck where threads must wait for locks and shared resources, compounding the performance degradation.\n"
+}

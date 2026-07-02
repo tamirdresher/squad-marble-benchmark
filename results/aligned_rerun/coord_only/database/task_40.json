@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 225.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 40,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Anomaly Diagnosis\n\n## Root Causes: `INSERT_LARGE_DATA`, `REDUNDANT_INDEX`\n\n## Evidence Summary\n\n### 1. INSERT_LARGE_DATA (Primary)\n\n- **table1** contains 2,005,226 rows with `n_tup_ins = 2,005,000`\n- Table size: **1790 MB** (99.50% of entire database at 1799 MB)\n- `pg_stat_statements` shows bulk INSERT workload: `INSERT INTO table1 SELECT generate_series(...)` with massive row counts\n- WAL impact: 596 MB of WAL bytes generated from inserts\n- `pg_stat_database.tup_inserted = 3,086,955` \u2014 overwhelmingly write-heavy workload\n\n### 2. REDUNDANT_INDEX (Secondary)\n\n- **22 indexes** on `table1` consuming **358 MB** total\n- Multiple **exact duplicate indexes** on the same columns:\n  - `index_table1_id` (id) + `index_table1_id_dup` (id) \u2014 both 43 MB\n  - `index_table1_0_dup` (name0) + `index_table1_0_v2` (name0)\n  - `index_table1_1_dup` (name1) + `index_table1_1_v2` (name1)\n  - `index_table1_2_dup` (name2) + `index_table1_2_v2` (name2)\n  - `index_table1_3_dup` (name3) + `index_table1_3_v2` (name3)\n  - `index_table1_4_dup` (name4) + `index_table1_4_v2` (name4)\n  - `index_table1_5` (name5) + `index_table1_5_dup` (name5)\n  - `index_table1_6` (name6) + `index_table1_6_dup` (name6)\n  - `index_table1_7` (name7) + `index_table1_7_dup` (name7)\n- Most indexes have `idx_scan = 0` (never used for reads)\n- Each INSERT must maintain all 22 indexes, amplifying write cost dramatically\n\n### Eliminated Hypotheses\n\n| Suspect | Verdict | Reason |\n|---------|---------|--------|\n| LOCK_CONTENTION | **Eliminated** | Zero waiters (`pg_locks WHERE NOT granted` = 0), zero deadlocks, no blocked backends, no idle-in-transaction sessions |\n| VACUUM | **Eliminated** | Only 9,764 dead tuples vs 2M live (0.5%), autovacuum_count=1 ran successfully, no active vacuum progress, healthy XID age (77) |\n| FETCH_LARGE_DATA | **Eliminated** | While some full-table scans exist (seq_scan=12,641), these are diagnostic/monitoring queries, not the application workload. The dominant performance issue is writes, not reads |\n\n## Conclusion\n\nThe performance anomaly is caused by **massive bulk data insertion** (`INSERT_LARGE_DATA`) into `table1` combined with **redundant duplicate indexes** (`REDUNDANT_INDEX`) that multiply the write cost. Every row inserted must update 22 indexes (many being exact duplicates on the same column), creating an O(n \u00d7 22) index maintenance overhead on a 2M-row table.\n"
+}

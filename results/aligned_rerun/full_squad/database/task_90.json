@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 325.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 90,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Task #90 (Social Media Platform)\n\n## Root Causes (3 of 5)\n\n**INSERT_LARGE_DATA, REDUNDANT_INDEX, VACUUM**\n\n## Evidence Summary\n\n### 1. INSERT_LARGE_DATA \u2705\n- **Dominant workload:** `INSERT INTO table1 SELECT generate_series(...)` bulk-inserted **2,005,000 rows** into `table1`\n- Single INSERT statement: 5,000 rows/call, total exec time ~1,190 ms per call\n- DO $$ block performed 10,000 random UPDATEs generating 43 MB WAL and 248,759 WAL records\n- Total WAL generated: ~106 MB across all statements\n- `table1` grew to **1,790 MB** (1,431 MB heap + 358 MB indexes)\n- `n_tup_ins = 2,005,000` confirms massive bulk insertion workload\n\n### 2. REDUNDANT_INDEX \u2705\n- **9 exact duplicate index pairs** on `table1` \u2014 same column indexed twice:\n  - `index_table1_id` / `index_table1_id_dup` (column: id) \u2014 43 MB each\n  - `index_table1_0_dup` / `index_table1_0_v2` (column: name0) \u2014 13-14 MB each\n  - `index_table1_1_dup` / `index_table1_1_v2` (column: name1)\n  - `index_table1_2_dup` / `index_table1_2_v2` (column: name2)\n  - `index_table1_3_dup` / `index_table1_3_v2` (column: name3)\n  - `index_table1_4_dup` / `index_table1_4_v2` (column: name4)\n  - `index_table1_5` / `index_table1_5_dup` (column: name5)\n  - `index_table1_6` / `index_table1_6_dup` (column: name6)\n  - `index_table1_7` / `index_table1_7_dup` (column: name7)\n- **22 total indexes** on a single table \u2014 358 MB of index space\n- Every INSERT must maintain all 22 indexes \u2192 ~2x write amplification from duplicates\n- Most duplicate indexes have **0 scans** (pure overhead, never used)\n\n### 3. VACUUM \u2705\n- `autovacuum_vacuum_insert_threshold = 1000` vs `n_tup_ins = 2,005,000` \u2192 autovacuum-for-inserts triggered repeatedly\n- Only **1 autovacuum** completed despite 2M inserts far exceeding threshold\n- **9,764 dead tuples** from the 10,000 random UPDATE operations remain unvacuumed\n- `n_ins_since_vacuum = 0` (table still accumulating post-vacuum)\n- With 22 indexes, each vacuum pass is expensive (must scan/clean all index pages)\n- `maintenance_work_mem = 64 MB` default is inadequate for vacuuming 358 MB of indexes efficiently\n\n## Ruled Out\n\n### LOCK_CONTENTION \u274c\n- 0 ungranted locks, 0 lock-waiting sessions, 0 deadlocks\n- No blocking pairs detected\n- Only probe's own AccessShareLock present at query time\n\n### FETCH_LARGE_DATA \u274c\n- While temp_files=68 (800 MB) exists, this is attributable to index maintenance and diagnostic queries\n- No application-level large SELECT queries found in pg_stat_statements\n- The dominant workload is write-heavy (INSERT/UPDATE), not read-heavy\n"
+}

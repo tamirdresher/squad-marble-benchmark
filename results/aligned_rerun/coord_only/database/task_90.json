@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 466.5,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 90,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Task #90\n\n## Root Causes (Top 3)\n\n**REDUNDANT_INDEX, INSERT_LARGE_DATA, FETCH_LARGE_DATA**\n\n## Evidence\n\n### 1. REDUNDANT_INDEX\n- **9 pairs of exact duplicate indexes** on `table1` (identical btree definitions on the same columns)\n- 22 total indexes on a single table; duplicates on: name0, name1, name2, name3, name4, name5, name6, name7, id\n- Index storage: 358 MB (20% of total 1,790 MB table size)\n- Most duplicate indexes have **0 scans** \u2014 completely unused, pure overhead\n- Every INSERT/UPDATE must maintain all 22 indexes, compounding write latency\n\n### 2. INSERT_LARGE_DATA\n- 2,005,000 rows bulk-inserted into `table1` (a wide table with 20 varchar(100) columns)\n- Table data size: 1,431 MB\n- INSERT used `generate_series` for batch loading (5,000 rows per call)\n- Additional 10,000 random UPDATE operations via DO block\n- Combined with 22 redundant indexes, each insert triggers excessive index maintenance\n\n### 3. FETCH_LARGE_DATA\n- `tup_returned / tup_fetched` ratio: **1,743.7:1** (extreme over-fetching)\n- 12,641 sequential scans on table1 reading 26,025,005 tuples total\n- Top query: full-table aggregation (min/max/count distinct) taking 3,596 ms per call\n- Temp file usage: **68 temp files, 800 MB** \u2014 data spilling to disk during queries\n- `SELECT count(*)` on the 2M-row table averaging 237 ms per call\n\n### Ruled Out\n- **LOCK_CONTENTION**: 0 blocked backends, 0 deadlocks, 0 ungranted locks\n- **VACUUM**: Only 9,764 dead tuples (0.49%), autovacuum ran successfully, no vacuum backlog\n"
+}

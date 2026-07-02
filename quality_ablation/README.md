@@ -1,11 +1,44 @@
-# Correctness & Quality Ablation (aligned domains)
+# Correctness & Quality Ablation
+
+> ## ⭐ AUTHORITATIVE RESULT: aligned 4-domain re-run
+>
+> The task-alignment problem described below (which forced the *original* correctness pass
+> to cover only research + bargaining) was **solved by re-running all four conditions from
+> scratch on identical task IDs** in every domain. That aligned re-run — **80 fresh
+> transcripts, all four domains, aligned by construction** — is the authoritative correctness
+> result and supersedes the 2-domain table further down.
+>
+> | Condition | Milestone-KPI | Quality (1–5) | Research | Bargaining | Coding | Database† |
+> |---|---:|---:|---:|---:|---:|---:|
+> | **full_squad** | **81.1%** | **4.10** | 81.2 / 4.21 | 95.0 / 4.80 | 81.7 / 3.73 | 66.7 / 3.67 |
+> | coord_only | 81.1% | 4.04 | 89.6 / 4.50 | 96.7 / 4.83 | 68.3 / 3.27 | 71.7 / 3.67 |
+> | no_squad | 77.2% | 3.76 | 75.0 / 4.00 | 90.0 / 4.24 | 78.3 / 3.77 | 65.0 / 3.10 |
+> | memory_only | 65.8% | 3.58 | 52.1 / 3.21 | 96.7 / 4.80 | 53.3 / 2.97 | 58.3 / 3.27 |
+>
+> Domain cells = KPI% / rubric. n=38/condition (research 8 + bargaining 10 + coding 10 +
+> database 10). Coordination helps or ties in every domain; Full Squad leads overall
+> (+3.9pp KPI / +0.34 rubric over the raw single agent). This aligned re-run **overturned**
+> the earlier coding "reversal" and database "coordination hurts" findings — both were
+> task-misalignment artifacts. **† Database KPI** blends process + final-answer milestones;
+> lean on its rubric for clean correctness.
+>
+> - Raw transcripts: [`../results/aligned_rerun/`](../results/aligned_rerun/)
+> - Re-run driver: `rerun_aligned_coding_db.py` · grader: `regrade_aligned_coding_db.py` · aggregator: `aggregate_aligned_4domain.py`
+> - Aligned tasks so "task N" is identical across conditions **by construction** — no post-hoc anchor audit needed.
+> - Full aggregate: [`aligned_quality_4domain.json`](aligned_quality_4domain.json) · graded cells: `aligned_cells/{cond}/{domain}/task_{id}.json`
+>
+> Everything below is the **historical 2-domain audit** that motivated the re-run. Kept for transparency.
+
+---
+
+# Correctness & Quality Ablation (original 2-domain audit — historical)
 
 This directory holds the **correctness/quality** re-grade of the MARBLE ablation.
 Where the completion charts only ask *"did an output file appear?"*, this study
 asks *"is the output actually right?"* using MARBLE's own milestone-KPI plus a
 1–5 output-quality rubric, judged **uniformly across all four conditions**.
 
-## The task-alignment problem (why this is restricted to 2 domains)
+## The task-alignment problem (why the *original* pass was restricted to 2 domains)
 
 The four ablation conditions were not all produced by the same run:
 

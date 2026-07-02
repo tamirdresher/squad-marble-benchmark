@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "no_squad",
+    "domain": "database",
+    "execution_time_seconds": 325.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 20,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Anomaly \u2014 Root Cause Diagnosis\n\n## Final Answer\n\n**INSERT_LARGE_DATA, FETCH_LARGE_DATA**\n\n## Evidence Summary\n\n### INSERT_LARGE_DATA \u2705 CONFIRMED\n- `table1`: 2,000,000 rows \u00d7 22 wide varchar columns = **1421 MB**\n- Bulk INSERT completed in ~5ms timestamp span (COPY/generate_series pattern)\n- `pg_stat_statements`: INSERT consumed **99.34%** of all execution time (270,453 ms across 41 calls, 820,000 rows)\n- Generated **596 MB WAL**, dirtied 74,572 shared buffers\n- Zero indexes created \u2014 pure unstructured bulk write\n\n### FETCH_LARGE_DATA \u2705 CONFIRMED\n- Zero indexes on `table1` \u2192 every query is a full sequential scan of 1421 MB\n- **297 sequential scans**, reading **294 million tuples**\n- **200.79 GB** shared block reads, **11.81 GB** temp spill (49 temp files)\n- `tup_returned:tup_fetched` ratio = **1,097:1** (textbook over-scanning)\n- All top-consuming queries are full-table scans (COUNT(*), COUNT(DISTINCT), aggregates)\n\n### Ruled Out\n- **LOCK_CONTENTION**: 0 ungranted locks, 0 blocked PIDs, 0 deadlocks\n- **REDUNDANT_INDEX**: 0 duplicate indexes; `table1` has no indexes at all\n- **VACUUM**: 0 dead tuples, 0 updates/deletes, no vacuum running or needed\n"
+}

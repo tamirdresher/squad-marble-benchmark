@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 305.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 80,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Task #80\n\n## Root Causes Identified\n\n**INSERT_LARGE_DATA, REDUNDANT_INDEX, FETCH_LARGE_DATA**\n\n---\n\n## Evidence Summary\n\n### 1. INSERT_LARGE_DATA \u2705\n\n- **tup_inserted = 3,086,955** (3M+ rows inserted into the database)\n- `table1` contains 2,005,226 rows (n_tup_ins = 2,005,000), occupying **1,431 MB** of heap space\n- INSERT via `generate_series` with 21 wide random-text columns (~700 bytes/row)\n- Additional DO$$ block performing 10,000 random UPDATEs (generating dead tuples)\n- INSERT workload dominates total execution time in pg_stat_statements\n\n### 2. REDUNDANT_INDEX \u2705\n\n- **9 duplicate index groups** detected on table1 via `GROUP BY indrelid, indkey HAVING count > 1`\n- 22 total indexes on table1, consuming **358 MB** (25% of heap size)\n- Duplicates include `_dup` and `_v2` variants on same columns:\n  - `index_table1_id` + `index_table1_id_dup` (both btree(id), 43 MB each)\n  - `index_table1_0_dup` + `index_table1_0_v2` (both btree(name0))\n  - `index_table1_5` + `index_table1_5_dup` (both btree(name5))\n  - 6 more duplicate pairs on name1\u2013name7\n- 20 of 22 indexes show **idx_scan = 0** (completely unused)\n- Redundant indexes slow every INSERT/UPDATE and waste ~180 MB\n\n### 3. FETCH_LARGE_DATA \u2705\n\n- **temp_files = 68, temp_bytes = 839 MB** (800 MB of disk spill from large fetches)\n- **tup_returned = 744,372,130** vs tup_fetched = 616,317 \u2014 ratio **1207.8:1**\n- Top query: `SELECT min(time), max(time), count(distinct time) FROM table1` \u2014 7.2 seconds, reads 340,773 shared blocks, writes 5,920 temp blocks\n- table1: **seq_scan = 12,644**, seq_tup_read = 28,030,005 (full-table sequential scans)\n- Aggregate queries (COUNT, DISTINCT, MIN/MAX) on 2M-row unindexed table force full scans and temp spill\n\n### Ruled Out\n\n| Suspect | Status | Key Evidence |\n|---------|--------|--------------|\n| LOCK_CONTENTION | ABSENT | 0 lock waiters, 0 deadlocks, only self-held locks |\n| VACUUM | Secondary | autovacuum fired once; 9764 dead tuples being managed |\n"
+}

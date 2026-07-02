@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 365.0,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 60,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Task #60\n\n## Root Causes Identified\n\n**INSERT_LARGE_DATA, REDUNDANT_INDEX, FETCH_LARGE_DATA**\n\n## Evidence Summary\n\n### 1. INSERT_LARGE_DATA \u2705 PRESENT (Confidence: 99%)\n\n- `table1` contains **2,005,226 rows** and is **1790 MB** in size\n- `pg_stat_statements` shows bulk INSERT via `generate_series` inserted 2,005,000 rows\n- A `DO` block performed 10,000 random UPDATEs (3562 ms total)\n- INSERT workload dominates total database execution time\n- The table has 22 columns (id + 20 varchar(100) + timestamp) \u2014 wide rows\n\n### 2. REDUNDANT_INDEX \u2705 PRESENT (Confidence: 98%)\n\n- `table1` has **22 indexes**, with **9 exact duplicate pairs**:\n  - `index_table1_id` / `index_table1_id_dup` (both on `id`)\n  - `index_table1_0_dup` / `index_table1_0_v2` (both on `name0`)\n  - `index_table1_1_dup` / `index_table1_1_v2` (both on `name1`)\n  - `index_table1_2_dup` / `index_table1_2_v2` (both on `name2`)\n  - `index_table1_3_dup` / `index_table1_3_v2` (both on `name3`)\n  - `index_table1_4_dup` / `index_table1_4_v2` (both on `name4`)\n  - `index_table1_5` / `index_table1_5_dup` (both on `name5`)\n  - `index_table1_6` / `index_table1_6_dup` (both on `name6`)\n  - `index_table1_7` / `index_table1_7_dup` (both on `name7`)\n- Total index storage: **358 MB** (20% of total relation size)\n- Most duplicate indexes have **0 scans** \u2014 completely unused\n- Redundant indexes slow down INSERT/UPDATE operations and waste storage\n\n### 3. FETCH_LARGE_DATA \u2705 PRESENT (Confidence: 95%)\n\n- Database-wide: `tup_returned / tup_fetched = 1813.86` (massive over-fetch ratio)\n- **800 MB of temp file spill** across 68 temp files\n- `table1` has **12,641 sequential scans** reading **26,025,005 tuples**\n- Top queries by execution time are all full-table scans on table1:\n  - `SELECT min(time), max(time), count(distinct time) FROM table1` \u2014 7191 ms, 340K blocks read\n  - `SELECT count(*), min(time), max(time) FROM table1` \u2014 1913 ms, 170K blocks read\n  - `SELECT count(*) FROM table1` \u2014 949 ms across 4 calls\n- Cache hit ratio: 85.82% (below the 99%+ ideal, indicating significant disk I/O)\n- Block reads: 16,656,888 (very high physical I/O)\n\n## Ruled Out\n\n### LOCK_CONTENTION \u274c ABSENT\n- 0 ungranted locks in `pg_locks`\n- 0 sessions waiting with `wait_event_type='Lock'`\n- 0 deadlocks in `pg_stat_database`\n\n### VACUUM \u274c ABSENT (as primary cause)\n- Autovacuum ran successfully (`autovacuum_count=1`)\n- Dead tuples: only 9,764 (0.48% of live tuples \u2014 negligible)\n- `n_ins_since_vacuum = 0` \u2014 vacuum already processed all inserts\n- No active vacuum in progress\n"
+}

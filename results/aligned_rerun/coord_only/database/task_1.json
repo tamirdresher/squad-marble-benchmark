@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 466.7,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 1,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis\n\n## Root Causes: `REDUNDANT_INDEX`, `INSERT_LARGE_DATA`\n\n## Evidence\n\n### REDUNDANT_INDEX (Primary Cause)\n\n`table1` has **22 indexes**, with **9 pairs of exact duplicates** on the same columns:\n\n| Column | Duplicate Indexes |\n|--------|-------------------|\n| id | `index_table1_id` + `index_table1_id_dup` |\n| name0 | `index_table1_0_dup` + `index_table1_0_v2` |\n| name1 | `index_table1_1_dup` + `index_table1_1_v2` |\n| name2 | `index_table1_2_dup` + `index_table1_2_v2` |\n| name3 | `index_table1_3_dup` + `index_table1_3_v2` |\n| name4 | `index_table1_4_dup` + `index_table1_4_v2` |\n| name5 | `index_table1_5` + `index_table1_5_dup` |\n| name6 | `index_table1_6` + `index_table1_6_dup` |\n| name7 | `index_table1_7` + `index_table1_7_dup` |\n\n- **20 out of 22 indexes have 0 scans** (completely unused)\n- Total index size: **358 MB** (25% of the 1,431 MB data size)\n- Every INSERT/UPDATE must maintain all 22 indexes, causing massive write amplification\n\n### INSERT_LARGE_DATA (Secondary Cause)\n\n- **2,005,000 rows** bulk-inserted into `table1` within ~103 seconds\n- Table size: **1,790 MB** (22 varchar columns + timestamp)\n- Each inserted row required updating all 22 indexes simultaneously\n- `n_tup_ins = 2,005,000` confirmed in `pg_stat_user_tables`\n- INSERT operations consumed significant I/O: 340,227 shared blocks read\n\n### Eliminated Causes\n\n- **LOCK_CONTENTION**: 0 not-granted locks, 0 blocked backends, 0 deadlocks\n- **VACUUM**: Only 9,764 dead tuples (0.49% of live rows), autovacuum ran successfully\n- **FETCH_LARGE_DATA**: Sequential scans exist but are monitoring queries returning aggregate results; not the primary bottleneck\n"
+}

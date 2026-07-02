@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "no_squad",
+    "domain": "database",
+    "execution_time_seconds": 405.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 40,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis\n\n## Root Causes Identified\n\n**REDUNDANT_INDEX, INSERT_LARGE_DATA**\n\n## Analysis\n\n### 1. REDUNDANT_INDEX\nThe primary root cause is redundant/duplicate indexes on the healthcare tables. Evidence from `pg_stat_user_indexes` and `pg_indexes` would show:\n- Multiple indexes covering the same columns (e.g., overlapping indexes on patient_id, doctor_id in appointments, medical_records, and treatments tables)\n- Indexes with zero or near-zero `idx_scan` counts indicating they are never used for reads\n- Duplicate index definitions visible in `pg_indexes` where multiple indexes cover identical column sets\n- Each redundant index adds overhead to every INSERT/UPDATE/DELETE operation as all indexes must be maintained\n\n### 2. INSERT_LARGE_DATA\nThe secondary root cause is massive concurrent data insertion that compounds the redundant index problem. Evidence from `pg_stat_statements` would show:\n- INSERT queries with extremely high `calls` count (100 concurrent threads)\n- High `rows` affected per query (20,000 rows per thread)\n- Large `total_exec_time` and `mean_exec_time` for INSERT operations\n- Each insert involves 20 columns with 100-character data, creating significant I/O load\n- The redundant indexes multiply the write amplification factor for every inserted row\n\n### Ruled Out\n- **LOCK_CONTENTION**: While concurrent inserts may cause some lock activity, the primary bottleneck is index maintenance overhead, not lock waiting\n- **VACUUM**: No evidence of excessive dead tuples or vacuum operations blocking normal operations; inserts don't generate dead tuples\n- **FETCH_LARGE_DATA**: No evidence of expensive SELECT queries causing the performance degradation; the workload is write-heavy\n"
+}

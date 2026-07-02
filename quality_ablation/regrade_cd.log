@@ -1,0 +1,83 @@
+total cells: 80 (workers=4)
+prewarming az token cache ...
+[aligned] coding no_squad    t20  kpi=1.00 rub=4.0 len=35795
+[aligned] coding no_squad    t10  kpi=0.83 rub=3.67 len=49725
+[aligned] coding no_squad    t1   kpi=0.50 rub=2.67 len=64070
+[aligned] coding no_squad    t30  kpi=0.67 rub=3.67 len=49035
+[aligned] coding no_squad    t50  kpi=1.00 rub=5.0 len=24952
+[aligned] coding no_squad    t40  kpi=0.50 rub=2.67 len=91533
+[aligned] coding no_squad    t60  kpi=0.67 rub=3.33 len=50759
+[aligned] coding no_squad    t70  kpi=0.67 rub=3.33 len=56408
+[aligned] coding no_squad    t80  kpi=1.00 rub=4.67 len=49402
+[aligned] coding no_squad    t90  kpi=1.00 rub=4.67 len=27250
+[aligned] coding memory_only t1   kpi=0.67 rub=3.67 len=46798
+[aligned] coding memory_only t10  kpi=0.00 rub=1.0 len=43932
+[aligned] coding memory_only t30  kpi=0.33 rub=2.67 len=91742
+[aligned] coding memory_only t20  kpi=0.67 rub=3.67 len=68703
+[aligned] coding memory_only t50  kpi=0.50 rub=2.67 len=64816
+[aligned] coding memory_only t40  kpi=0.17 rub=2.67 len=85356
+[aligned] coding memory_only t60  kpi=0.83 rub=3.67 len=48246
+[aligned] coding memory_only t80  kpi=0.50 rub=2.67 len=70222
+[aligned] coding memory_only t70  kpi=0.83 rub=3.67 len=95753
+[aligned] coding memory_only t90  kpi=0.83 rub=3.33 len=41967
+[aligned] coding coord_only  t1   kpi=0.67 rub=3.67 len=67545
+[aligned] coding coord_only  t10  kpi=0.83 rub=3.33 len=56328
+[aligned] coding coord_only  t20  kpi=0.83 rub=3.67 len=63572
+[aligned] coding coord_only  t30  kpi=0.83 rub=3.33 len=62152
+[aligned] coding coord_only  t70  EMPTY (no_output)
+[aligned] coding coord_only  t40  kpi=0.50 rub=2.67 len=76796
+[aligned] coding coord_only  t50  kpi=1.00 rub=4.67 len=26854
+[aligned] coding coord_only  t60  kpi=0.33 rub=2.33 len=50055
+[aligned] coding coord_only  t80  kpi=0.83 rub=4.0 len=32943
+[aligned] coding coord_only  t90  kpi=1.00 rub=4.0 len=33381
+[aligned] coding full_squad  t1   kpi=0.67 rub=3.33 len=54874
+[aligned] coding full_squad  t10  kpi=0.83 rub=3.33 len=43371
+[aligned] coding full_squad  t20  kpi=1.00 rub=4.0 len=49101
+[aligned] coding full_squad  t30  kpi=0.67 rub=2.67 len=77277
+[aligned] coding full_squad  t50  kpi=1.00 rub=5.0 len=28855
+[aligned] coding full_squad  t40  kpi=0.67 rub=3.33 len=104520
+[aligned] coding full_squad  t60  kpi=0.67 rub=3.67 len=50664
+[aligned] coding full_squad  t70  kpi=0.67 rub=3.67 len=103795
+[aligned] coding full_squad  t80  kpi=1.00 rub=4.0 len=37633
+[aligned] database no_squad    t1   kpi=0.50 rub=2.33 len=2128
+[aligned] coding full_squad  t90  kpi=1.00 rub=4.33 len=47793
+[aligned] database no_squad    t10  kpi=0.33 rub=2.0 len=1336
+[aligned] database no_squad    t20  kpi=1.00 rub=5.0 len=1187
+[aligned] database no_squad    t40  kpi=0.17 rub=1.67 len=1731
+[aligned] database no_squad    t70  EMPTY (no_output)
+[aligned] database no_squad    t50  kpi=1.00 rub=4.0 len=4031
+[aligned] database no_squad    t30  kpi=0.83 rub=4.0 len=3366
+[aligned] database no_squad    t60  kpi=0.83 rub=3.33 len=2855
+[aligned] database memory_only t10  EMPTY (no_output)
+[aligned] database memory_only t20  EMPTY (no_output)
+[aligned] database no_squad    t80  kpi=0.83 rub=4.0 len=3068
+[aligned] database no_squad    t90  kpi=1.00 rub=3.67 len=2751
+[aligned] database memory_only t1   kpi=0.83 rub=4.33 len=2144
+[aligned] database memory_only t30  kpi=0.67 rub=3.67 len=2806
+[aligned] database memory_only t40  kpi=0.83 rub=4.0 len=2601
+[aligned] database memory_only t50  kpi=0.83 rub=4.0 len=2605
+[aligned] database memory_only t70  kpi=1.00 rub=5.0 len=3283
+[aligned] database memory_only t60  kpi=0.67 rub=3.67 len=3230
+[aligned] database memory_only t80  kpi=0.83 rub=4.67 len=3030
+[aligned] database coord_only  t20  EMPTY (no_output)
+[aligned] database memory_only t90  kpi=0.17 rub=1.33 len=53
+[aligned] database coord_only  t10  kpi=0.67 rub=3.67 len=2072
+[aligned] database coord_only  t1   kpi=0.83 rub=4.0 len=1674
+[aligned] database coord_only  t30  kpi=0.83 rub=3.67 len=1635
+[aligned] database coord_only  t40  kpi=0.83 rub=4.33 len=2402
+[aligned] database coord_only  t50  kpi=1.00 rub=5.0 len=2189
+[aligned] database coord_only  t60  kpi=0.83 rub=4.0 len=2560
+[aligned] database coord_only  t70  kpi=0.17 rub=1.0 len=51
+[aligned] database coord_only  t80  kpi=1.00 rub=5.0 len=2530
+[aligned] database full_squad  t20  EMPTY (no_output)
+[aligned] database coord_only  t90  kpi=1.00 rub=5.0 len=1539
+[aligned] database full_squad  t1   kpi=0.83 rub=4.67 len=2211
+[aligned] database full_squad  t10  kpi=0.67 rub=3.67 len=1951
+[aligned] database full_squad  t60  EMPTY (no_output)
+[aligned] database full_squad  t40  kpi=0.83 rub=4.67 len=2686
+[aligned] database full_squad  t50  kpi=0.83 rub=4.0 len=1758
+[aligned] database full_squad  t70  kpi=1.00 rub=5.0 len=1870
+[aligned] database full_squad  t30  kpi=0.67 rub=3.67 len=1646
+[aligned] database full_squad  t80  kpi=0.83 rub=4.0 len=1996
+[aligned] database full_squad  t90  kpi=1.00 rub=5.0 len=2569
+aligned coding+database regrade done

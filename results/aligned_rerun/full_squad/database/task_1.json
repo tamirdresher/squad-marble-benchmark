@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "full_squad",
+    "domain": "database",
+    "execution_time_seconds": 305.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 1,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis\n\n## Root Causes: `INSERT_LARGE_DATA`, `REDUNDANT_INDEX`\n\n## Evidence\n\n### 1. INSERT_LARGE_DATA\n\n- **`table1` received 2,005,000 inserts** (`n_tup_ins = 2,005,000`) in approximately 100 seconds (09:25:12 to 09:26:55)\n- The table grew to **1790 MB** (1431 MB heap + 358 MB indexes), dominating the entire 1799 MB database\n- Bulk insert used `INSERT INTO table1 SELECT generate_series(...)` pattern \u2014 massive batch loading\n- With 22 indexes on the table, each insert had to maintain all indexes, causing severe write amplification\n- Database-level `tup_inserted = 3,086,955` \u2014 almost entirely from table1\n\n### 2. REDUNDANT_INDEX\n\n- `table1` has **22 indexes** \u2014 an excessive number\n- **9 pairs of exact duplicate indexes** on the same columns:\n  - `index_table1_id` / `index_table1_id_dup` (both on `id`, 43 MB each)\n  - `index_table1_0_dup` / `index_table1_0_v2` (both on `name0`)\n  - `index_table1_1_dup` / `index_table1_1_v2` (both on `name1`)\n  - `index_table1_2_dup` / `index_table1_2_v2` (both on `name2`)\n  - `index_table1_3_dup` / `index_table1_3_v2` (both on `name3`)\n  - `index_table1_4_dup` / `index_table1_4_v2` (both on `name4`)\n  - `index_table1_5` / `index_table1_5_dup` (both on `name5`)\n  - `index_table1_6` / `index_table1_6_dup` (both on `name6`)\n  - `index_table1_7` / `index_table1_7_dup` (both on `name7`)\n- **20 out of 22 indexes have 0 scans** \u2014 never used for reads\n- Total index overhead: **358 MB** (20% of total table size) for mostly unused duplicates\n- Every write operation (INSERT/UPDATE) must maintain all 22 indexes, doubling the write cost unnecessarily\n\n### Eliminated Root Causes\n\n| Root Cause | Evidence Against |\n|---|---|\n| LOCK_CONTENTION | 0 ungranted locks, 0 lock-waiting sessions, 0 deadlocks |\n| VACUUM | Only 9,764 dead tuples (0.485%), autovacuum ran successfully |\n| FETCH_LARGE_DATA | Sequential scans present but are diagnostic queries, not application workload pattern |\n\n## Conclusion\n\nThe performance anomaly is caused by the combination of a **massive bulk data insertion** (2M rows in ~100 seconds) compounded by **redundant duplicate indexes** (9 pairs, 22 total) that amplify write costs while providing zero read benefit.\n"
+}

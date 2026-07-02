@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 414.3,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 10,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Task #10\n\n## Root Causes\n\n**REDUNDANT_INDEX, INSERT_LARGE_DATA**\n\n## Evidence\n\n### 1. REDUNDANT_INDEX\n\n`table1` has **22 indexes consuming 358 MB** \u2014 many are explicit duplicates on the same columns:\n\n| Column | Index A | Index B | Both Unused? |\n|--------|---------|---------|--------------|\n| id | index_table1_id (43 MB, 0 scans) | index_table1_id_dup (43 MB) | id_dup has 10K scans; id has 0 |\n| name0 | index_table1_0_dup (13 MB) | index_table1_0_v2 (14 MB) | v2 has 0 scans |\n| name1 | index_table1_1_dup (13 MB) | index_table1_1_v2 (14 MB) | Both 0 scans |\n| name2 | index_table1_2_dup (13 MB) | index_table1_2_v2 (14 MB) | Both 0 scans |\n| name3 | index_table1_3_dup (13 MB) | index_table1_3_v2 (14 MB) | Both 0 scans |\n| name4 | index_table1_4_dup (13 MB) | index_table1_4_v2 (14 MB) | Both 0 scans |\n| name5 | index_table1_5 (13 MB) | index_table1_5_dup (13 MB) | Both 0 scans |\n| name6 | index_table1_6 (13 MB) | index_table1_6_dup (14 MB) | Both 0 scans |\n| name7 | index_table1_7 (13 MB) | index_table1_7_dup (14 MB) | Both 0 scans |\n\nAdditionally, name8\u2013name11 have single indexes with 0 scans. Every INSERT/UPDATE must maintain all 22 indexes, severely degrading write performance.\n\n### 2. INSERT_LARGE_DATA\n\n- `table1` received **2,005,000 bulk inserts** (`n_tup_ins = 2,005,000`)\n- Table data size: **1432 MB** + 358 MB indexes = **1790 MB total**\n- Database-wide `tup_inserted = 3,086,955`\n- Bulk insert via `generate_series` confirmed in `pg_stat_statements` (5000 rows, 1190ms)\n- A DO block performed 10,000 random updates (3562ms total \u2014 the most expensive single query)\n- The combination of massive bulk inserts into a table with 22 redundant indexes creates compounding write amplification\n\n### Eliminated Root Causes\n\n- **LOCK_CONTENTION**: 0 waiters, 0 blocked backends, 0 deadlocks\n- **VACUUM**: Only 9,764 dead tuples; autovacuum ran successfully; not a bottleneck\n- **FETCH_LARGE_DATA**: While full table scans exist (170K blocks read), these are diagnostic/analytical queries, not the operational root cause\n"
+}

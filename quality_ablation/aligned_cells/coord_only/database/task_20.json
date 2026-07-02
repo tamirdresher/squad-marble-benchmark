@@ -1,0 +1,24 @@
+{
+  "domain": "database",
+  "cond": "coord_only",
+  "task": "20",
+  "status": "no_output",
+  "raw_len": 0,
+  "n_gold": 6,
+  "grading": "aligned-rerun-v1",
+  "kpi_achieved": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "kpi_rate": 0.0,
+  "rubric": {
+    "correctness": 1,
+    "completeness": 1,
+    "quality": 1,
+    "avg": 1.0
+  }
+}

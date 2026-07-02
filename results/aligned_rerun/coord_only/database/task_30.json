@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 265.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 30,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis\n\n## Root Causes: `REDUNDANT_INDEX`, `INSERT_LARGE_DATA`\n\n## Evidence\n\n### REDUNDANT_INDEX (Primary Cause)\n- `table1` has **22 indexes** with **9 duplicate pairs** on the same columns:\n  - `index_table1_0_dup` / `index_table1_0_v2` (both on `name0`)\n  - `index_table1_1_dup` / `index_table1_1_v2` (both on `name1`)\n  - `index_table1_2_dup` / `index_table1_2_v2` (both on `name2`)\n  - `index_table1_3_dup` / `index_table1_3_v2` (both on `name3`)\n  - `index_table1_4_dup` / `index_table1_4_v2` (both on `name4`)\n  - `index_table1_5` / `index_table1_5_dup` (both on `name5`)\n  - `index_table1_6` / `index_table1_6_dup` (both on `name6`)\n  - `index_table1_7` / `index_table1_7_dup` (both on `name7`)\n  - `index_table1_id` / `index_table1_id_dup` (both on `id`)\n- Most indexes have **0 scans** \u2014 never used for reads\n- Indexes consume **358 MB** (20% of 1790 MB total table size)\n- Every write must maintain all 22 indexes, causing severe write amplification\n\n### INSERT_LARGE_DATA (Secondary Cause)\n- **2,005,000 rows** bulk-inserted into `table1` (`n_tup_ins = 2,005,000`)\n- Bulk INSERT via `generate_series` inserting 5000 rows per call\n- Table data alone is **1431 MB**\n- Combined with 22 redundant indexes, inserts are extremely slow (1189ms for 5000 rows)\n- Additional 10,000 random UPDATEs across 20 columns (537 calls each)\n\n### Eliminated Causes\n- **LOCK_CONTENTION**: 0 not-granted locks, 0 blocked backends, 0 deadlocks\n- **VACUUM**: Only 9764 dead tuples (0.49% of rows), autovacuum ran recently\n- **FETCH_LARGE_DATA**: Sequential scans exist but are diagnostic queries, not application workload\n"
+}

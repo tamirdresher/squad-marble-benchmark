@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "coord_only",
+    "domain": "database",
+    "execution_time_seconds": 305.5,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 50,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Music Streaming Platform\n\n## Root Causes: `REDUNDANT_INDEX`, `INSERT_LARGE_DATA`\n\n## Evidence Summary\n\n### 1. REDUNDANT_INDEX (Primary Root Cause)\n\n`table1` has **22 indexes** \u2014 with **9 exact duplicate index pairs** on the same columns:\n\n| Duplicate Pair | Column | Scans |\n|---|---|---|\n| index_table1_id / index_table1_id_dup | id | 0 / 10078 |\n| index_table1_0_dup / index_table1_0_v2 | name0 | 4 / 0 |\n| index_table1_1_dup / index_table1_1_v2 | name1 | 0 / 0 |\n| index_table1_2_dup / index_table1_2_v2 | name2 | 0 / 0 |\n| index_table1_3_dup / index_table1_3_v2 | name3 | 0 / 0 |\n| index_table1_4_dup / index_table1_4_v2 | name4 | 0 / 0 |\n| index_table1_5 / index_table1_5_dup | name5 | 0 / 0 |\n| index_table1_6 / index_table1_6_dup | name6 | 0 / 0 |\n| index_table1_7 / index_table1_7_dup | name7 | 0 / 0 |\n\n- **Total redundant index waste: 222.9 MB**\n- Index size: 358 MB vs Heap: 1431 MB (25% overhead from indexes)\n- Most duplicates have **zero scans** \u2014 completely unused but slowing every write\n\n### 2. INSERT_LARGE_DATA (Secondary Root Cause)\n\n- **2,005,000 rows** bulk-inserted into table1 (`n_tup_ins = 2,005,000`)\n- INSERT via `generate_series` (5000 rows/call) + DO block (10,000 rows in loop)\n- Each INSERT must update **all 22 indexes** \u2014 massive write amplification\n- WAL impact: 17.5 MB bytes, 116,106 WAL records for a single 5000-row batch\n- Table grew to **1790 MB** total\n\n### Ruled Out\n\n| Candidate | Evidence | Verdict |\n|---|---|---|\n| LOCK_CONTENTION | 0 ungranted locks, 0 lock-waiting sessions, 0 deadlocks | \u274c No evidence |\n| VACUUM | 0.485% dead tuples, autovacuum ran recently, no vacuum in progress | \u274c No evidence |\n| FETCH_LARGE_DATA | Some seq scans from diagnostic queries but not the primary workload | \u274c Minor/secondary |\n\n## Conclusion\n\nThe performance anomaly is caused by **REDUNDANT_INDEX** and **INSERT_LARGE_DATA**. The combination of bulk-inserting 2M+ rows into a table with 22 indexes (9 of which are exact duplicates serving no purpose) creates severe write amplification. Every inserted row must update all 22 index entries, and half of those updates are completely wasted on redundant duplicate indexes.\n"
+}

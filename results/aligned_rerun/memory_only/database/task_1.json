@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "condition": "memory_only",
+    "domain": "database",
+    "execution_time_seconds": 265.4,
+    "produced_output": true,
+    "aligned_rerun": true,
+    "factorial": true
+  },
+  "task_id": 1,
+  "domain": "database",
+  "model": "claude-opus-4-6",
+  "output": "# Database Performance Diagnosis \u2014 Music Streaming Platform\n\n## Root Causes (exactly two)\n\n**INSERT_LARGE_DATA, FETCH_LARGE_DATA**\n\n## Evidence Summary\n\n### INSERT_LARGE_DATA \u2014 PRESENT (HIGH confidence)\n\n- `table1` contains 2,000,000 rows occupying 1421 MB (744 bytes/row)\n- Accounts for 99.44% of the entire 1429 MB database\n- Entire bulk load completed in a 0.005217-second timestamp span (99 distinct timestamps) \u2014 classic sysbench bulk insert pattern\n- Zero indexes on table1\n- All 9 music-streaming domain tables (users, artists, albums, songs, playlists, playlist_songs, subscriptions, payments, user_activity) are EMPTY \u2014 only the synthetic bulk-loaded table1 has data\n\n### FETCH_LARGE_DATA \u2014 PRESENT (HIGH confidence)\n\n- tup_returned/tup_fetched ratio = 765:1 (massive over-reading)\n- Cache hit rate only 26.4% (poor \u2014 most reads go to disk)\n- Disk blocks read: 2,615,631\n- Temp file spill: 120 MB across 5 temp files (growing)\n- table1 seq_scan = 39 (growing), seq_tup_read = 34,000,200\n- idx_scan = NULL (no index scans possible \u2014 zero indexes)\n- EXPLAIN shows only Parallel Seq Scan path (cost 193k+) for selective predicates\n- 181,821 buffers touched for single-row lookups\n\n## Ruled-Out Candidates\n\n### LOCK_CONTENTION \u2014 ABSENT (HIGH confidence)\n\n- 0 locks in waiting state\n- 0 backends with wait_event_type = Lock\n- pg_stat_database deadlocks = 0\n- Only idle backends present\n\n### REDUNDANT_INDEX \u2014 ABSENT (HIGH confidence)\n\n- 11 total indexes across music tables, all UNIQUE/PK on distinct columns\n- Duplicate-column-set detection query returned 0 rows\n- table1 has 0 indexes (cannot have redundant indexes)\n\n### VACUUM \u2014 ABSENT (HIGH confidence)\n\n- n_dead_tup = 0, n_tup_upd = 0, n_tup_del = 0\n- dead_tuple_percent = 0.0% (confirmed via pgstattuple)\n- free_percent = 5.67% (healthy, not bloated)\n- Autovacuum correctly idle \u2014 no dead tuples to reclaim\n\n## Conclusion\n\nThe performance anomaly is caused by **INSERT_LARGE_DATA** (massive bulk load creating a 1.4 GB table) combined with **FETCH_LARGE_DATA** (queries forced into full sequential scans on that table due to zero indexes, causing excessive disk I/O and temp spill).\n"
+}
